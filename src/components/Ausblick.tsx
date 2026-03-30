@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ShieldCheck, Cpu, MessageSquare, Users, CheckCircle2, FileText } from 'lucide-react';
 
 export default function Ausblick() {

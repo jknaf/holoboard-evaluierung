@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { FileText, Calendar } from 'lucide-react';
 import SpotlightCard from './ui/SpotlightCard';
 

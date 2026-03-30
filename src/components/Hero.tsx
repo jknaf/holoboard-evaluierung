@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function Hero() {
   const ref = useRef(null);

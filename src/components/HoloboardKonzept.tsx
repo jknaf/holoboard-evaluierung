@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Monitor, Cpu, MessageSquare, Layout, X, ArrowRight, BookOpen, ChevronDown } from 'lucide-react';
 
 export default function HoloboardKonzept() {

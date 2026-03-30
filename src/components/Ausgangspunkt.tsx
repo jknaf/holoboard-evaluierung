@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Target, Users, Video, Lightbulb } from 'lucide-react';
 
 export default function Ausgangspunkt() {

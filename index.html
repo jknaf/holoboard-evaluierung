@@ -7,6 +7,19 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      window.onerror = function(msg, src, line, col, err) {
+        document.getElementById('root').innerHTML =
+          '<pre style="color:red;padding:2rem;font-size:14px;white-space:pre-wrap;">' +
+          'MESSAGE: ' + msg + '\nFILE: ' + src + '\nLINE: ' + line + ' COL: ' + col +
+          '\nSTACK:\n' + (err && err.stack ? err.stack : 'no stack') + '</pre>';
+      };
+      window.addEventListener('unhandledrejection', function(e) {
+        document.getElementById('root').innerHTML =
+          '<pre style="color:red;padding:2rem;font-size:14px;white-space:pre-wrap;">' +
+          'PROMISE ERROR:\n' + (e.reason && e.reason.stack ? e.reason.stack : e.reason) + '</pre>';
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

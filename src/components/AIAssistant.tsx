@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
 
 export default function AIAssistant() {

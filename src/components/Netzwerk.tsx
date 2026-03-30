@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Network as NetworkIcon, Building2, Users, GraduationCap, Presentation } from 'lucide-react';
 
 export default function Netzwerk() {

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Target, CheckCircle2, Users, Building2, Lightbulb, X, ArrowRight } from 'lucide-react';
 
 export default function Evaluation() {

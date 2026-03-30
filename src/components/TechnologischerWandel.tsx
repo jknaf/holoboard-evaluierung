@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 export default function TechnologischerWandel() {
   const containerRef = useRef(null);

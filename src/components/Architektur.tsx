@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Database, Server, User, Monitor, Cpu, Globe, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function Architektur() {

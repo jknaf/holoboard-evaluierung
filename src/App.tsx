@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring, AnimatePresence } from 'motion/react';
+import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { Download as DownloadIcon, Menu, X } from 'lucide-react';
 
 // Sections

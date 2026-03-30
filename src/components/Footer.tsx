@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import LegalModal from './LegalModal';
 
 export default function Footer() {
