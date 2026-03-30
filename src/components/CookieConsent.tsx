@@ -34,7 +34,7 @@ export default function CookieConsent() {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed bottom-0 left-0 right-0 z-[99999] p-4 sm:p-6 pointer-events-none"
         >
-          <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-gray-200 p-6 sm:p-8 pointer-events-auto flex flex-col md:flex-row gap-8 items-center">
+          <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-gray-200 p-6 sm:p-8 pointer-events-auto flex flex-col md:flex-row gap-8 items-center cursor-auto [&_button]:cursor-pointer">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-hm-red/10 flex items-center justify-center text-hm-red">
