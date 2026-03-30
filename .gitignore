@@ -1,0 +1,14 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+.DS_Store
+*.local
+
+asset-hosting/.env.netlify
+asset-hosting/public
+asset-hosting/staging/*/*
+!asset-hosting/staging/**/.gitkeep
+.netlify
+.vercel
