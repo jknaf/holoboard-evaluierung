@@ -5,19 +5,19 @@ import { Quote } from 'lucide-react';
 export default function Impact() {
   const quotes = [
     {
-      text: "Durch die Arbeit am Holoboard-Projekt konnte ich mich intensiv mit aktuellen KI-Technologien auseinandersetzen. Das hat mir direkt im Anschluss an mein Studium ein Jobangebot als AI Engineer eingebracht.",
-      author: "Ehemaliger Bachelorand",
-      role: "Jetzt AI Engineer"
+      text: "Ich habe die Festanstellung hauptsächlich wegen meiner Workflow- und Automatisierungskenntnisse aus der Bachelorarbeit bekommen.",
+      author: "Stimme eines Absolventen",
+      role: "Direkter Berufseinstieg durch Projektkompetenzen"
     },
     {
-      text: "Die Kombination aus Hardware-Integration und moderner Webentwicklung war extrem lehrreich. Es ist motivierend, an einem Projekt zu arbeiten, das die Lehre der Zukunft aktiv mitgestaltet.",
-      author: "Werkstudentin",
-      role: "Frontend Entwicklung"
+      text: "Meine Bachelorarbeit hatte im Unternehmen so viel Wirkung, dass ich für eine Position auf Holding-Ebene weiterempfohlen wurde und dort eine Festanstellung im Bereich KI-Automatisierung bekommen habe.",
+      author: "Rückmeldung aus einem Unternehmensprojekt",
+      role: "Weiterempfehlung und Festanstellung im KI-Umfeld"
     },
     {
-      text: "Die praktischen Erfahrungen mit RAG-Systemen und lokalen LLMs waren genau das, was Unternehmen aktuell suchen. Das Projekt war ein perfektes Sprungbrett für meine Karriere.",
-      author: "Masterand",
-      role: "Data Scientist"
+      text: "Die im Projekt erworbenen Kompetenzen in Veranstaltungstechnik und KI-Automatisierung haben wesentlich dazu beigetragen, dass ich mich in diesem Bereich selbstständig gemacht habe.",
+      author: "Rückmeldung aus dem Projektkontext",
+      role: "Selbstständigkeit im Bereich KI-Automatisierung"
     }
   ];
 
@@ -36,8 +36,9 @@ export default function Impact() {
           <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">Karriereeffekte</h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-6">Impact für Studierende</h3>
           <p className="text-lg text-blue-100 font-light leading-relaxed">
-            Die Mitarbeit am Projekt bietet Studierenden nicht nur akademische Credits, sondern 
-            vermittelt hochrelevante Zukunftskompetenzen, die auf dem Arbeitsmarkt stark nachgefragt sind.
+            Die studentischen Arbeiten führen nicht nur zu Prototypen und Konzepten, sondern
+            auch zu konkreten beruflichen Anschlüssen in Unternehmen, KI-nahen Praxisfeldern und
+            selbstständigen Tätigkeiten.
           </p>
         </motion.div>
 

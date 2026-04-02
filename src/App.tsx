@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
-import { Download as DownloadIcon, Menu, X } from 'lucide-react';
+import { ChevronDown, Download as DownloadIcon, Menu, X } from 'lucide-react';
 
 // Sections
 import Hero from './components/Hero';
@@ -34,6 +34,29 @@ export default function App() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
+
+  const primaryNavItems = [
+    { id: 'ausgangspunkt', label: 'Ausgangspunkt' },
+    { id: 'konzept', label: 'Holoboard' },
+    { id: 'architektur', label: 'Architektur' },
+    { id: 'studentische-projekte', label: 'Studentische Projekte' },
+    { id: 'evaluation', label: 'Evaluation' },
+  ];
+
+  const secondaryNavItems = [
+    { id: 'exploration', label: 'Exploration' },
+    { id: 'wandel', label: 'Wandel' },
+    { id: 'prototyp', label: 'Prototyp' },
+    { id: 'ausblick', label: 'Ausblick' },
+  ];
+
+  const mobileNavItems = [...primaryNavItems, ...secondaryNavItems];
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
@@ -60,16 +83,18 @@ export default function App() {
     };
   }, []);
 
-  const navItems = [
-    { id: 'ausgangspunkt', label: 'Ausgangspunkt' },
-    { id: 'exploration', label: 'Exploration' },
-    { id: 'wandel', label: 'Wandel' },
-    { id: 'konzept', label: 'Konzept' },
-    { id: 'architektur', label: 'Architektur' },
-    { id: 'prototyp', label: 'Prototyp' },
-    { id: 'evaluation', label: 'Evaluation' },
-    { id: 'ausblick', label: 'Ausblick' },
-  ];
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setIsMoreMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-hm-white text-hm-black font-sans selection:bg-hm-red selection:text-white no-scrollbar">
@@ -108,20 +133,59 @@ export default function App() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex flex-1 justify-center items-center px-4">
-              <div className="flex space-x-4 xl:space-x-8 h-full">
-                {navItems.map((item) => (
+              <div className="flex items-center gap-4 xl:gap-6 h-full">
+                {primaryNavItems.map((item) => (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                      setIsMoreMenuOpen(false);
+                      scrollToSection(item.id);
                     }}
                     className="flex items-center text-[10px] xl:text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-hm-red transition-colors whitespace-nowrap"
                   >
                     {item.label}
                   </a>
                 ))}
+
+                <div className="relative" ref={moreMenuRef}>
+                  <button
+                    onClick={() => setIsMoreMenuOpen((open) => !open)}
+                    className="flex items-center gap-1 text-[10px] xl:text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-hm-red transition-colors whitespace-nowrap"
+                    aria-expanded={isMoreMenuOpen}
+                    aria-label="Weitere Navigationspunkte"
+                  >
+                    <span>Mehr</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isMoreMenuOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {isMoreMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        className="absolute right-0 top-full mt-4 min-w-[14rem] rounded-2xl border border-gray-200 bg-white p-2 shadow-xl"
+                      >
+                        {secondaryNavItems.map((item) => (
+                          <a
+                            key={item.id}
+                            href={`#${item.id}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setIsMoreMenuOpen(false);
+                              scrollToSection(item.id);
+                            }}
+                            className="block rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-widest text-gray-600 hover:bg-gray-50 hover:text-hm-red transition-colors"
+                          >
+                            {item.label}
+                          </a>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 
@@ -162,15 +226,16 @@ export default function App() {
               className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
             >
               <div className="px-4 py-2 pb-4 space-y-1 shadow-inner">
-                {navItems.map((item) => (
+                {mobileNavItems.map((item) => (
                   <a
                     key={item.id}
                     href={`#${item.id}`}
                     onClick={(e) => {
                       e.preventDefault();
                       setIsMobileMenuOpen(false);
+                      setIsMoreMenuOpen(false);
                       setTimeout(() => {
-                        document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                        scrollToSection(item.id);
                       }, 100);
                     }}
                     className="block px-4 py-3 text-sm font-bold uppercase tracking-widest text-gray-600 hover:text-hm-red hover:bg-gray-50 rounded-xl transition-colors"
