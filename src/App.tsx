@@ -122,6 +122,19 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <div className="min-h-screen bg-hm-white text-hm-black font-sans selection:bg-hm-red selection:text-white no-scrollbar">
       {/* Custom Cursor */}
@@ -236,11 +249,12 @@ export default function App() {
           {isMobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: '100dvh' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
+              className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto overscroll-contain border-t border-gray-100 bg-white/95 backdrop-blur-xl lg:hidden sm:top-20"
+              style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}
             >
-              <div className="px-4 py-3 pb-5 space-y-4 shadow-inner">
+              <div className="min-h-full px-4 py-4 pb-8 space-y-4 shadow-inner">
                 {chapters.map((chapter) => (
                   <div key={chapter.id} className="rounded-2xl border border-gray-100 bg-gray-50/60 p-2">
                     <button

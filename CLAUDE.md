@@ -33,7 +33,15 @@ Lokal bearbeiten  -->  git add <dateien>  -->  git commit -m "Beschreibung"  -->
 ## Wichtige Regeln
 
 - **Animations-Library:** `framer-motion` (NICHT `motion/react`)
+- **Texte auf der Website:** Immer echte deutsche Umlaute und `ß` verwenden (`ä`, `ö`, `ü`, `ß`), keine Umschreibungen wie `ae`, `oe`, `ue`
 - **Keine .env committen:** API-Keys sind als Vercel Environment Variables konfiguriert
+- **Interaktionsmuster:** Einheitliche CTA-Sprache beibehalten
+  - `Mehr anzeigen` / `Weniger anzeigen` fuer auf- und zuklappbare Inhalte
+  - `Details ansehen` fuer interne Vertiefungen
+  - `Extern oeffnen` fuer externe Links
+- **Navigation:** Zwei Ebenen beibehalten
+  - obere Ebene = Kapitel
+  - darunter = `In diesem Kapitel`
 - **Assets:** Bilder und Videos liegen auf Netlify, nicht im Repo:
   - Bilder: `https://holoboard-assets.netlify.app/images/...`
   - Brand: `https://holoboard-assets.netlify.app/brand/...`
