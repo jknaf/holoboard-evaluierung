@@ -1,6 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowUpRight, BookOpen, Bot, Boxes, Database } from 'lucide-react';
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { BookOpen, Bot, Boxes, Database } from 'lucide-react';
+import celikCover from '../assets/studentische-projekte-celik.png';
+import ActionCue from './ui/ActionCue';
 
 type Project = {
   title: string;
@@ -48,6 +50,15 @@ const clusters: Cluster[] = [
         image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-klass.png',
         contribution:
           'Vergleicht interaktive und nicht-interaktive Holobox-Präsentationen und zeigt eine signifikant längere Verweildauer bei interaktiven Formaten.',
+      },
+      {
+        title: 'Die Verwendung einer Holobox in der modernen Wissensvermittlung',
+        author: 'Arda Çelik',
+        kind: 'Bachelorarbeit',
+        year: '2024',
+        image: celikCover,
+        contribution:
+          'Untersucht die Holobox als Medium der Wissensvermittlung und ordnet ihr Potenzial für anschauliche, immersive und aufmerksamkeitsstarke Lehrszenarien ein.',
       },
     ],
   },
@@ -124,7 +135,7 @@ const clusters: Cluster[] = [
         contribution:
           'Erprobt einen praxisnahen Leitfaden für die Konzeption, Produktion und technische Integration interaktiver Holobox-Lehreinheiten.',
         link: 'https://www.holobox-leitfaden.de',
-        linkLabel: 'Leitfaden-Website',
+        linkLabel: 'Extern öffnen',
       },
       {
         title: 'Interaktives Lernen mit der Holobox: Lehrkonzepte mit KI-Avataren',
@@ -149,6 +160,20 @@ const clusters: Cluster[] = [
 ];
 
 export default function StudentischeProjekte() {
+  const [openClusters, setOpenClusters] = useState<Record<string, boolean>>({
+    'Holoboard / Holobox': true,
+    Automatisierung: false,
+    'RAG / Wissenssysteme': false,
+    'Didaktik / Lehrkonzepte': false,
+  });
+
+  const toggleCluster = (title: string) => {
+    setOpenClusters((current) => ({
+      ...current,
+      [title]: !current[title],
+    }));
+  };
+
   return (
     <section id="studentische-projekte" className="py-32 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -167,75 +192,106 @@ export default function StudentischeProjekte() {
           </p>
         </motion.div>
 
-        <div className="space-y-10">
-          {clusters.map((cluster, clusterIndex) => (
-            <motion.div
-              key={cluster.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: clusterIndex * 0.08 }}
-              className={`rounded-[2rem] border border-gray-200 bg-gradient-to-br ${cluster.accent} p-6 md:p-8 shadow-sm`}
-            >
-              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between mb-8">
-                <div className="max-w-3xl">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500 mb-4">
-                    {cluster.icon}
-                    <span>{cluster.eyebrow}</span>
-                  </div>
-                  <h4 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight mb-3">{cluster.title}</h4>
-                  <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">{cluster.description}</p>
-                </div>
-                <div className="text-sm font-medium text-gray-500 bg-white/80 rounded-2xl px-4 py-3 border border-gray-200">
-                  {cluster.projects.length} {cluster.projects.length === 1 ? 'Arbeit' : 'Arbeiten'}
-                </div>
-              </div>
+        <div className="space-y-8">
+          {clusters.map((cluster, clusterIndex) => {
+            const isOpen = openClusters[cluster.title];
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {cluster.projects.map((project) => (
-                  <article
-                    key={project.title}
-                    className="group overflow-hidden rounded-[1.75rem] border border-gray-200 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500"
-                  >
-                    <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
-                      <img
-                        src={project.image}
-                        alt={`Erste Seite von ${project.kind} ${project.author}`}
-                        className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-4">
-                        <div className="flex items-center justify-between gap-3 text-white">
-                          <span className="text-xs font-bold uppercase tracking-[0.22em]">{project.kind}</span>
-                          <span className="text-sm font-medium">{project.year}</span>
+            return (
+              <motion.div
+                key={cluster.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: clusterIndex * 0.08 }}
+                className={`rounded-[2rem] border border-gray-200 bg-gradient-to-br ${cluster.accent} shadow-sm transition-shadow hover:shadow-lg`}
+              >
+                <button
+                  type="button"
+                  onClick={() => toggleCluster(cluster.title)}
+                  className="w-full p-6 md:p-8 text-left cursor-pointer"
+                  aria-expanded={isOpen}
+                >
+                  <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+                    <div className="max-w-3xl">
+                      <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500 mb-4">
+                        {cluster.icon}
+                        <span>{cluster.eyebrow}</span>
+                      </div>
+                      <h4 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight mb-3">{cluster.title}</h4>
+                      <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">{cluster.description}</p>
+                    </div>
+
+                    <div className="flex items-center gap-3 self-start">
+                      <span className="text-sm font-medium text-gray-500 bg-white/85 rounded-2xl px-4 py-3 border border-gray-200">
+                        {cluster.projects.length} {cluster.projects.length === 1 ? 'Arbeit' : 'Arbeiten'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-gray-200/80">
+                    <ActionCue mode="expand" expanded={isOpen} accent={isOpen ? 'red' : 'turquoise'} />
+                  </div>
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 md:px-8 pb-6 md:pb-8">
+                        <div className="h-px w-full bg-gray-200/80 mb-8" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                          {cluster.projects.map((project) => (
+                            <article
+                              key={project.title}
+                              className="group overflow-hidden rounded-[1.75rem] border border-gray-200 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500"
+                            >
+                              <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
+                                <img
+                                  src={project.image}
+                                  alt={`Erste Seite von ${project.kind} ${project.author}`}
+                                  className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
+                                  loading="lazy"
+                                />
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-4">
+                                  <div className="flex items-center justify-between gap-3 text-white">
+                                    <span className="text-xs font-bold uppercase tracking-[0.22em]">{project.kind}</span>
+                                    <span className="text-sm font-medium">{project.year}</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="p-5">
+                                <p className="text-sm font-semibold text-hm-red mb-2">{project.author}</p>
+                                <h5 className="text-lg font-bold text-gray-900 leading-snug mb-3">{project.title}</h5>
+                                <p className="text-sm leading-relaxed text-gray-600 font-light">{project.contribution}</p>
+
+                                {project.link && (
+                                  <div className="mt-5 pt-4 border-t border-gray-100">
+                                    <a
+                                      href={project.link}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="inline-flex"
+                                    >
+                                      <ActionCue mode="external" accent="blue" />
+                                    </a>
+                                  </div>
+                                )}
+                              </div>
+                            </article>
+                          ))}
                         </div>
                       </div>
-                    </div>
-
-                    <div className="p-5">
-                      <p className="text-sm font-semibold text-hm-red mb-2">{project.author}</p>
-                      <h5 className="text-lg font-bold text-gray-900 leading-snug mb-3">{project.title}</h5>
-                      <p className="text-sm leading-relaxed text-gray-600 font-light">{project.contribution}</p>
-
-                      {project.link && (
-                        <div className="mt-5 pt-4 border-t border-gray-100">
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 text-sm font-bold text-hm-blue hover:text-hm-red transition-colors"
-                          >
-                            <span>{project.linkLabel || 'Weiterführender Link'}</span>
-                            <ArrowUpRight className="w-4 h-4" />
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

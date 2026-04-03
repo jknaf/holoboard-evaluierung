@@ -37,7 +37,7 @@ export default function Zukunftsperspektive() {
   ];
 
   return (
-    <section id="zukunft" ref={containerRef} className="py-32 bg-black text-white relative overflow-hidden">
+    <section id="zukunftsperspektive" ref={containerRef} className="py-32 bg-black text-white relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none opacity-30">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-hm-blue/10 via-hm-red/5 to-transparent blur-[100px]" />

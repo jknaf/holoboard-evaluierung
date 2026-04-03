@@ -36,7 +36,7 @@ export default function Ausblick() {
           <div className="flex flex-col justify-center">
             <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">Ausblick</h2>
             <h3 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
-              KI-gestützte mündliche Prüfungen
+              Weiterführung 2027 bis 2030
             </h3>
 
             <div className="relative h-[40vh]">
@@ -44,22 +44,22 @@ export default function Ausblick() {
                 progress={scrollYProgress} 
                 range={[0, 0.33]} 
                 icon={<FileText className="w-10 h-10 text-hm-red mb-6" />}
-                title="Das Problem" 
-                desc="Klassische schriftliche Prüfungsformate verlieren an Aussagekraft. Dialogbasierte Prüfungsformate gewinnen an Bedeutung, sind jedoch kaum skalierbar."
+                title="Die Evaluierungsfrage" 
+                desc="Die Evaluierung soll eine fundierte Entscheidung darüber ermöglichen, ob und in welcher Form das Holoboard-Projekt nach 2027 weitergeführt werden soll."
               />
               <ScrollText 
                 progress={scrollYProgress} 
                 range={[0.33, 0.66]} 
                 icon={<Cpu className="w-10 h-10 text-hm-blue mb-6" />}
-                title="Der Forschungsansatz" 
-                desc="Ein KI-Avatar fungiert als dialogbasierter Prüfungsagent und führt strukturierte, teilautomatisierte Prüfungsgespräche mit Studierenden."
+                title="Der Entwicklungspfad" 
+                desc="Im Zeitraum 2027 bis 2030 soll das Projekt auf Basis der bisherigen Ergebnisse in neue Lehr-, Prüfungs- und Assistenzszenarien überführt und institutionell verstetigt werden."
               />
               <ScrollText 
                 progress={scrollYProgress} 
                 range={[0.66, 1]} 
                 icon={<ShieldCheck className="w-10 h-10 text-hm-turquoise mb-6" />}
-                title="Lokale KI" 
-                desc="Einsatz lokaler KI-Systeme garantiert Datenschutz, Prüfungsintegrität und die institutionelle Souveränität über sensible Daten."
+                title="Die Perspektive" 
+                desc="Im Mittelpunkt steht die Frage, wie das Holoboard von 2027 bis 2030 als tragfähige Infrastruktur für zukunftsrelevante Formate in Lehre, Prüfung und Transfer weiterentwickelt werden kann."
               />
             </div>
           </div>

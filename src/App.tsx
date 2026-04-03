@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Download as DownloadIcon, Menu, X } from 'lucide-react';
+import { motion, useScroll, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
+import { Download as DownloadIcon, Menu, X } from 'lucide-react';
 
 // Sections
 import Hero from './components/Hero';
@@ -31,28 +31,66 @@ export default function App() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
-  const moreMenuRef = useRef<HTMLDivElement>(null);
+  const [activeChapter, setActiveChapter] = useState('projekt');
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const smoothCursorX = useSpring(cursorX, { stiffness: 500, damping: 28, mass: 0.5 });
+  const smoothCursorY = useSpring(cursorY, { stiffness: 500, damping: 28, mass: 0.5 });
 
-  const primaryNavItems = [
-    { id: 'ausgangspunkt', label: 'Ausgangspunkt' },
-    { id: 'konzept', label: 'Holoboard' },
-    { id: 'architektur', label: 'Architektur' },
-    { id: 'studentische-projekte', label: 'Studentische Projekte' },
-    { id: 'evaluation', label: 'Evaluation' },
+  const chapters = [
+    {
+      id: 'projekt',
+      label: 'Projekt',
+      items: [
+        { id: 'ausgangspunkt', label: 'Ausgangspunkt' },
+        { id: 'exploration', label: 'Exploration' },
+        { id: 'wandel', label: 'Wandel' },
+        { id: 'konzept', label: 'Holoboard' },
+      ],
+    },
+    {
+      id: 'technik',
+      label: 'Technik',
+      items: [
+        { id: 'architektur', label: 'Architektur' },
+        { id: 'avatar', label: 'Avatar' },
+        { id: 'prototyp', label: 'Prototyp' },
+        { id: 'demonstrator', label: 'Demonstrator' },
+      ],
+    },
+    {
+      id: 'praxis',
+      label: 'Praxis',
+      items: [
+        { id: 'netzwerk', label: 'Netzwerk' },
+        { id: 'studentische-projekte', label: 'Studentische Projekte' },
+        { id: 'wissenstransfer', label: 'Wissenstransfer' },
+        { id: 'nutzen', label: 'Nutzen' },
+      ],
+    },
+    {
+      id: 'evaluation',
+      label: 'Evaluation',
+      items: [
+        { id: 'evaluation', label: 'Evaluation' },
+        { id: 'impact', label: 'Impact' },
+        { id: 'learnings', label: 'Learnings' },
+      ],
+    },
+    {
+      id: 'ausblick',
+      label: 'Ausblick',
+      items: [
+        { id: 'ausblick', label: 'Ausblick' },
+        { id: 'zukunftsperspektive', label: 'Zukunftsperspektive' },
+        { id: 'download', label: 'Download' },
+        { id: 'kontakt', label: 'Kontakt' },
+      ],
+    },
   ];
-
-  const secondaryNavItems = [
-    { id: 'exploration', label: 'Exploration' },
-    { id: 'wandel', label: 'Wandel' },
-    { id: 'prototyp', label: 'Prototyp' },
-    { id: 'ausblick', label: 'Ausblick' },
-  ];
-
-  const mobileNavItems = [...primaryNavItems, ...secondaryNavItems];
+  const activeChapterItems = chapters.find((chapter) => chapter.id === activeChapter)?.items ?? chapters[0].items;
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -60,7 +98,8 @@ export default function App() {
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      cursorX.set(e.clientX - 8);
+      cursorY.set(e.clientY - 8);
     };
     window.addEventListener('mousemove', updateMousePosition);
 
@@ -83,29 +122,12 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
-        setIsMoreMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
     <div className="min-h-screen bg-hm-white text-hm-black font-sans selection:bg-hm-red selection:text-white no-scrollbar">
       {/* Custom Cursor */}
       <motion.div
-        className="hidden md:block fixed top-0 left-0 w-4 h-4 bg-hm-red rounded-full pointer-events-none z-[9999] mix-blend-difference"
-        animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-          scale: isHovering ? 3 : 1,
-        }}
+        className="hidden md:block fixed top-0 left-0 w-4 h-4 bg-hm-red rounded-full pointer-events-none z-[100001] mix-blend-difference"
+        style={{ x: smoothCursorX, y: smoothCursorY, scale: isHovering ? 3 : 1 }}
         transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
       />
 
@@ -133,59 +155,29 @@ export default function App() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex flex-1 justify-center items-center px-4">
-              <div className="flex items-center gap-4 xl:gap-6 h-full">
-                {primaryNavItems.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsMoreMenuOpen(false);
-                      scrollToSection(item.id);
-                    }}
-                    className="flex items-center text-[10px] xl:text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-hm-red transition-colors whitespace-nowrap"
-                  >
-                    {item.label}
-                  </a>
-                ))}
-
-                <div className="relative" ref={moreMenuRef}>
+              <div className="flex items-center gap-6 xl:gap-8 h-full">
+                {chapters.map((chapter) => (
                   <button
-                    onClick={() => setIsMoreMenuOpen((open) => !open)}
-                    className="flex items-center gap-1 text-[10px] xl:text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-hm-red transition-colors whitespace-nowrap"
-                    aria-expanded={isMoreMenuOpen}
-                    aria-label="Weitere Navigationspunkte"
+                    key={chapter.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveChapter(chapter.id);
+                      scrollToSection(chapter.items[0].id);
+                    }}
+                    className={`relative px-1 py-2 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.22em] transition-colors whitespace-nowrap ${
+                      activeChapter === chapter.id
+                        ? 'text-hm-red'
+                        : 'text-gray-500 hover:text-hm-red'
+                    }`}
                   >
-                    <span>Mehr</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${isMoreMenuOpen ? 'rotate-180' : ''}`} />
+                    {chapter.label}
+                    <span
+                      className={`absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-opacity ${
+                        activeChapter === chapter.id ? 'bg-hm-red opacity-100' : 'bg-transparent opacity-0'
+                      }`}
+                    />
                   </button>
-
-                  <AnimatePresence>
-                    {isMoreMenuOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        className="absolute right-0 top-full mt-4 min-w-[14rem] rounded-2xl border border-gray-200 bg-white p-2 shadow-xl"
-                      >
-                        {secondaryNavItems.map((item) => (
-                          <a
-                            key={item.id}
-                            href={`#${item.id}`}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setIsMoreMenuOpen(false);
-                              scrollToSection(item.id);
-                            }}
-                            className="block rounded-xl px-4 py-3 text-sm font-bold uppercase tracking-widest text-gray-600 hover:bg-gray-50 hover:text-hm-red transition-colors"
-                          >
-                            {item.label}
-                          </a>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                ))}
               </div>
             </div>
 
@@ -216,6 +208,29 @@ export default function App() {
           </div>
         </div>
 
+        <div className="hidden lg:block border-t border-gray-100 bg-gray-50/80">
+          <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-center gap-5 py-3">
+              <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.24em] text-gray-400">
+                In diesem Kapitel
+              </span>
+              <div className="h-6 w-px bg-gray-200" />
+              <div className="flex items-center gap-2 xl:gap-3 overflow-x-auto no-scrollbar">
+                {activeChapterItems.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => scrollToSection(item.id)}
+                    className="rounded-full border border-gray-200 bg-white px-4 py-2 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.2em] text-gray-600 hover:border-hm-red/30 hover:text-hm-red transition-colors whitespace-nowrap"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Mobile Menu Dropdown */}
         <AnimatePresence>
           {isMobileMenuOpen && (
@@ -225,23 +240,36 @@ export default function App() {
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
             >
-              <div className="px-4 py-2 pb-4 space-y-1 shadow-inner">
-                {mobileNavItems.map((item) => (
-                  <a
-                    key={item.id}
-                    href={`#${item.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsMobileMenuOpen(false);
-                      setIsMoreMenuOpen(false);
-                      setTimeout(() => {
-                        scrollToSection(item.id);
-                      }, 100);
-                    }}
-                    className="block px-4 py-3 text-sm font-bold uppercase tracking-widest text-gray-600 hover:text-hm-red hover:bg-gray-50 rounded-xl transition-colors"
-                  >
-                    {item.label}
-                  </a>
+              <div className="px-4 py-3 pb-5 space-y-4 shadow-inner">
+                {chapters.map((chapter) => (
+                  <div key={chapter.id} className="rounded-2xl border border-gray-100 bg-gray-50/60 p-2">
+                    <button
+                      type="button"
+                      onClick={() => setActiveChapter(chapter.id)}
+                      className="w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500"
+                    >
+                      {chapter.label}
+                    </button>
+                    <div className="space-y-1">
+                      {chapter.items.map((item) => (
+                        <a
+                          key={item.id}
+                          href={`#${item.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setActiveChapter(chapter.id);
+                            setIsMobileMenuOpen(false);
+                            setTimeout(() => {
+                              scrollToSection(item.id);
+                            }, 100);
+                          }}
+                          className="block px-3 py-3 text-sm font-bold uppercase tracking-widest text-gray-600 hover:text-hm-red hover:bg-white rounded-xl transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </motion.div>

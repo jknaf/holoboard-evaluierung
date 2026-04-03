@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Monitor, Cpu, MessageSquare, Layout, X, ArrowRight, BookOpen, ChevronDown } from 'lucide-react';
+import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen } from 'lucide-react';
+import ActionCue from './ui/ActionCue';
 
 export default function HoloboardKonzept() {
   const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
@@ -117,9 +118,8 @@ export default function HoloboardKonzept() {
                 Das Grundproblem digitaler Lehre ist multidimensional: Es reicht nicht aus, Lerninhalte nur technisch verfügbar zu machen. Forschung zu Online-Lernen zeigt, dass digitale Formate besonders dann an Wirksamkeit verlieren, wenn soziale Präsenz, emotionale Bindung und sichtbare Lehrendenpräsenz fehlen.
               </p>
 
-              <div className="flex items-center gap-2 text-hm-red font-semibold uppercase tracking-widest text-sm transition-colors">
-                {isConceptExpanded ? "Weniger Details" : "Mehr Details"} 
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isConceptExpanded ? 'rotate-180' : ''}`} />
+              <div className="pt-2">
+                <ActionCue mode="expand" expanded={isConceptExpanded} accent="red" />
               </div>
             </div>
           </div>
@@ -335,8 +335,8 @@ function SpotlightCard({ feature, index, onClick }: { key?: React.Key, feature: 
         <h4 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h4>
         <p className="text-gray-500 leading-relaxed font-light text-sm mb-6">{feature.description}</p>
         
-        <div className="flex items-center gap-2 text-hm-blue text-sm font-semibold uppercase tracking-widest opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-          Details <ArrowRight className="w-4 h-4" />
+        <div className="mt-6 pt-4 border-t border-gray-100">
+          <ActionCue mode="detail" accent="blue" />
         </div>
       </div>
     </motion.div>

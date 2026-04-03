@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Presentation, Users, Lightbulb, BookOpen } from 'lucide-react';
+import { Presentation, Users, Lightbulb } from 'lucide-react';
 import SpotlightCard from './ui/SpotlightCard';
 
 export default function Wissenstransfer() {
@@ -18,13 +18,13 @@ export default function Wissenstransfer() {
     {
       icon: <Lightbulb className="w-6 h-6 text-hm-turquoise" />,
       title: "Fachkonferenzen",
-      desc: "Präsentation der Forschungsergebnisse auf nationalen Bildungskonferenzen zur digitalen Lehre."
+      desc: "Präsentation der Forschungsergebnisse auf Formaten wie TURN, Learntec und weiteren Fachveranstaltungen zur digitalen Lehre."
     },
     {
-      icon: <BookOpen className="w-6 h-6 text-gray-700" />,
-      title: "Publikationen",
-      desc: "Veröffentlichung von Whitepapern und Best Practices zur Integration von KI-Avataren im Hochschulkontext."
-    }
+      icon: <Users className="w-6 h-6 text-hm-turquoise" />,
+      title: "Internationale Gastlehre",
+      desc: "Offene Lehrveranstaltungen am ISEC Lisboa am 2. und 5. März 2026 zur Anwendung von KI in Kommunikation, Design und Medien im Rahmen einer internationalen akademischen Mobilität."
+    },
   ];
 
   return (

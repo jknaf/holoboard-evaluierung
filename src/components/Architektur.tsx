@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Database, Server, User, Monitor, Cpu, Globe, ChevronDown, ChevronUp } from 'lucide-react';
+import { Database, Server, User, Monitor, Cpu, Globe } from 'lucide-react';
+import ActionCue from './ui/ActionCue';
 
 export default function Architektur() {
   const containerRef = useRef(null);
@@ -111,10 +112,9 @@ export default function Architektur() {
         <div className="flex justify-center">
           <button 
             onClick={() => setShowDetails(!showDetails)}
-            className="group flex items-center gap-3 bg-gray-900 hover:bg-hm-red text-white px-8 py-4 rounded-full font-bold tracking-wide transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="rounded-full border border-gray-200 bg-white px-3 py-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
           >
-            {showDetails ? "Detailbericht schließen" : "Technische Architektur im Detail"}
-            {showDetails ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5 group-hover:translate-y-1 transition-transform" />}
+            <ActionCue mode="expand" expanded={showDetails} accent="red" />
           </button>
         </div>
 

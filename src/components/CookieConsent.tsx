@@ -32,7 +32,7 @@ export default function CookieConsent() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-0 left-0 right-0 z-[99999] p-4 sm:p-6 pointer-events-none"
+          className="fixed bottom-0 left-0 right-0 z-[99990] p-4 sm:p-6 pointer-events-none"
         >
           <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border border-gray-200 p-6 sm:p-8 pointer-events-auto flex flex-col md:flex-row gap-8 items-center cursor-auto [&_button]:cursor-pointer">
             <div className="flex-1">
