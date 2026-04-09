@@ -15,7 +15,7 @@ type VideoCardProps = {
 function VideoCard({ src, poster, className = '' }: VideoCardProps) {
   return (
     <div
-      className={`relative aspect-[9/16] w-full max-w-[22rem] mx-auto rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl ${className}`}
+      className={`relative aspect-[9/16] w-full max-w-[20rem] mx-auto rounded-2xl overflow-hidden bg-black border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] ${className}`}
     >
       <video
         src={src}
@@ -27,6 +27,7 @@ function VideoCard({ src, poster, className = '' }: VideoCardProps) {
         preload="metadata"
         aria-hidden="true"
         className="w-full h-full object-cover motion-reduce:hidden"
+        style={{ filter: 'contrast(1.08) saturate(1.12) brightness(0.96)' }}
       />
       <img
         src={poster}
@@ -35,6 +36,17 @@ function VideoCard({ src, poster, className = '' }: VideoCardProps) {
         className="absolute inset-0 w-full h-full object-cover hidden motion-reduce:block"
         referrerPolicy="no-referrer"
       />
+      {/* Vignette */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          boxShadow: 'inset 0 0 80px 10px rgba(0,0,0,0.55)',
+        }}
+      />
+      {/* Subtle brand color wash */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-hm-blue/15 via-transparent to-hm-red/10 mix-blend-overlay" />
+      {/* Bottom fade */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent" />
     </div>
   );
 }
@@ -56,7 +68,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-hm-black z-10 pointer-events-none" />
 
       <div className="relative z-20 w-full max-w-[110rem] mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(0,32rem)_1fr] gap-8 lg:gap-16 xl:gap-20 items-center">
           {/* Video A — left on desktop, second on mobile */}
           <div className="order-2 lg:order-1">
             <VideoCard src={VIDEO_A} poster={POSTER_A} />
@@ -76,7 +88,7 @@ export default function Hero() {
                 <span className="w-2 h-2 rounded-full bg-hm-red animate-pulse" />
                 Innovationsprofessur Lehre
               </div>
-              <h1 className="text-[18vw] sm:text-[14vw] lg:text-[8vw] xl:text-[7rem] leading-[0.85] font-black tracking-tighter text-white uppercase mb-6 drop-shadow-2xl">
+              <h1 className="text-[18vw] sm:text-[14vw] lg:text-[5.5vw] xl:text-[6rem] leading-[0.85] font-black tracking-tighter text-white uppercase mb-6 drop-shadow-2xl">
                 Holo<span className="text-hm-red">board</span>
               </h1>
               <p className="text-lg md:text-2xl text-gray-300 font-light mb-8 tracking-wide">
