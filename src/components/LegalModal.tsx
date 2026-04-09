@@ -14,37 +14,37 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
       title: "Impressum",
       body: (
         <div className="space-y-4 text-gray-600 font-light leading-relaxed">
-          <p><strong>Angaben gemäß § 5 TMG</strong></p>
+          <p><strong>Diensteanbieter gemäß § 5 TMG</strong></p>
           <p>
             Hochschule für angewandte Wissenschaften München<br />
             Lothstraße 34<br />
-            80335 München
+            80335 München<br />
+            Telefon: +49 89 1265-0<br />
+            E-Mail: kommunikation@hm.edu
           </p>
           <p>
-            Die Hochschule München ist eine Körperschaft des öffentlichen Rechts. Sie wird vertreten durch den Präsidenten der Hochschule München.
+            Die Hochschule für angewandte Wissenschaften München ist eine Körperschaft des öffentlichen Rechts. Sie wird gesetzlich vertreten durch den Präsidenten Prof. Dr. Martin Leitner.
           </p>
           <p>
-            <strong>Inhaltlich verantwortlich für diese Projektseite (i.S.d. § 18 Abs. 2 MStV):</strong><br />
+            <strong>Umsatzsteuer-Identifikationsnummer</strong> gemäß § 27 a Umsatzsteuergesetz:<br />
+            DE 235 059 152
+          </p>
+          <p>
+            <strong>Zuständige Aufsichtsbehörde der Hochschule:</strong><br />
+            Bayerisches Staatsministerium für Wissenschaft und Kunst<br />
+            Salvatorstraße 2<br />
+            80333 München
+          </p>
+          <p>
+            <strong>Inhaltlich verantwortlich für diese Projektseite gemäß § 18 Abs. 2 MStV:</strong><br />
             Prof. Dr. Joachim Knaf<br />
             Innovationsprofessur Lehre<br />
             Hochschule München<br />
             Lothstraße 34<br />
             80335 München
           </p>
-          <p>
-            <strong>Kontakt:</strong><br />
-            Telefon: +49 (0) 89 1265-0<br />
-            E-Mail: kontakt@hm.edu
-          </p>
-          <p>
-            <strong>Umsatzsteuer-Identifikationsnummer</strong> gemäß § 27 a Umsatzsteuergesetz:<br />
-            DE 811335517
-          </p>
-          <p>
-            <strong>Aufsichtsbehörde:</strong><br />
-            Bayerisches Staatsministerium für Wissenschaft und Kunst<br />
-            Salvatorstraße 2<br />
-            80333 München
+          <p className="text-sm text-gray-500">
+            Die Nennung als „inhaltlich verantwortlich" bezieht sich ausschließlich auf die Verantwortung für die journalistisch-redaktionellen Inhalte dieser Projektseite gemäß Medienstaatsvertrag. Verantwortliche Stelle im Sinne des Datenschutzrechts ist die Hochschule München (siehe Datenschutzerklärung).
           </p>
 
           <h3 className="text-base font-bold text-gray-900 pt-4">Haftungsausschluss</h3>
@@ -74,14 +74,20 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
           <section>
             <h3 className="text-lg font-bold text-gray-900 mb-2">2. Verantwortliche Stelle</h3>
             <p>
-              Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO) sowie anderer nationaler Datenschutzgesetze der Mitgliedsstaaten ist:
+              Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO) sowie anderer nationaler Datenschutzgesetze der Mitgliedstaaten ist:
             </p>
             <p className="mt-2">
               Hochschule für angewandte Wissenschaften München<br />
-              Prof. Dr. Joachim Knaf (Innovationsprofessur Lehre)<br />
               Lothstraße 34<br />
               80335 München<br />
-              E-Mail: kontakt@hm.edu
+              Telefon: +49 89 1265-0<br />
+              E-Mail: kommunikation@hm.edu
+            </p>
+            <p className="mt-2">
+              Die Hochschule für angewandte Wissenschaften München ist eine Körperschaft des öffentlichen Rechts. Sie wird gesetzlich vertreten durch ihren Präsidenten, Prof. Dr. Martin Leitner.
+            </p>
+            <p className="mt-2 text-sm text-gray-500">
+              Inhaltlich-redaktionell betreut wird diese Projektseite durch Prof. Dr. Joachim Knaf (Innovationsprofessur Lehre) im Auftrag der Hochschule München.
             </p>
           </section>
 
@@ -91,10 +97,11 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
               Den behördlichen Datenschutzbeauftragten der Hochschule München erreichen Sie unter:
             </p>
             <p className="mt-2">
-              Datenschutzbeauftragter der Hochschule München<br />
+              Datenschutzbeauftragter der Hochschule für angewandte Wissenschaften München<br />
               Lothstraße 34<br />
               80335 München<br />
-              E-Mail: datenschutz@hm.edu
+              Telefon: +49 9951 99990-500<br />
+              E-Mail: datenschutzbeauftragter@hm.edu
             </p>
           </section>
 
@@ -187,13 +194,16 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
           <section>
             <h3 className="text-lg font-bold text-gray-900 mb-2">11. Beschwerderecht bei der Aufsichtsbehörde</h3>
             <p>
-              Unbeschadet anderweitiger Rechtsbehelfe haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Zuständige Behörde für die Hochschule München ist:
+              Unbeschadet anderweitiger Rechtsbehelfe haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Da die Hochschule München eine bayerische öffentliche Stelle ist, ist hierfür der Bayerische Landesbeauftragte für den Datenschutz zuständig:
             </p>
             <p className="mt-2">
-              Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)<br />
-              Promenade 18<br />
-              91522 Ansbach<br />
-              <a href="https://www.lda.bayern.de" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">www.lda.bayern.de</a>
+              Der Bayerische Landesbeauftragte für den Datenschutz<br />
+              Wagmüllerstraße 18<br />
+              80538 München<br />
+              Postanschrift: Postfach 22 12 19, 80502 München<br />
+              Telefon: +49 89 212672-0<br />
+              E-Mail: poststelle@datenschutz-bayern.de<br />
+              <a href="https://www.datenschutz-bayern.de" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">www.datenschutz-bayern.de</a>
             </p>
           </section>
 
