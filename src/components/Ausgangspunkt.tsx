@@ -11,7 +11,7 @@ export default function Ausgangspunkt() {
       title: "Hintergrund der Onlinelehre",
       shortDesc: "Digitale Lehre zwischen Pragmatismus und Erschöpfung",
       description: "Zwischen 2020 und 2022 wurde videobasierte Lehre an Hochschulen zum Normalfall. Zoom-Meetings, Lernvideos und digitale Plattformen ermöglichten zwar Kontinuität, machten aber auch ihre Grenzen sichtbar: geringe Interaktion, sinkende Aufmerksamkeit und ein wachsendes Gefühl von Distanz zwischen Lehrenden und Lernenden.",
-      image: "https://holoboard-assets.netlify.app/images/090-confluence_media-image1.jpeg",
+      image: "https://holoboard-assets.netlify.app/images/110-unsplash-stress-laptop.jpg",
       color: "from-hm-red/90 to-hm-red/20"
     },
     {
@@ -27,7 +27,7 @@ export default function Ausgangspunkt() {
       title: "Zielgruppen",
       shortDesc: "Lehrende, Studierende und Hochschule im Fokus",
       description: "Im Mittelpunkt standen Lehrende, die ohne komplexe Produktionsumgebungen interaktive Inhalte bereitstellen sollen, Studierende, die von mehr Präsenz und Beteiligung profitieren, sowie die Hochschule München, die digitale Lehre nicht nur verwalten, sondern aktiv weiterentwickeln will.",
-      image: "https://holoboard-assets.netlify.app/images/084-confluence_media-img-1086.jpg",
+      image: "https://holoboard-assets.netlify.app/images/111-unsplash-lecture-hall.jpg",
       color: "from-hm-turquoise/90 to-hm-turquoise/20"
     }
   ];

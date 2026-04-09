@@ -21,9 +21,15 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
             80335 München
           </p>
           <p>
-            <strong>Vertreten durch:</strong><br />
+            Die Hochschule München ist eine Körperschaft des öffentlichen Rechts. Sie wird vertreten durch den Präsidenten der Hochschule München.
+          </p>
+          <p>
+            <strong>Inhaltlich verantwortlich für diese Projektseite (i.S.d. § 18 Abs. 2 MStV):</strong><br />
             Prof. Dr. Joachim Knaf<br />
-            Innovationsprofessur Lehre
+            Innovationsprofessur Lehre<br />
+            Hochschule München<br />
+            Lothstraße 34<br />
+            80335 München
           </p>
           <p>
             <strong>Kontakt:</strong><br />
@@ -31,15 +37,25 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
             E-Mail: kontakt@hm.edu
           </p>
           <p>
-            <strong>Umsatzsteuer-ID:</strong><br />
-            Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
+            <strong>Umsatzsteuer-Identifikationsnummer</strong> gemäß § 27 a Umsatzsteuergesetz:<br />
             DE 811335517
           </p>
           <p>
-            <strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong><br />
-            Prof. Dr. Joachim Knaf<br />
-            Lothstraße 34<br />
-            80335 München
+            <strong>Aufsichtsbehörde:</strong><br />
+            Bayerisches Staatsministerium für Wissenschaft und Kunst<br />
+            Salvatorstraße 2<br />
+            80333 München
+          </p>
+
+          <h3 className="text-base font-bold text-gray-900 pt-4">Haftungsausschluss</h3>
+          <p>
+            <strong>Haftung für Inhalte:</strong> Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+          </p>
+          <p>
+            <strong>Haftung für Links:</strong> Diese Website enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+          </p>
+          <p>
+            <strong>Urheberrecht:</strong> Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Beiträge Dritter sind als solche gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
           </p>
         </div>
       )
@@ -50,43 +66,158 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
         <div className="space-y-6 text-gray-600 font-light leading-relaxed">
           <section>
             <h3 className="text-lg font-bold text-gray-900 mb-2">1. Datenschutz auf einen Blick</h3>
-            <p className="mb-2"><strong>Allgemeine Hinweise</strong></p>
-            <p>Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.</p>
+            <p>
+              Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie den nachfolgenden Abschnitten.
+            </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">2. Allgemeine Hinweise und Pflichtinformationen</h3>
-            <p className="mb-2"><strong>Datenschutz</strong></p>
-            <p className="mb-4">Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.</p>
-            
-            <p className="mb-2"><strong>Hinweis zur verantwortlichen Stelle</strong></p>
-            <p className="mb-4">Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:<br />
-            Hochschule München<br />
-            Prof. Dr. Joachim Knaf<br />
-            Lothstraße 34<br />
-            80335 München<br />
-            E-Mail: kontakt@hm.edu</p>
-
-            <p className="mb-2"><strong>Widerruf Ihrer Einwilligung zur Datenverarbeitung</strong></p>
-            <p className="mb-4">Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen Einwilligung möglich. Sie können eine bereits erteilte Einwilligung jederzeit widerrufen. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unberührt.</p>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">2. Verantwortliche Stelle</h3>
+            <p>
+              Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO) sowie anderer nationaler Datenschutzgesetze der Mitgliedsstaaten ist:
+            </p>
+            <p className="mt-2">
+              Hochschule für angewandte Wissenschaften München<br />
+              Prof. Dr. Joachim Knaf (Innovationsprofessur Lehre)<br />
+              Lothstraße 34<br />
+              80335 München<br />
+              E-Mail: kontakt@hm.edu
+            </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">3. Datenerfassung auf dieser Website</h3>
-            <p className="mb-2"><strong>Cookies und Local Storage</strong></p>
-            <p className="mb-4">Unsere Internetseiten verwenden so genannte „Cookies“ sowie den lokalen Speicher (Local Storage) Ihres Browsers. Diese Technologien richten auf Ihrem Rechner keinen Schaden an und enthalten keine Viren. Sie dienen dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu machen.<br />
-            Wir speichern Ihre Präferenzen (z.B. die Zustimmung zum Cookie-Banner) im Local Storage Ihres Browsers (Art. 6 Abs. 1 lit. f DSGVO bzw. Art. 6 Abs. 1 lit. a DSGVO bei Einwilligung).</p>
-
-            <p className="mb-2"><strong>Kontaktformular</strong></p>
-            <p className="mb-4">Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist.</p>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">3. Datenschutzbeauftragter</h3>
+            <p>
+              Den behördlichen Datenschutzbeauftragten der Hochschule München erreichen Sie unter:
+            </p>
+            <p className="mt-2">
+              Datenschutzbeauftragter der Hochschule München<br />
+              Lothstraße 34<br />
+              80335 München<br />
+              E-Mail: datenschutz@hm.edu
+            </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">4. Plugins und Tools</h3>
-            <p className="mb-2"><strong>KI-Chatbot (Google Gemini API)</strong></p>
-            <p className="mb-4">Diese Website nutzt zur Bereitstellung des interaktiven KI-Assistenten die Gemini API von Google (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland). Wenn Sie den Chatbot nutzen, werden Ihre Texteingaben an Server von Google übertragen und dort verarbeitet, um eine entsprechende Antwort zu generieren.</p>
-            <p className="mb-4">Die Nutzung dieses Dienstes erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Sie über unser Cookie-Banner oder durch die aktive Nutzung des Chatbots erteilen. Sie können diese Einwilligung jederzeit für die Zukunft widerrufen.</p>
-            <p>Bitte beachten Sie, dass bei der Nutzung von Google-Diensten eine Datenübertragung in die USA nicht ausgeschlossen werden kann. Google verfügt über eine Zertifizierung nach dem EU-US Data Privacy Framework. Weitere Informationen zum Umgang mit Nutzerdaten finden Sie in der Datenschutzerklärung von Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">https://policies.google.com/privacy</a>.</p>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">4. SSL-/TLS-Verschlüsselung</h3>
+            <p>
+              Diese Seite nutzt aus Gründen der Sicherheit und zum Schutz der Übertragung vertraulicher Inhalte eine SSL-/TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt und am Schloss-Symbol in Ihrer Browserzeile.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">5. Server-Logfiles</h3>
+            <p>
+              Beim Aufruf dieser Website werden durch unseren Hostingprovider automatisch Informationen in sogenannten Server-Logfiles erfasst, die Ihr Browser übermittelt. Dies sind:
+            </p>
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>Browsertyp und Browserversion</li>
+              <li>verwendetes Betriebssystem</li>
+              <li>Referrer-URL</li>
+              <li>Hostname des zugreifenden Rechners</li>
+              <li>Uhrzeit der Serveranfrage</li>
+              <li>IP-Adresse (gekürzt bzw. anonymisiert nach kurzer Zeit)</li>
+            </ul>
+            <p className="mt-2">
+              Eine Zusammenführung dieser Daten mit anderen Datenquellen findet nicht statt. Die Erfassung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an der technisch fehlerfreien Darstellung und Optimierung seiner Website — hierzu müssen die Server-Logfiles erfasst werden.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">6. Hosting und Auftragsverarbeiter</h3>
+            <p className="mb-2"><strong>Webhosting (Vercel)</strong></p>
+            <p className="mb-4">
+              Diese Website wird bei der Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA, gehostet (im Folgenden „Vercel"). Beim Aufruf der Website erhebt Vercel automatisch verschiedene Logdateien inklusive Ihrer IP-Adressen. Vercel ist nach dem EU-US Data Privacy Framework zertifiziert. Wir haben mit Vercel einen Auftragsverarbeitungsvertrag gemäß Art. 28 DSGVO abgeschlossen. Details: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">vercel.com/legal/privacy-policy</a>.
+            </p>
+            <p className="mb-2"><strong>Asset-Hosting (Netlify)</strong></p>
+            <p className="mb-4">
+              Bilder und Videos dieser Website werden über Netlify, Inc., 44 Montgomery Street, Suite 300, San Francisco, CA 94104, USA, ausgeliefert. Beim Laden dieser Medieninhalte wird Ihre IP-Adresse an Netlify übermittelt. Netlify ist ebenfalls nach dem EU-US Data Privacy Framework zertifiziert. Details: <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">netlify.com/privacy</a>.
+            </p>
+            <p>
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer zuverlässigen, performanten Auslieferung der Website).
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">7. Cookies und Local Storage</h3>
+            <p>
+              Diese Website verwendet keine Tracking-Cookies. Im Local Storage Ihres Browsers wird ausschließlich Ihre Auswahl zum Cookie-Banner gespeichert (Schlüssel <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">hm_cookie_consent</code>), damit der Hinweis nicht bei jedem Besuch erneut erscheint. Diese Speicherung ist technisch notwendig (Art. 6 Abs. 1 lit. f DSGVO bzw. § 25 Abs. 2 Nr. 2 TTDSG).
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">8. KI-Chatbot (Google Gemini API)</h3>
+            <p className="mb-4">
+              Diese Website bietet einen optionalen interaktiven KI-Assistenten an. Dieser nutzt die Gemini API der Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irland). Wenn Sie den Chatbot aktiv nutzen, werden Ihre Texteingaben an Google-Server übertragen und dort verarbeitet, um eine Antwort zu generieren. Eine Datenübertragung in die USA kann dabei nicht ausgeschlossen werden. Google verfügt über eine Zertifizierung nach dem EU-US Data Privacy Framework.
+            </p>
+            <p className="mb-4">
+              Die Nutzung dieses Dienstes erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Sie über das Cookie-Banner oder durch die aktive Nutzung des Chatbots erteilen. Sie können diese Einwilligung jederzeit für die Zukunft widerrufen, indem Sie den Local-Storage-Eintrag <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">hm_cookie_consent</code> in Ihrem Browser löschen oder den Chatbot nicht weiter verwenden.
+            </p>
+            <p>
+              Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">policies.google.com/privacy</a>
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">9. Speicherdauer</h3>
+            <p>
+              Server-Logfiles werden nach maximal 14 Tagen automatisch gelöscht oder anonymisiert. Eingaben in den KI-Chatbot werden nicht dauerhaft auf unseren Servern gespeichert; die Verarbeitung erfolgt lediglich zur Beantwortung Ihrer Anfrage. Speichervorgaben durch Google für die Gemini API entnehmen Sie der oben verlinkten Google-Datenschutzerklärung.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">10. Ihre Rechte als betroffene Person</h3>
+            <p className="mb-2">
+              Sie haben jederzeit das Recht auf:
+            </p>
+            <ul className="list-disc list-inside space-y-1 mb-2">
+              <li><strong>Auskunft</strong> über die zu Ihrer Person gespeicherten Daten (Art. 15 DSGVO)</li>
+              <li><strong>Berichtigung</strong> unrichtiger Daten (Art. 16 DSGVO)</li>
+              <li><strong>Löschung</strong> Ihrer Daten („Recht auf Vergessenwerden", Art. 17 DSGVO)</li>
+              <li><strong>Einschränkung der Verarbeitung</strong> (Art. 18 DSGVO)</li>
+              <li><strong>Datenübertragbarkeit</strong> (Art. 20 DSGVO)</li>
+              <li><strong>Widerspruch</strong> gegen die Verarbeitung (Art. 21 DSGVO)</li>
+              <li><strong>Widerruf</strong> einer erteilten Einwilligung (Art. 7 Abs. 3 DSGVO)</li>
+            </ul>
+            <p>
+              Hierfür wenden Sie sich bitte an die oben genannte verantwortliche Stelle oder den Datenschutzbeauftragten der Hochschule München.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">11. Beschwerderecht bei der Aufsichtsbehörde</h3>
+            <p>
+              Unbeschadet anderweitiger Rechtsbehelfe haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Zuständige Behörde für die Hochschule München ist:
+            </p>
+            <p className="mt-2">
+              Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)<br />
+              Promenade 18<br />
+              91522 Ansbach<br />
+              <a href="https://www.lda.bayern.de" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">www.lda.bayern.de</a>
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">12. Bildnachweise</h3>
+            <p className="mb-2">
+              Die meisten Bilder und Videos auf dieser Website stammen aus dem Holoboard-Projekt der Hochschule München und liegen bei Prof. Dr. Joachim Knaf bzw. der Hochschule München.
+            </p>
+            <p className="mb-2">
+              Darüber hinaus werden in der Sektion „Ausgangspunkt" zwei Symbolbilder verwendet, die unter der freien <a href="https://unsplash.com/license" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">Unsplash-Lizenz</a> stehen:
+            </p>
+            <ul className="list-disc list-inside space-y-1 mb-2">
+              <li>Symbolfoto „Onlinelehre / digitale Distanz" — Foto: <em>Vitaly Gariev</em> / Unsplash</li>
+              <li>Symbolfoto „Studierende im Hörsaal" — Foto: <em>Vitaly Gariev</em> / Unsplash</li>
+            </ul>
+            <p>
+              Die Aufnahmen dienen ausschließlich illustrativen Zwecken und stellen keine Personen der Hochschule München dar.
+            </p>
+          </section>
+
+          <section className="pt-4 border-t border-gray-200">
+            <p className="text-xs text-gray-500">
+              Stand: April 2026
+            </p>
           </section>
         </div>
       )
@@ -113,7 +244,7 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
             >
               <div className="flex items-center justify-between p-6 sm:p-8 border-b border-gray-100 bg-gray-50/50">
                 <h2 className="text-2xl font-bold text-gray-900">{content[type].title}</h2>
-                <button 
+                <button
                   onClick={onClose}
                   className="w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-500 transition-colors shadow-sm border border-gray-200"
                 >
