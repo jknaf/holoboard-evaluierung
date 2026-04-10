@@ -7,24 +7,24 @@ export default function Prototyp() {
 
   const images = [
     {
-      url: "https://holoboard-assets.netlify.app/images/090-confluence_media-image1.jpeg",
-      title: "Studio Setup",
-      desc: "Professionelle Beleuchtung und Kameraausrüstung für die Avatar-Aufzeichnung."
+      url: "https://holoboard-assets.netlify.app/images/082-confluence_media-bildschirmfoto-2025-07-29-um-16.05.50.png",
+      title: "Holoboard mit HM-Branding",
+      desc: "Das folierte Holoboard mit einheitlichem Branding der Hochschule München."
     },
     {
-      url: "https://holoboard-assets.netlify.app/images/102-confluence_media-pc.jpg",
-      title: "Softwareentwicklung",
-      desc: "Integration der APIs und Entwicklung der Webplattform."
+      url: "https://holoboard-assets.netlify.app/images/010-imported_downloads-img-4998.jpg",
+      title: "Studio-Setup",
+      desc: "Professionelles Greenscreen-Studio mit Beleuchtung für die Avatar-Aufzeichnung."
     },
     {
-      url: "https://holoboard-assets.netlify.app/images/088-confluence_media-holobox.jpeg",
-      title: "Holobox Integration",
-      desc: "Testaufbau der physischen Holobox für die räumliche Darstellung."
+      url: "https://holoboard-assets.netlify.app/images/016-imported_downloads-img-5818.jpg",
+      title: "Funktionierender Prototyp",
+      desc: "Der Ganzkörper-Avatar auf dem Holobox-Display im laufenden Betrieb."
     },
     {
-      url: "https://holoboard-assets.netlify.app/images/084-confluence_media-img-1086.jpg",
-      title: "Teamarbeit",
-      desc: "Interdisziplinäre Zusammenarbeit bei der Umsetzung des Prototyps."
+      url: "https://holoboard-assets.netlify.app/images/IT_Hardware_Holoboard.JPG",
+      title: "IT-Infrastruktur",
+      desc: "Die technische Hardware-Basis für Wiedergabe und Steuerung des Holoboards."
     }
   ];
 
