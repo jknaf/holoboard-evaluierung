@@ -118,9 +118,25 @@ export default function HoloboardKonzept() {
                 Das Grundproblem digitaler Lehre ist multidimensional: Es reicht nicht aus, Lerninhalte nur technisch verfügbar zu machen. Forschung zu Online-Lernen zeigt, dass digitale Formate besonders dann an Wirksamkeit verlieren, wenn soziale Präsenz, emotionale Bindung und sichtbare Lehrendenpräsenz fehlen.
               </p>
 
-              <div className="pt-2">
-                <ActionCue mode="expand" expanded={isConceptExpanded} accent="red" />
-              </div>
+              {!isConceptExpanded ? (
+                <div className="pt-2">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Zwei Lehrszenarien im Detail</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="p-4 rounded-xl border border-hm-red/20 bg-hm-red/[0.04] hover:bg-hm-red/[0.08] transition-colors">
+                      <div className="text-sm font-bold text-hm-red mb-1">Synchrone Lehre</div>
+                      <div className="text-xs text-gray-500 font-light">Full-Body-KI-Avatar für Live-Interaktion</div>
+                    </div>
+                    <div className="p-4 rounded-xl border border-hm-blue/20 bg-hm-blue/[0.04] hover:bg-hm-blue/[0.08] transition-colors">
+                      <div className="text-sm font-bold text-hm-blue mb-1">Asynchrone Lehre</div>
+                      <div className="text-xs text-gray-500 font-light">Holoboard als interaktives Lehrmedium</div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="pt-2">
+                  <ActionCue mode="expand" expanded={isConceptExpanded} accent="red" />
+                </div>
+              )}
             </div>
           </div>
 
