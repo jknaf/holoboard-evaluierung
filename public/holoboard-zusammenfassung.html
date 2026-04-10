@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Holoboard — Projektzusammenfassung</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    width: 210mm;
+    max-height: 297mm;
+    margin: 0 auto;
+    color: #1a1a1a;
+    background: white;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    display: flex;
+    flex-direction: column;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Header Bar */
+  .header {
+    background: #FC5555;
+    color: white;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header img { height: 32px; filter: brightness(0) invert(1); }
+  .header-title { font-size: 11pt; font-weight: 700; letter-spacing: 0.5px; }
+  .header-sub { font-size: 8pt; opacity: 0.85; font-weight: 400; }
+
+  /* Main Content */
+  .content { padding: 22px 28px 16px; flex: 1; }
+
+  /* Project Title */
+  .project-title {
+    font-size: 22pt;
+    font-weight: 900;
+    color: #1a1a1a;
+    letter-spacing: -0.5px;
+    margin-bottom: 2px;
+  }
+  .project-subtitle {
+    font-size: 10pt;
+    color: #666;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+
+  /* Two Column Layout */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
+
+  /* Section Headers */
+  .section-label {
+    font-size: 7pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #FC5555;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 12pt;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  p { color: #444; margin-bottom: 8px; }
+
+  /* Stats Row */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .stat {
+    text-align: center;
+    padding: 10px 6px;
+    border-radius: 10px;
+    background: #f7f7f7;
+  }
+  .stat-number { font-size: 18pt; font-weight: 900; color: #3E46D9; }
+  .stat-label { font-size: 7.5pt; color: #666; margin-top: 2px; }
+
+  /* Quote */
+  .quote {
+    border-left: 3px solid #3E46D9;
+    padding: 8px 12px;
+    background: #f0f1ff;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+    font-style: italic;
+    color: #333;
+    font-size: 8.5pt;
+  }
+  .quote-author { font-style: normal; font-weight: 600; color: #3E46D9; font-size: 7.5pt; margin-top: 4px; }
+
+  /* Innovation Box */
+  .innovation-box {
+    background: #1a1a1a;
+    color: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 10px 0;
+  }
+  .innovation-box .section-label { color: #33CCCC; }
+  .innovation-box .section-title { color: white; }
+  .innovation-box p { color: #ccc; }
+
+  /* Timeline */
+  .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0; }
+  .timeline-item { text-align: center; }
+  .timeline-year {
+    font-size: 14pt;
+    font-weight: 900;
+    color: #FC5555;
+  }
+  .timeline-text { font-size: 7.5pt; color: #666; line-height: 1.3; }
+  .timeline-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 6px;
+  }
+  .timeline-dot {
+    width: 8px; height: 8px;
+    background: #FC5555;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .timeline-line { height: 2px; background: #e0e0e0; flex: 1; }
+
+  /* Benefits List */
+  .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; margin: 6px 0; }
+  .benefit {
+    font-size: 8.5pt;
+    color: #444;
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .benefit::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px; height: 6px;
+    background: #33CCCC;
+    border-radius: 50%;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 12px 28px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+  .footer-logos { display: flex; align-items: center; gap: 16px; }
+  .footer-logos img { height: 24px; }
+  .footer-text { font-size: 7pt; color: #999; text-align: right; line-height: 1.4; }
+  .footer-url { color: #3E46D9; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <img src="https://holoboard-assets.netlify.app/brand/061-logo_assets-hm-logo-rgb.png" alt="HM">
+    <div>
+      <div class="header-title">Innovationsprofessur Lehre</div>
+      <div class="header-sub">Hochschule München — Prof. Dr. Joachim Knaf</div>
+    </div>
+  </div>
+  <div style="font-size: 8pt; opacity: 0.8;">April 2026</div>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+  <div class="project-title">Holoboard</div>
+  <div class="project-subtitle">Interaktive Lernsysteme mit KI-Avataren und holografischer Präsenz</div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">23</div>
+      <div class="stat-label">Partner und Kontakte</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" style="color: #FC5555;">4</div>
+      <div class="stat-label">Fachkonferenzen</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number" style="color: #33CCCC;">13</div>
+      <div class="stat-label">Betreute Bachelorarbeiten</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Integrierte KI-Systeme</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- Left Column -->
+    <div>
+      <div class="section-label">Ausgangslage</div>
+      <div class="section-title">Warum dieses Projekt?</div>
+      <p>Die Erfahrungen aus der Onlinelehre (2020–2022) machten sichtbar: Videobasierte Formate ermöglichen Kontinuität, ersetzen aber Präsenz, Aufmerksamkeit und Interaktion nur unzureichend. Daraus entstand die Suche nach einem System, das synchrone Kommunikation, sichtbare Lehrpräsenz und interaktive Inhalte in einer gemeinsamen Lernszene verbindet.</p>
+
+      <div class="section-label" style="margin-top: 12px;">Technische Innovation</div>
+      <div class="section-title">Erster Ganzkörper-KI-Avatar</div>
+      <p>Während marktübliche Systeme auf Kopf-Schulter-Darstellungen beschränkt sind, wurde im Projekt erstmals ein Ganzkörper-Avatar zu vertretbaren Kosten realisiert — kombiniert mit Echtzeit-Video-Synthese, Voice Agents und einem RAG-basierten Wissenssystem.</p>
+
+      <div class="quote">
+        „Ich habe die Festanstellung hauptsächlich wegen meiner Workflow- und Automatisierungskenntnisse aus der Bachelorarbeit bekommen."
+        <div class="quote-author">— Absolventin, betreute Bachelorarbeit</div>
+      </div>
+
+      <div class="section-label" style="margin-top: 10px;">Nutzen für die HM</div>
+      <div class="benefits">
+        <div class="benefit">Neue interaktive Lehrformate</div>
+        <div class="benefit">KI-Kompetenzaufbau</div>
+        <div class="benefit">Moderne Infrastruktur</div>
+        <div class="benefit">Interdisziplinäre Zusammenarbeit</div>
+        <div class="benefit">Innovationsimpulse</div>
+        <div class="benefit">Positionierung als Vorreiterin</div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div>
+      <div class="section-label">Wissenstransfer</div>
+      <div class="section-title">Über das Projekt hinaus</div>
+      <p>Die KI-Expertise wurde fortlaufend innerhalb des Kollegiums, in Vorlesungen und über betreute Bachelorarbeiten weitergegeben. Präsentationen auf TURN 2024 Berlin, Learntec Karlsruhe, TEKOM Stuttgart sowie internationale Gastlehre am ISEC Lisboa trugen die Ergebnisse in die wissenschaftliche Community.</p>
+
+      <div class="innovation-box">
+        <div class="section-label">Ausblick 2027–2030</div>
+        <div class="section-title">KI-gestützte mündliche Prüfungen</div>
+        <p style="margin-bottom: 10px;">In Zeiten generativer KI verlieren schriftliche Seminar- und Modularbeiten an Aussagekraft. Mündliche Prüfungen gewinnen an Bedeutung — skalieren aber nicht. Die Lösung: Der KI-Avatar führt die mündliche Prüfung in der Holobox als fester Prüfungsstation.</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">2027</div>
+            <div class="timeline-text">Konzeption und Pilotierung</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2028</div>
+            <div class="timeline-text">Datenschutz und Integration</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2029</div>
+            <div class="timeline-text">Erprobung im Studienbetrieb</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2030</div>
+            <div class="timeline-text">Institutionelle Verankerung</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top: 12px;">Aufgebaute Expertise</div>
+      <div class="section-title">Einzigartige Kompetenz an der HM</div>
+      <p>Durch das Projekt wurde eine an der Hochschule einzigartige Expertise aufgebaut: die Verbindung von KI-gestützten Lernsystemen, Voice und Video Agents sowie RAG-Wissenssystemen. 13 betreute Bachelorarbeiten haben dieses Wissen breit in den Studiengang getragen.</p>
+
+      <div class="section-label" style="margin-top: 10px;">Herausforderungen</div>
+      <p><strong>Physische Dimensionen:</strong> Die Holobox ist groß und schwer — flexibler Einsatz ist eingeschränkt. <strong>Betriebskosten:</strong> Proprietäre Avatar-Software verursacht im Dauerbetrieb hohe Kosten. <strong>Innovationstempo:</strong> Die KI-Entwicklung erfordert kontinuierliches Am-Thema-Bleiben.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-logos">
+    <img src="https://holoboard-assets.netlify.app/brand/061-logo_assets-hm-logo-rgb.png" alt="HM">
+    <img src="https://holoboard-assets.netlify.app/brand/hightech-agenda-bayern-vertikal.jpg" alt="Hightech Agenda Bayern">
+  </div>
+  <div class="footer-text">
+    Vollständige Dokumentation: <span class="footer-url">holoboard.joachimknaf.de</span><br>
+    Prof. Dr. Joachim Knaf — Innovationsprofessur Lehre — Hochschule München
+  </div>
+</div>
+
+</body>
+</html>
