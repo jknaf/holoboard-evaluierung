@@ -59,16 +59,6 @@ export default function Prototyp() {
       desc: "Das Ergebnis der iterativen Entwicklung: ein foliertes Holoboard mit HM-Branding, professionellem Studio-Setup und funktionierender IT-Infrastruktur.",
       images: [
         {
-          url: "https://holoboard-assets.netlify.app/images/082-confluence_media-bildschirmfoto-2025-07-29-um-16.05.50.png",
-          title: "Holoboard mit HM-Branding",
-          desc: "Das folierte Holoboard mit einheitlichem Branding der Hochschule München."
-        },
-        {
-          url: "https://holoboard-assets.netlify.app/images/010-imported_downloads-img-4998.jpg",
-          title: "Studio-Setup",
-          desc: "Professionelles Greenscreen-Studio mit Beleuchtung für die Avatar-Aufzeichnung."
-        },
-        {
           url: "https://holoboard-assets.netlify.app/images/016-imported_downloads-img-5818.jpg",
           title: "Funktionierender Prototyp",
           desc: "Der Ganzkörper-Avatar auf dem Holobox-Display im laufenden Betrieb."
