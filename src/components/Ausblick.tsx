@@ -45,14 +45,14 @@ export default function Ausblick() {
                 range={[0, 0.33]}
                 icon={<FileText className="w-10 h-10 text-hm-red mb-6" />}
                 title="Das Szenario: KI-gestützte mündliche Prüfungen"
-                desc="In Zeiten generativer KI verlieren schriftliche Prüfungen an Aussagekraft — Antworten lassen sich maschinell erzeugen. Mündliche Prüfungen prüfen echtes Verständnis, skalieren aber nicht. Die Lösung: Der KI-Avatar des Professors führt die mündliche Prüfung in der Holobox. Ihre Größe ist kein Problem mehr — sie wird zur festen Prüfungsstation."
+                desc="In Zeiten generativer KI verlieren schriftliche Seminar- und Modularbeiten an Aussagekraft. Mündliche Prüfungen gewinnen an Bedeutung, weil sie echtes Verständnis prüfen — skalieren aber nicht. Die Lösung: Der KI-Avatar des Professors führt die mündliche Prüfung in der Holobox. Ihre Größe ist kein Problem mehr — sie wird zur festen Prüfungsstation."
               />
               <ScrollText
                 progress={scrollYProgress}
                 range={[0.33, 0.66]}
                 icon={<ShieldCheck className="w-10 h-10 text-hm-blue mb-6" />}
-                title="Die kritischen Fragen — schon beantwortet"
-                desc="Datenschutz? Lokale KI-Infrastruktur, im Projekt bereits erprobt. Prüfungsinhalte? Über das RAG-System aus dem Fragenkatalog der Lehrenden — die Technologie läuft. Bewertung? Strukturierte KI-Auswertung mit finaler Freigabe durch die Lehrenden. Bedienung? Über eine No-Code-Plattform, im Projekt bereits validiert."
+                title="Komplexe Fragen — tragfähige Grundlagen"
+                desc="Ein solches Szenario wirft große und berechtigte Fragen auf: Datenschutz, einfache Bedienbarkeit, niedrigschwellige Zugänglichkeit, faire Bewertung. Das Projekt hat hier bereits wichtige Ergebnisse geliefert — lokale KI-Infrastruktur, RAG-basierte Wissenssysteme, No-Code-Steuerung — die jetzt gezielt weiterentwickelt und in die neue Technologie integriert werden können."
               />
               <ScrollText
                 progress={scrollYProgress}
