@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen } from 'lucide-react';
+import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen, ChevronDown } from 'lucide-react';
 import ActionCue from './ui/ActionCue';
 
 export default function HoloboardKonzept() {
@@ -122,14 +122,28 @@ export default function HoloboardKonzept() {
                 <div className="pt-2">
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Zwei Lehrszenarien im Detail</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="p-4 rounded-xl border border-hm-red/20 bg-hm-red/[0.04] hover:bg-hm-red/[0.08] transition-colors">
-                      <div className="text-sm font-bold text-hm-red mb-1">Synchrone Lehre</div>
+                    <motion.div
+                      animate={{ y: [0, -2, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut' }}
+                      className="p-4 rounded-xl border border-hm-red/20 bg-hm-red/[0.04] hover:bg-hm-red/10 hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="text-sm font-bold text-hm-red">Synchrone Lehre</div>
+                        <ChevronDown className="w-4 h-4 text-hm-red/60" />
+                      </div>
                       <div className="text-xs text-gray-500 font-light">Full-Body-KI-Avatar für Live-Interaktion</div>
-                    </div>
-                    <div className="p-4 rounded-xl border border-hm-blue/20 bg-hm-blue/[0.04] hover:bg-hm-blue/[0.08] transition-colors">
-                      <div className="text-sm font-bold text-hm-blue mb-1">Asynchrone Lehre</div>
+                    </motion.div>
+                    <motion.div
+                      animate={{ y: [0, -2, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut', delay: 0.3 }}
+                      className="p-4 rounded-xl border border-hm-blue/20 bg-hm-blue/[0.04] hover:bg-hm-blue/10 hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="text-sm font-bold text-hm-blue">Asynchrone Lehre</div>
+                        <ChevronDown className="w-4 h-4 text-hm-blue/60" />
+                      </div>
                       <div className="text-xs text-gray-500 font-light">Holoboard als interaktives Lehrmedium</div>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               ) : (
