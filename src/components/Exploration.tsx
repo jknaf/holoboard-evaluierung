@@ -119,12 +119,6 @@ const gallerySlides = [
   },
   {
     phase: "Präsentation und Anwendung",
-    title: "Prof. Dr. Joachim Knaf vor und in der Holobox",
-    description: "Prof. Dr. Joachim Knaf vor und in der Holobox. Die Illustration zeigt ihn einmal vor dem System und einmal innerhalb der Holobox, wie er von innen auf die transparente Scheibe schreibt.",
-    image: "https://holoboard-assets.netlify.app/images/Gemini_Generated_Image_kiyugukiyugukiyu.png"
-  },
-  {
-    phase: "Präsentation und Anwendung",
     title: "Prof. Dr. Joachim Knaf am Stand auf der TURN-Konferenz",
     description: "Prof. Dr. Joachim Knaf am Stand auf der TURN-Konferenz. Die Aufnahme zeigt das Projekt im Messe- und Präsentationskontext.",
     image: "https://holoboard-assets.netlify.app/images/20241115_114416.jpg"
