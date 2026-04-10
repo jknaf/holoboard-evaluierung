@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen, ChevronDown } from 'lucide-react';
+import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen, ArrowRight } from 'lucide-react';
 import ActionCue from './ui/ActionCue';
 
 export default function HoloboardKonzept() {
@@ -125,24 +125,26 @@ export default function HoloboardKonzept() {
                     <motion.div
                       animate={{ y: [0, -2, 0] }}
                       transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut' }}
-                      className="p-4 rounded-xl border border-hm-red/20 bg-hm-red/[0.04] hover:bg-hm-red/10 hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+                      className="px-5 py-4 rounded-xl bg-hm-red text-white hover:bg-hm-red/90 hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
                     >
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="text-sm font-bold text-hm-red">Synchrone Lehre</div>
-                        <ChevronDown className="w-4 h-4 text-hm-red/60" />
+                      <div className="text-sm font-bold mb-1">Synchrone Lehre</div>
+                      <div className="text-xs text-white/70 font-light mb-3">Full-Body-KI-Avatar für Live-Interaktion</div>
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
+                        <span>Szenario aufklappen</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </div>
-                      <div className="text-xs text-gray-500 font-light">Full-Body-KI-Avatar für Live-Interaktion</div>
                     </motion.div>
                     <motion.div
                       animate={{ y: [0, -2, 0] }}
                       transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut', delay: 0.3 }}
-                      className="p-4 rounded-xl border border-hm-blue/20 bg-hm-blue/[0.04] hover:bg-hm-blue/10 hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+                      className="px-5 py-4 rounded-xl bg-hm-blue text-white hover:bg-hm-blue/90 hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
                     >
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="text-sm font-bold text-hm-blue">Asynchrone Lehre</div>
-                        <ChevronDown className="w-4 h-4 text-hm-blue/60" />
+                      <div className="text-sm font-bold mb-1">Asynchrone Lehre</div>
+                      <div className="text-xs text-white/70 font-light mb-3">Holoboard als interaktives Lehrmedium</div>
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
+                        <span>Szenario aufklappen</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </div>
-                      <div className="text-xs text-gray-500 font-light">Holoboard als interaktives Lehrmedium</div>
                     </motion.div>
                   </div>
                 </div>
