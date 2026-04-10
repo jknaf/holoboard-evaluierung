@@ -28,7 +28,7 @@ export default function HoloboardKonzept() {
           </div>
         </div>
       ),
-      image: "https://holoboard-assets.netlify.app/images/102-confluence_media-pc.jpg"
+      image: "https://holoboard-assets.netlify.app/images/architektur-07-rag-wissenssystem.png"
     },
     {
       id: 2,
