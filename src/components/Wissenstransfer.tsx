@@ -8,7 +8,7 @@ export default function Wissenstransfer() {
     {
       icon: <Presentation className="w-6 h-6 text-hm-red" />,
       title: "Hochschulentwicklungsplan Tag",
-      desc: "Vorstellung der Projektvision und erster Prototypen vor dem Präsidium und Lehrenden der HM."
+      desc: "Vorstellung der Projektvision und des ersten Prototypen im Rahmen der HEP-Präsentation."
     },
     {
       icon: <Users className="w-6 h-6 text-hm-blue" />,
