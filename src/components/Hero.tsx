@@ -88,7 +88,7 @@ export default function Hero() {
                 <span className="w-2 h-2 rounded-full bg-hm-red animate-pulse" />
                 Innovationsprofessur Lehre
               </div>
-              <h1 className="text-[18vw] sm:text-[14vw] lg:text-[5.5vw] xl:text-[6rem] leading-[0.85] font-black tracking-tighter text-white uppercase mb-6 drop-shadow-2xl">
+              <h1 className="text-[14vw] sm:text-[14vw] lg:text-[5.5vw] xl:text-[6rem] leading-[0.85] font-black tracking-tighter text-white uppercase mb-6 drop-shadow-2xl">
                 Holo<span className="text-hm-red">board</span>
               </h1>
               <p className="text-lg md:text-2xl text-gray-300 font-light mb-8 tracking-wide">
