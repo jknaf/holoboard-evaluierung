@@ -14,8 +14,8 @@ export default function Evaluation() {
       desc: "Das Projekt adressiert ein hochaktuelles Zukunftsfeld an der Schnittstelle von generativer KI, KI-Agenten, Voice Agents und digitaler Lehre.",
       examples: ["Generative KI in der Lehre", "KI-Agenten und Voice Agents", "Technische und didaktische Tiefenerschließung des Themenfeldes"],
       detailedText: "Das Themenfeld ist in hohem Maße zukunftsrelevant, weil Hochschulen sich zunehmend mit generativer KI, agentischen Systemen und sprachbasierten Assistenzsystemen auseinandersetzen müssen. Das Holoboard-Projekt hat dieses Feld nicht nur oberflächlich aufgegriffen, sondern in einer besonderen technischen und didaktischen Tiefe bearbeitet. Damit gehört es zu den prägenden Projekten der Innovationsprofessur Lehre, weil es die Verbindung von KI-Technologien, Interaktion, Präsenz und Hochschuldidaktik frühzeitig und substanziell erschlossen hat.",
-      image: "https://holoboard-assets.netlify.app/images/Gemini_Generated_Image_kiyugukiyugukiyu.png",
-      altText: "Holoboard-Projekt auf der TURN-Konferenz im Präsentationskontext"
+      image: "https://holoboard-assets.netlify.app/images/ki-hochschule-zukunft.png",
+      altText: "KI als integraler Bestandteil der Hochschullehre"
     },
     {
       id: 2,
