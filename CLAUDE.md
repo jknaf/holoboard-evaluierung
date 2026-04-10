@@ -57,7 +57,7 @@ src/
   App.tsx           # Haupt-App mit Navigation und Sektions-Routing
   main.tsx          # Entry Point
 api/
-  chat.ts           # Vercel Serverless Function (Gemini AI-Assistent, nutzt GEMINI_API_KEY)
+  chat.ts           # Vercel Serverless Function (Gemini AI-Assistent via Vertex AI, nutzt GOOGLE_SERVICE_ACCOUNT_KEY)
 index.html          # SPA-Shell mit Error-Handlern
 index.css           # Tailwind-Konfiguration
 vite.config.ts      # Vite + React + Tailwind Setup
@@ -66,8 +66,9 @@ vite.config.ts      # Vite + React + Tailwind Setup
 ## Serverless Function
 
 `api/chat.ts` ist ein Vercel Serverless Endpoint fuer den KI-Assistenten auf der Webseite.
-- Nutzt `GEMINI_API_KEY` (als Vercel Environment Variable konfiguriert)
-- Modell: `gemini-2.0-flash`
+- Nutzt `GOOGLE_SERVICE_ACCOUNT_KEY` (Service Account JSON als Vercel Environment Variable)
+- Verbindung ueber Vertex AI (nicht Google AI Studio) — Kosten laufen ueber das GCP-Bildungsguthaben
+- Modell: `gemini-2.5-flash`
 - Streaming-Responses via Server-Sent Events
 
 ## Git-Hinweise

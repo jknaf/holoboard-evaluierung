@@ -1,4 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
+import type { GoogleAuthOptions } from 'google-auth-library';
 
 const SYSTEM_INSTRUCTION = `
 Du bist der offizielle KI-Assistent der Projektwebsite "Holoboard" an der Hochschule München.
@@ -135,9 +136,9 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'GEMINI_API_KEY not configured' });
+  const credentialsJson = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  if (!credentialsJson) {
+    return res.status(500).json({ error: 'GOOGLE_SERVICE_ACCOUNT_KEY not configured' });
   }
 
   try {
@@ -146,7 +147,15 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: 'messages array required' });
     }
 
-    const ai = new GoogleGenAI({ apiKey });
+    const credentials = JSON.parse(credentialsJson);
+    const authOptions: GoogleAuthOptions = { credentials };
+
+    const ai = new GoogleGenAI({
+      vertexai: true,
+      project: 'bildung-480314',
+      location: 'us-central1',
+      googleAuthOptions: authOptions,
+    });
 
     // Build contents from conversation history
     const contents = messages.map((msg: { role: string; text: string }) => ({
@@ -160,7 +169,7 @@ export default async function handler(req: any, res: any) {
     res.setHeader('Connection', 'keep-alive');
 
     const response = await ai.models.generateContentStream({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         temperature: 0.7,

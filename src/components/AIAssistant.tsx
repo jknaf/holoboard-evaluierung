@@ -124,7 +124,7 @@ export default function AIAssistant() {
                   <h3 className="font-bold text-gray-900 text-sm">Holoboard KI</h3>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-xs text-gray-500 font-medium">Online (Gemini 3.1)</span>
+                    <span className="text-xs text-gray-500 font-medium">Online (Gemini 2.5 Flash)</span>
                   </div>
                 </div>
               </div>
@@ -202,7 +202,7 @@ export default function AIAssistant() {
                 </button>
               </form>
               <div className="text-center mt-2">
-                <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Powered by Gemini 3.1 Pro</span>
+                <span className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Powered by Gemini 2.5 Flash</span>
               </div>
             </div>
           </motion.div>
