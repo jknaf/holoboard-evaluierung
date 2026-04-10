@@ -14,18 +14,18 @@ export default function AvatarIntegration() {
   const steps = [
     {
       icon: <Video className="w-6 h-6" />,
-      title: "Digitale Replikas",
-      desc: "Erstellung eines fotorealistischen digitalen Zwillings des Lehrenden basierend auf Videoaufnahmen."
+      title: "Ganzkörper-Avatar",
+      desc: "Von der Videoaufnahme zur fotorealistischen Ganzkörper-Replika. Marktübliche Anbieter liefern Avatare von der Brust aufwärts — hier wurde erstmals der gesamte Körper überzeugend digital abgebildet."
     },
     {
       icon: <Sparkles className="w-6 h-6" />,
-      title: "Video-Generierung",
-      desc: "Echtzeit-Synthese von Lippenbewegungen und Gestik passend zum generierten Text-Output."
+      title: "Echtzeit-Video-Synthese",
+      desc: "Generierung von Lippenbewegungen, Gestik und Körperhaltung passend zum gesprochenen Text — in Echtzeit, nicht vorproduziert."
     },
     {
       icon: <MessageSquare className="w-6 h-6" />,
-      title: "Konversationssysteme",
-      desc: "Integration von Speech-to-Text und Text-to-Speech für natürliche, fließende Dialoge."
+      title: "Dialogfähigkeit durch Voice Agents",
+      desc: "Natürliche Sprachinteraktion über Speech-to-Text und Text-to-Speech. Der Avatar hört zu, versteht und antwortet — kein Skript, echtes Gespräch."
     }
   ];
 
@@ -47,9 +47,7 @@ export default function AvatarIntegration() {
             <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">Technologie</h2>
             <h3 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter">KI Avatar Integration</h3>
             <p className="text-xl text-gray-300 font-light leading-relaxed mb-12">
-              Der KI-Avatar bildet die menschliche Schnittstelle des Systems. Er ermöglicht eine natürliche, 
-              dialogbasierte Interaktion, die weit über klassische Chatbots hinausgeht und die soziale 
-              Präsenz in digitalen Lernumgebungen erhöht.
+              Der KI-Avatar bildet die menschliche Schnittstelle des Systems. Eine Besonderheit des Projekts: Während marktübliche Systeme auf Kopf-Schulter-Darstellungen beschränkt sind, wurde hier erstmals ein Ganzkörper-Avatar zu vertretbaren Kosten realisiert — eine eigenständige technische Innovation, die eine glaubwürdigere und räumlich wirksamere digitale Präsenz ermöglicht.
             </p>
 
             <div className="space-y-10">
@@ -77,7 +75,7 @@ export default function AvatarIntegration() {
           <div className="relative h-[800px] rounded-3xl overflow-hidden border border-white/10 bg-black">
             <motion.div style={{ y: yImage }} className="absolute inset-0 h-[140%] -top-[20%]">
               <img 
-                src="https://holoboard-assets.netlify.app/images/081-confluence_media-bildschirmfoto-2025-01-28-um-18.22.56.png" 
+                src="https://holoboard-assets.netlify.app/images/080-confluence_media-bildschirmfoto-2025-01-28-um-15.43.40.png" 
                 alt="Digitale Avatar Integration" 
                 className="w-full h-full object-cover opacity-60 mix-blend-luminosity"
                 referrerPolicy="no-referrer"
