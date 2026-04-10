@@ -40,26 +40,26 @@ export default function Ausblick() {
             </h3>
 
             <div className="relative h-[40vh]">
-              <ScrollText 
-                progress={scrollYProgress} 
-                range={[0, 0.33]} 
+              <ScrollText
+                progress={scrollYProgress}
+                range={[0, 0.33]}
                 icon={<FileText className="w-10 h-10 text-hm-red mb-6" />}
-                title="Die Evaluierungsfrage" 
-                desc="Die Evaluierung soll eine fundierte Entscheidung darüber ermöglichen, ob und in welcher Form das Holoboard-Projekt nach 2027 weitergeführt werden soll."
+                title="Das Szenario: KI-gestützte mündliche Prüfungen"
+                desc="In Zeiten generativer KI verlieren schriftliche Prüfungen an Aussagekraft — Antworten lassen sich maschinell erzeugen. Mündliche Prüfungen prüfen echtes Verständnis, skalieren aber nicht. Die Lösung: Der KI-Avatar des Professors führt die mündliche Prüfung in der Holobox. Ihre Größe ist kein Problem mehr — sie wird zur festen Prüfungsstation."
               />
-              <ScrollText 
-                progress={scrollYProgress} 
-                range={[0.33, 0.66]} 
-                icon={<Cpu className="w-10 h-10 text-hm-blue mb-6" />}
-                title="Der Entwicklungspfad" 
-                desc="Im Zeitraum 2027 bis 2030 soll das Projekt auf Basis der bisherigen Ergebnisse in neue Lehr-, Prüfungs- und Assistenzszenarien überführt und institutionell verstetigt werden."
+              <ScrollText
+                progress={scrollYProgress}
+                range={[0.33, 0.66]}
+                icon={<ShieldCheck className="w-10 h-10 text-hm-blue mb-6" />}
+                title="Die kritischen Fragen — schon beantwortet"
+                desc="Datenschutz? Lokale KI-Infrastruktur, im Projekt bereits erprobt. Prüfungsinhalte? Über das RAG-System aus dem Fragenkatalog der Lehrenden — die Technologie läuft. Bewertung? Strukturierte KI-Auswertung mit finaler Freigabe durch die Lehrenden. Bedienung? Über eine No-Code-Plattform, im Projekt bereits validiert."
               />
-              <ScrollText 
-                progress={scrollYProgress} 
-                range={[0.66, 1]} 
-                icon={<ShieldCheck className="w-10 h-10 text-hm-turquoise mb-6" />}
-                title="Die Perspektive" 
-                desc="Im Mittelpunkt steht die Frage, wie das Holoboard von 2027 bis 2030 als tragfähige Infrastruktur für zukunftsrelevante Formate in Lehre, Prüfung und Transfer weiterentwickelt werden kann."
+              <ScrollText
+                progress={scrollYProgress}
+                range={[0.66, 1]}
+                icon={<Cpu className="w-10 h-10 text-hm-turquoise mb-6" />}
+                title="Von der Forschung in den Regelbetrieb"
+                desc="Alles, was dafür gebraucht wird, existiert bereits als Prototyp: lokale KI-Infrastruktur, RAG-System, Avatar-Technologie und Voice Agents. Der Schritt von 2027 bis 2030 ist die Überführung vom Forschungsprototyp in ein institutionell verankertes, datenschutzkonformes Prüfungswerkzeug mit echtem Mehrwert für die Hochschule."
               />
             </div>
           </div>
