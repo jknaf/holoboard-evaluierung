@@ -181,13 +181,36 @@ export default function Exploration() {
             </p>
             
             <div>
-              <button 
+              <button
                 onClick={() => setIsGalleryOpen(true)}
                 className="inline-flex items-center gap-3 bg-gray-900 hover:bg-hm-red text-white px-6 py-3 rounded-full font-bold tracking-wide transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 <ImageIcon className="w-5 h-5" />
-                Die Entwicklung visuell nachvollziehen
+                Entwicklungsdokumentation — {gallerySlides.length} Bilder
               </button>
+
+              <div className="flex items-center gap-3 mt-4">
+                {[1, 7, 18].map((idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => { setCurrentSlide(idx); setIsGalleryOpen(true); }}
+                    className="w-20 h-20 rounded-lg overflow-hidden ring-2 ring-gray-200 hover:ring-hm-red transition-all duration-300 hover:scale-105"
+                  >
+                    <img
+                      src={gallerySlides[idx].image}
+                      alt={gallerySlides[idx].title}
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </button>
+                ))}
+                <button
+                  onClick={() => setIsGalleryOpen(true)}
+                  className="w-20 h-20 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all duration-300 hover:scale-105 ring-2 ring-gray-200 hover:ring-hm-red"
+                >
+                  <span className="text-gray-500 font-bold text-sm text-center leading-tight">+{gallerySlides.length - 3}<br/>weitere</span>
+                </button>
+              </div>
             </div>
           </div>
 
