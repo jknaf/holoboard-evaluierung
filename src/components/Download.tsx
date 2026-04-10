@@ -33,15 +33,16 @@ export default function Download() {
             viewport={{ once: true }}
             className="flex-shrink-0"
           >
-            <a 
-              href="#" 
-              onClick={(e) => { e.preventDefault(); alert("Der Download startet in Kürze."); }}
+            <a
+              href="/holoboard-zusammenfassung.html"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative inline-flex items-center justify-center gap-3 bg-white text-hm-blue px-8 py-5 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
             >
               <div className="absolute inset-0 rounded-2xl ring-4 ring-white/20 group-hover:ring-white/40 transition-all duration-300" />
               <DownloadIcon className="w-6 h-6" />
-              PDF Herunterladen
-              <span className="text-sm font-normal text-gray-500 ml-2">(2.4 MB)</span>
+              Zusammenfassung öffnen
+              <span className="text-sm font-normal text-gray-500 ml-2">(PDF-Druck)</span>
             </a>
           </motion.div>
 
