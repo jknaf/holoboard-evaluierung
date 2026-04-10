@@ -110,12 +110,27 @@ export default function Architektur() {
 
         {/* Toggle Button */}
         <div className="flex justify-center">
-          <button 
-            onClick={() => setShowDetails(!showDetails)}
-            className="rounded-full border border-gray-200 bg-white px-3 py-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <ActionCue mode="expand" expanded={showDetails} accent="red" />
-          </button>
+          {!showDetails ? (
+            <motion.button
+              onClick={() => setShowDetails(true)}
+              animate={{ y: [0, -2, 0] }}
+              transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut' }}
+              className="px-6 py-4 rounded-xl bg-gray-900 text-white hover:bg-hm-red hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+            >
+              <div className="text-sm font-bold mb-1">Vollständiger technischer Bericht</div>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/70">
+                <span>8 Kapitel mit Architekturdiagrammen aufklappen</span>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </div>
+            </motion.button>
+          ) : (
+            <button
+              onClick={() => setShowDetails(false)}
+              className="rounded-full border border-gray-200 bg-white px-3 py-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <ActionCue mode="expand" expanded={showDetails} accent="red" />
+            </button>
+          )}
         </div>
 
         {/* Technical Deep Dive Section */}
