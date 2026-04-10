@@ -5,26 +5,80 @@ import { X } from 'lucide-react';
 export default function Prototyp() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const images = [
+  const sections = [
     {
-      url: "https://holoboard-assets.netlify.app/images/082-confluence_media-bildschirmfoto-2025-07-29-um-16.05.50.png",
-      title: "Holoboard mit HM-Branding",
-      desc: "Das folierte Holoboard mit einheitlichem Branding der Hochschule München."
+      heading: "Erster Versuch: Eigenbau-Rahmen im Studio",
+      desc: "Im Greenscreen-Studio wurde ein Aluminiumrahmen mit Glasscheibe gebaut, um darauf von innen zu schreiben und durch die Scheibe hindurch zu filmen. Der Rahmen erwies sich jedoch als zu schmal — das vollständige Bild konnte nicht eingefangen werden.",
+      images: [
+        {
+          url: "https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg",
+          title: "Erster Versuch: Glasrahmen im Studio",
+          desc: "Der selbst gebaute Rahmen mit Glasscheibe vor dem Greenscreen — zu schmal für das Ganzkörperformat."
+        },
+        {
+          url: "https://holoboard-assets.netlify.app/images/004-imported_downloads-img-4850.jpg",
+          title: "Material für den Rahmenbau",
+          desc: "Aluminiumprofile und Bauteile für die Konstruktion des ersten Schreibrahmens."
+        }
+      ]
     },
     {
-      url: "https://holoboard-assets.netlify.app/images/010-imported_downloads-img-4998.jpg",
-      title: "Studio-Setup",
-      desc: "Professionelles Greenscreen-Studio mit Beleuchtung für die Avatar-Aufzeichnung."
+      heading: "Zweiter Versuch: Improvisation an der Hochschulfassade",
+      desc: "Nachdem der Rahmen zu klein war, wurde kurzerhand eine Glasscheibe der Hochschule als Schreibfläche genutzt. Das improvisierte Setup vor der Fassade ermöglichte großformatige Aufnahmen: Der Protagonist stand hinter der Scheibe, schrieb von innen darauf, und die Kamera filmte von außen durch das Glas.",
+      images: [
+        {
+          url: "https://holoboard-assets.netlify.app/images/014-imported_downloads-img-5776.jpg",
+          title: "Aufnahme-Setup an der Hochschulfassade",
+          desc: "Kamera, Beleuchtung und Scheibe — das improvisierte Aufnahmeszenario vor der Glasfront der Hochschule."
+        },
+        {
+          url: "https://holoboard-assets.netlify.app/images/015-imported_downloads-img-5777.jpg",
+          title: "Kamera-Perspektive durch die Scheibe",
+          desc: "Detailansicht des Kamera-Setups: Von außen durch die Glasscheibe hindurch gefilmt."
+        }
+      ]
     },
     {
-      url: "https://holoboard-assets.netlify.app/images/016-imported_downloads-img-5818.jpg",
-      title: "Funktionierender Prototyp",
-      desc: "Der Ganzkörper-Avatar auf dem Holobox-Display im laufenden Betrieb."
+      heading: "Interaktive Steuerung mit Processing",
+      desc: "Das gesamte interaktive Szenario — Buttons, Layer, Video-Steuerung — wurde in Processing (Java) programmiert. Die Entwicklung erforderte aufwendige Anpassungen, da alle interaktiven Elemente spiegelverkehrt dargestellt und korrekt ausgerichtet werden mussten.",
+      images: [
+        {
+          url: "https://holoboard-assets.netlify.app/images/processing-screenshot-code.png",
+          title: "Processing-Code für die Holoboard-Steuerung",
+          desc: "Java-Code in Processing: Programmierung der interaktiven Layer und Video-Steuerung."
+        },
+        {
+          url: "https://holoboard-assets.netlify.app/images/processing-screenshot-layers.png",
+          title: "Interaktive Layer mit spiegelverkehrten Elementen",
+          desc: "Erster Versuch der interaktiven Oberfläche — Buttons und Beschriftungen mussten spiegelverkehrt korrigiert werden."
+        }
+      ]
     },
     {
-      url: "https://holoboard-assets.netlify.app/images/IT_Hardware_Holoboard.JPG",
-      title: "IT-Infrastruktur",
-      desc: "Die technische Hardware-Basis für Wiedergabe und Steuerung des Holoboards."
+      heading: "Fertiges System",
+      desc: "Das Ergebnis der iterativen Entwicklung: ein foliertes Holoboard mit HM-Branding, professionellem Studio-Setup und funktionierender IT-Infrastruktur.",
+      images: [
+        {
+          url: "https://holoboard-assets.netlify.app/images/082-confluence_media-bildschirmfoto-2025-07-29-um-16.05.50.png",
+          title: "Holoboard mit HM-Branding",
+          desc: "Das folierte Holoboard mit einheitlichem Branding der Hochschule München."
+        },
+        {
+          url: "https://holoboard-assets.netlify.app/images/010-imported_downloads-img-4998.jpg",
+          title: "Studio-Setup",
+          desc: "Professionelles Greenscreen-Studio mit Beleuchtung für die Avatar-Aufzeichnung."
+        },
+        {
+          url: "https://holoboard-assets.netlify.app/images/016-imported_downloads-img-5818.jpg",
+          title: "Funktionierender Prototyp",
+          desc: "Der Ganzkörper-Avatar auf dem Holobox-Display im laufenden Betrieb."
+        },
+        {
+          url: "https://holoboard-assets.netlify.app/images/IT_Hardware_Holoboard.JPG",
+          title: "IT-Infrastruktur",
+          desc: "Die technische Hardware-Basis für Wiedergabe und Steuerung des Holoboards."
+        }
+      ]
     }
   ];
 
@@ -45,26 +99,35 @@ export default function Prototyp() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {images.map((img, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+        <div className="space-y-20">
+          {sections.map((section, sIdx) => (
+            <motion.div
+              key={sIdx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative aspect-video rounded-3xl overflow-hidden cursor-pointer bg-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500"
-              onClick={() => setSelectedImage(img.url)}
             >
-              <img 
-                src={img.url} 
-                alt={img.title} 
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                <h4 className="text-white font-semibold text-lg">{img.title}</h4>
-                <p className="text-gray-300 text-sm mt-1">{img.desc}</p>
+              <h4 className="text-2xl font-bold text-gray-900 mb-2 tracking-tight">{section.heading}</h4>
+              <p className="text-gray-600 font-light leading-relaxed mb-6 max-w-3xl">{section.desc}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {section.images.map((img, index) => (
+                  <div
+                    key={index}
+                    className="group relative aspect-video rounded-3xl overflow-hidden cursor-pointer bg-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500"
+                    onClick={() => setSelectedImage(img.url)}
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                      <h4 className="text-white font-semibold text-lg">{img.title}</h4>
+                      <p className="text-gray-300 text-sm mt-1">{img.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </motion.div>
           ))}
