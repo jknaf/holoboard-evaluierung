@@ -23,7 +23,7 @@ export default function Download() {
             </div>
             <h3 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">Zusammenfassung der Innovationsprofessur</h3>
             <p className="text-lg text-blue-100 font-light leading-relaxed">
-              Laden Sie sich die kompakte Zusammenfassung aller Ergebnisse, Learnings und der technologischen Architektur des Holoboard-Projekts als PDF herunter. Ideal für Entscheider und Interessierte im Bereich der digitalen Hochschullehre.
+              Die Projektzusammenfassung auf einer Seite: Ausgangslage, technische Innovation, aufgebaute Expertise, Nutzen für die Hochschule und Ausblick 2027–2030. Öffnet als druckbare Seite — über Cmd+P (Mac) oder Strg+P (Windows) als PDF speichern.
             </p>
           </motion.div>
 
