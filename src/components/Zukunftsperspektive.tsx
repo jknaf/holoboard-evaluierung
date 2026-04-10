@@ -12,26 +12,26 @@ export default function Zukunftsperspektive() {
   const timelineData = [
     {
       year: "2027",
-      title: "Campusweite Skalierung",
-      description: "Ausweitung des Holoboard-Systems auf mehrere Fakultäten. Standardisierte Integration in hybride Hörsäle.",
-      icon: <Globe className="w-6 h-6 text-hm-blue" />
+      title: "Konzeption und Pilotierung",
+      description: "Entwicklung des KI-gestützten Prüfungsszenarios auf Basis der bestehenden Holobox-Infrastruktur. Erste Pilotprüfungen mit Voice Agents und KI-Avatar in kontrollierten Testumgebungen.",
+      icon: <Brain className="w-6 h-6 text-hm-blue" />
     },
     {
       year: "2028",
-      title: "Multimodale KI-Tutoren",
-      description: "Avatare verstehen nicht nur Sprache, sondern analysieren auch Gestik, Mimik und Verständnisprobleme der Studierenden in Echtzeit.",
-      icon: <Brain className="w-6 h-6 text-hm-turquoise" />
+      title: "Datenschutz und Integration",
+      description: "Aufbau der datenschutzkonformen, lokalen Prüfungsinfrastruktur. Integration des RAG-Systems für Fragenkataloge der Lehrenden. Entwicklung der No-Code-Oberfläche für einfache Prüfungserstellung.",
+      icon: <Globe className="w-6 h-6 text-hm-turquoise" />
     },
     {
       year: "2029",
-      title: "Vollständige Personalisierung",
-      description: "Jeder Studierende erhält einen individuellen KI-Lernbegleiter, der sich an das spezifische Lerntempo und Vorwissen anpasst.",
+      title: "Erprobung im Studienbetrieb",
+      description: "Einsatz in ausgewählten Studiengängen als ergänzendes Prüfungsformat. Evaluation der Prüfungsqualität, Fairness und Akzeptanz bei Studierenden und Lehrenden.",
       icon: <GraduationCap className="w-6 h-6 text-hm-red" />
     },
     {
       year: "2030",
-      title: "Immersive Holografie",
-      description: "Wegfall der physischen Holobox-Grenzen. Frei im Raum stehende, volumetrische Projektionen von Lehrinhalten und Avataren.",
+      title: "Institutionelle Verankerung",
+      description: "Überführung in den Regelbetrieb als anerkanntes Prüfungsformat. Skalierung auf weitere Fakultäten und Prüfungsszenarien. Das Holoboard wird vom Forschungsprototyp zum festen Bestandteil der Prüfungsinfrastruktur.",
       icon: <Rocket className="w-6 h-6 text-white" />
     }
   ];
@@ -50,7 +50,7 @@ export default function Zukunftsperspektive() {
             Zukunftsperspektive
           </h3>
           <p className="text-xl text-gray-400 font-light leading-relaxed">
-            Die Roadmap für die nächsten Jahre zeigt den Weg von einem innovativen Prototypen hin zu einem allgegenwärtigen, hochschulweiten Standard für KI-gestützte Lehre.
+            Der Weg vom Forschungsprototyp zum institutionell verankerten Prüfungswerkzeug — aufbauend auf den Ergebnissen der Innovationsprofessur.
           </p>
         </div>
 
