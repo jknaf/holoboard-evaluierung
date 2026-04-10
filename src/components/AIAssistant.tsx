@@ -92,11 +92,16 @@ export default function AIAssistant() {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1, type: "spring" }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-8 right-8 w-16 h-16 rounded-full bg-hm-black text-white shadow-2xl flex items-center justify-center z-[100] border border-white/10 hover:scale-110 transition-transform ${isOpen ? 'hidden' : 'flex'}`}
-        style={{ cursor: 'none' }}
+        className={`fixed bottom-8 right-8 rounded-full bg-hm-black text-white shadow-2xl items-center z-[100] border border-white/10 hover:scale-105 transition-transform gap-3 px-5 py-3 ${isOpen ? 'hidden' : 'flex'}`}
       >
-        <div className="absolute inset-0 rounded-full bg-hm-blue opacity-50 blur-xl animate-pulse" />
-        <Sparkles className="w-6 h-6 relative z-10 text-hm-turquoise" />
+        <div className="absolute inset-0 rounded-full bg-hm-blue opacity-30 blur-xl animate-pulse" />
+        <div className="relative z-10 w-10 h-10 rounded-full bg-gradient-to-br from-hm-blue to-hm-turquoise flex items-center justify-center">
+          <Bot className="w-5 h-5 text-white" />
+        </div>
+        <div className="relative z-10 text-left hidden sm:block">
+          <div className="text-sm font-bold text-white">KI-Assistent</div>
+          <div className="text-[10px] text-white/60 font-medium">Fragen zum Projekt?</div>
+        </div>
       </motion.button>
 
       {/* Chat Window */}

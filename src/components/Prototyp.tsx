@@ -40,7 +40,7 @@ export default function Prototyp() {
     },
     {
       heading: "Interaktive Steuerung mit Processing",
-      desc: "Das gesamte interaktive Szenario — Buttons, Layer, Video-Steuerung — wurde in Processing (Java) programmiert. Die Entwicklung erforderte aufwendige Anpassungen, da alle interaktiven Elemente spiegelverkehrt dargestellt und korrekt ausgerichtet werden mussten.",
+      desc: "Das gesamte interaktive Szenario — Buttons, Layer, Video-Steuerung — wurde in Processing (Java) programmiert. Die Entwicklung erforderte aufwendige Anpassungen, da alle interaktiven Elemente seitenverkehrt dargestellt und korrekt ausgerichtet werden mussten.",
       images: [
         {
           url: "https://holoboard-assets.netlify.app/images/processing-screenshot-code.png",
@@ -49,8 +49,8 @@ export default function Prototyp() {
         },
         {
           url: "https://holoboard-assets.netlify.app/images/processing-screenshot-layers.png",
-          title: "Interaktive Layer mit spiegelverkehrten Elementen",
-          desc: "Erster Versuch der interaktiven Oberfläche — Buttons und Beschriftungen mussten spiegelverkehrt korrigiert werden."
+          title: "Interaktive Layer mit seitenverkehrten Elementen",
+          desc: "Erster Versuch der interaktiven Oberfläche — Buttons und Beschriftungen mussten seitenverkehrt korrigiert werden."
         }
       ]
     },
