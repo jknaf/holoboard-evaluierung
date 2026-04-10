@@ -3,98 +3,23 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, X, Image as ImageIcon } from 'lucide-react';
 
 const gallerySlides = [
-  // A. Holoboard-Implementierung
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Studio-Setup zur Produktion der Avatare",
-    description: "Studio-Setup zur Produktion der Avatare. Das Bild dokumentiert die technische Umgebung fuer Aufnahme und Erstellung.",
-    image: "https://holoboard-assets.netlify.app/images/image1.jpeg",
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Folierung Holoboard",
-    description: "Um das Holoboard stärker mit der Hochschule München zu verbinden, wurde ein einheitliches Branding hergestellt, indem die Box foliert wurde.",
-    image: "https://holoboard-assets.netlify.app/images/Bildschirmfoto%202025-07-29%20um%2016.05.50.png"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Prof. Dr. Joachim Knaf am Stand auf der TURN-Konferenz",
-    description: "Prof. Dr. Joachim Knaf am Stand auf der TURN-Konferenz. Die Aufnahme zeigt das Projekt im Messe- und Praesentationskontext.",
-    image: "https://holoboard-assets.netlify.app/images/20241115_114416.jpg"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Gesamte IT-Hardware des Holoboards",
-    description: "Gesamte IT-Hardware des Holoboards. Das Bild dokumentiert die technische Infrastruktur, die fuer die Wiedergabe interaktiver Animationen und Inhalte benoetigt wird.",
-    image: "https://holoboard-assets.netlify.app/images/IT_Hardware_Holoboard.JPG"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Allerster Versuch beim Anbieter der Holobox",
-    description: "Allerster Versuch beim Anbieter der Holobox. Das Bild dokumentiert eine sehr fruehe Phase der praktischen Annaeherung an das spaetere System.",
-    image: "https://holoboard-assets.netlify.app/images/Holobox.jpeg"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Weiterer Schritt beim Aufbau der Bildhintergruende",
-    description: "Weiterer Schritt beim Aufbau der Bildhintergruende. Das Bild dokumentiert die Gestaltung und Anpassung der Szenenflaechen.",
-    image: "https://holoboard-assets.netlify.app/images/IMG_3815.JPG"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Weitere Hintergrundkonstruktion fuer das Holoboard",
-    description: "Weitere Hintergrundkonstruktion fuer das Holoboard. Die Aufnahme zeigt einen ergaenzenden Produktions- oder Gestaltungszustand.",
-    image: "https://holoboard-assets.netlify.app/images/IMG_3816.JPG"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Aufbau der Hintergruende mit Prof. Dr. Joachim Knaf",
-    description: "Aufbau der Hintergruende mit Prof. Dr. Joachim Knaf. Die Aufnahme zeigt, wie die visuelle Szene fuer die spaetere Darstellung konstruiert wurde.",
-    image: "https://holoboard-assets.netlify.app/images/IMG_3814.JPG"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Darstellung der Ganzkoerper-Avatare in einer um 90 Grad gedrehten Ansicht",
-    description: "Darstellung der Ganzkoerper-Avatare in einer um 90 Grad gedrehten Ansicht. Das Bild zeigt einen technischen Zwischenschritt zur korrekten raeumlichen Ausrichtung.",
-    image: "https://holoboard-assets.netlify.app/images/Bildschirmfoto%202024-11-24%20um%2010.06.26.png"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Postproduktion des Ganzkoerper-Avatars durch Maskierung",
-    description: "Postproduktion des Ganzkoerper-Avatars durch Maskierung. Die Aufnahme dokumentiert einen Bearbeitungsschritt bei der Freistellung und Zusammenfuehrung.",
-    image: "https://holoboard-assets.netlify.app/images/Bildschirmfoto%202025-01-28%20um%2010.17.43.png"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Drei Teilbilder als Grundlage des Ganzkoerper-Avatars",
-    description: "Drei Teilbilder als Grundlage des Ganzkoerper-Avatars. Die Darstellung zeigt, aus welchen visuellen Segmenten der finale Avatar zusammengesetzt wurde.",
-    image: "https://holoboard-assets.netlify.app/images/Bildschirmfoto%202025-01-28%20um%2018.22.56.png"
-  },
-  {
-    phase: "Holoboard-Implementierung",
-    title: "Weiterentwickelter Zwischenstand des Systems",
-    description: "Weiterentwickelter Zwischenstand des Systems. Das Bild zeigt eine spaetere Phase nach den ersten Grundversuchen.",
-    image: "https://holoboard-assets.netlify.app/images/image2.jpeg",
-    rotate: 'left'
-  },
-
   // B. Früher Technologieansatz
   {
     phase: "Früher Technologieansatz",
-    title: "Technische Zeichnung des urspruenglichen technologischen Ansatzes",
-    description: "Technische Zeichnung des urspruenglichen technologischen Ansatzes. Gezeigt wird die erste Systemlogik auf Basis von Streaming- und Uebertragungstechnologie.",
+    title: "Technische Zeichnung des ursprünglichen technologischen Ansatzes",
+    description: "Technische Zeichnung des ursprünglichen technologischen Ansatzes. Gezeigt wird die erste Systemlogik auf Basis von Streaming- und Übertragungstechnologie.",
     image: "https://holoboard-assets.netlify.app/images/Holoboard.png"
   },
   {
     phase: "Früher Technologieansatz",
-    title: "Teil des Prototypenaufbaus fuer den ersten Streaming-Ansatz",
-    description: "Teil des Prototypenaufbaus fuer den ersten Streaming-Ansatz. Das Bild zeigt eine experimentelle technische Konfiguration.",
+    title: "Teil des Prototypenaufbaus für den ersten Streaming-Ansatz",
+    description: "Teil des Prototypenaufbaus für den ersten Streaming-Ansatz. Das Bild zeigt eine experimentelle technische Konfiguration.",
     image: "https://holoboard-assets.netlify.app/images/IMG_3677.JPG"
   },
   {
     phase: "Früher Technologieansatz",
-    title: "Frueher Proof of Concept fuer den Streaming-Ansatz",
-    description: "Frueher Proof of Concept fuer den Streaming-Ansatz. Die Aufnahme dokumentiert die erste praktische Validierung der urspruenglichen Technologieidee.",
+    title: "Früher Proof of Concept für den Streaming-Ansatz",
+    description: "Früher Proof of Concept für den Streaming-Ansatz. Die Aufnahme dokumentiert die erste praktische Validierung der ursprünglichen Technologieidee.",
     image: "https://holoboard-assets.netlify.app/images/IMG_3678.JPG"
   },
   {
@@ -106,27 +31,90 @@ const gallerySlides = [
   {
     phase: "Früher Technologieansatz",
     title: "Weiteres Element der Streaming-Technologie des ersten Ansatzes",
-    description: "Weiteres Element der Streaming-Technologie des ersten Ansatzes. Die Aufnahme ergaenzt die technische Dokumentation der fruehen Pipeline.",
+    description: "Weiteres Element der Streaming-Technologie des ersten Ansatzes. Die Aufnahme ergänzt die technische Dokumentation der frühen Pipeline.",
     image: "https://holoboard-assets.netlify.app/images/IMG_3682.JPG"
   },
   {
     phase: "Früher Technologieansatz",
-    title: "Zusaetzliche technische Komponente des urspruenglichen Streaming- Ansatzes",
-    description: "Zusaetzliche technische Komponente des urspruenglichen Streaming-Ansatzes. Das Bild gehoert zur Dokumentation des ersten Prototypenaufbaus.",
+    title: "Zusätzliche technische Komponente des ursprünglichen Streaming-Ansatzes",
+    description: "Zusätzliche technische Komponente des ursprünglichen Streaming-Ansatzes. Das Bild gehört zur Dokumentation des ersten Prototypenaufbaus.",
     image: "https://holoboard-assets.netlify.app/images/Kamera_4D.png"
+  },
+
+  // A. Holoboard-Implementierung (Reihenfolge: 11, 4, 5, 6, 7, 8, 9, 10, 12, 1)
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Drei Teilbilder als Grundlage des Ganzkörper-Avatars",
+    description: "Drei Teilbilder als Grundlage des Ganzkörper-Avatars. Die Darstellung zeigt, aus welchen visuellen Segmenten der finale Avatar zusammengesetzt wurde.",
+    image: "https://holoboard-assets.netlify.app/images/Bildschirmfoto%202025-01-28%20um%2018.22.56.png"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Gesamte IT-Hardware des Holoboards",
+    description: "Gesamte IT-Hardware des Holoboards. Das Bild dokumentiert die technische Infrastruktur, die für die Wiedergabe interaktiver Animationen und Inhalte benötigt wird.",
+    image: "https://holoboard-assets.netlify.app/images/IT_Hardware_Holoboard.JPG"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Allerster Versuch beim Anbieter der Holobox",
+    description: "Allerster Versuch beim Anbieter der Holobox. Das Bild dokumentiert eine sehr frühe Phase der praktischen Annäherung an das spätere System.",
+    image: "https://holoboard-assets.netlify.app/images/Holobox.jpeg"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Weiterer Schritt beim Aufbau der Bildhintergründe",
+    description: "Weiterer Schritt beim Aufbau der Bildhintergründe. Das Bild dokumentiert die Gestaltung und Anpassung der Szenenflächen.",
+    image: "https://holoboard-assets.netlify.app/images/IMG_3815.JPG"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Weitere Hintergrundkonstruktion für das Holoboard",
+    description: "Weitere Hintergrundkonstruktion für das Holoboard. Die Aufnahme zeigt einen ergänzenden Produktions- oder Gestaltungszustand.",
+    image: "https://holoboard-assets.netlify.app/images/IMG_3816.JPG"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Aufbau der Hintergründe mit Prof. Dr. Joachim Knaf",
+    description: "Aufbau der Hintergründe mit Prof. Dr. Joachim Knaf. Die Aufnahme zeigt, wie die visuelle Szene für die spätere Darstellung konstruiert wurde.",
+    image: "https://holoboard-assets.netlify.app/images/IMG_3814.JPG"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Darstellung der Ganzkörper-Avatare in einer um 90 Grad gedrehten Ansicht",
+    description: "Darstellung der Ganzkörper-Avatare in einer um 90 Grad gedrehten Ansicht. Das Bild zeigt einen technischen Zwischenschritt zur korrekten räumlichen Ausrichtung.",
+    image: "https://holoboard-assets.netlify.app/images/Bildschirmfoto%202024-11-24%20um%2010.06.26.png"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Postproduktion des Ganzkörper-Avatars durch Maskierung",
+    description: "Postproduktion des Ganzkörper-Avatars durch Maskierung. Die Aufnahme dokumentiert einen Bearbeitungsschritt bei der Freistellung und Zusammenführung.",
+    image: "https://holoboard-assets.netlify.app/images/Bildschirmfoto%202025-01-28%20um%2010.17.43.png"
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Weiterentwickelter Zwischenstand des Systems",
+    description: "Weiterentwickelter Zwischenstand des Systems. Das Bild zeigt eine spätere Phase nach den ersten Grundversuchen.",
+    image: "https://holoboard-assets.netlify.app/images/image2.jpeg",
+    rotate: 'left'
+  },
+  {
+    phase: "Holoboard-Implementierung",
+    title: "Studio-Setup zur Produktion der Avatare",
+    description: "Studio-Setup zur Produktion der Avatare. Das Bild dokumentiert die technische Umgebung für Aufnahme und Erstellung.",
+    image: "https://holoboard-assets.netlify.app/images/image1.jpeg",
   },
 
   // C. Präsentation und Anwendung
   {
     phase: "Präsentation und Anwendung",
     title: "Prof. Dr. Joachim Knaf in der Holobox mit Interaktion auf der Scheibe",
-    description: "Prof. Dr. Joachim Knaf in der Holobox mit Interaktion auf der Scheibe. Gezeigt wird ein Tic-Tac-Toe- Szenario, bei dem von aussen der Start-Button betaetigt wird und von innen direkt auf die Flaeche geschrieben wird.",
+    description: "Prof. Dr. Joachim Knaf in der Holobox mit Interaktion auf der Scheibe. Gezeigt wird ein Tic-Tac-Toe-Szenario, bei dem von außen der Start-Button betätigt wird und von innen direkt auf die Fläche geschrieben wird.",
     image: "https://holoboard-assets.netlify.app/images/Thumbnail%20Ansynchrone%20Lehre.png"
   },
   {
     phase: "Präsentation und Anwendung",
-    title: "Web-App fuer die Praesentation des Holoboards im Kontext des Hochschulentwicklungsplans",
-    description: "Web-App fuer die Praesentation des Holoboards im Kontext des Hochschulentwicklungsplans. Besucherinnen und Besucher konnten ueber ein interaktives Auswahlrad Fragen auswaehlen, die anschliessend von Prof. Dr. Klaus Kreulich als KI-Avatar beantwortet wurden.",
+    title: "Web-App für die Präsentation des Holoboards im Kontext des Hochschulentwicklungsplans",
+    description: "Web-App für die Präsentation des Holoboards im Kontext des Hochschulentwicklungsplans. Besucherinnen und Besucher konnten über ein interaktives Auswahlrad Fragen auswählen, die anschließend von Prof. Dr. Klaus Kreulich als KI-Avatar beantwortet wurden.",
     image: "https://holoboard-assets.netlify.app/images/IMG_1F7C0858-5792-44C8-B12D-9F0E1199333C.JPEG"
   },
   {
@@ -134,6 +122,12 @@ const gallerySlides = [
     title: "Prof. Dr. Joachim Knaf vor und in der Holobox",
     description: "Prof. Dr. Joachim Knaf vor und in der Holobox. Die Illustration zeigt ihn einmal vor dem System und einmal innerhalb der Holobox, wie er von innen auf die transparente Scheibe schreibt.",
     image: "https://holoboard-assets.netlify.app/images/Gemini_Generated_Image_kiyugukiyugukiyu.png"
+  },
+  {
+    phase: "Präsentation und Anwendung",
+    title: "Prof. Dr. Joachim Knaf am Stand auf der TURN-Konferenz",
+    description: "Prof. Dr. Joachim Knaf am Stand auf der TURN-Konferenz. Die Aufnahme zeigt das Projekt im Messe- und Präsentationskontext.",
+    image: "https://holoboard-assets.netlify.app/images/20241115_114416.jpg"
   }
 ];
 
