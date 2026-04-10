@@ -19,7 +19,7 @@ export default function Download() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-sm font-medium mb-6 border border-white/20">
               <FileText className="w-4 h-4" />
-              Management Summary
+              Projektzusammenfassung
             </div>
             <h3 className="text-4xl md:text-5xl font-black mb-6 tracking-tight">Zusammenfassung der Innovationsprofessur</h3>
             <p className="text-lg text-blue-100 font-light leading-relaxed">

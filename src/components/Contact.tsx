@@ -35,7 +35,16 @@ export default function Contact() {
             viewport={{ once: true }}
             className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100"
           >
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6" onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget;
+              const name = (form.querySelector('#name') as HTMLInputElement).value;
+              const email = (form.querySelector('#email') as HTMLInputElement).value;
+              const message = (form.querySelector('#message') as HTMLTextAreaElement).value;
+              const subject = encodeURIComponent(`Holoboard-Anfrage von ${name}`);
+              const body = encodeURIComponent(`Name: ${name}\nE-Mail: ${email}\n\n${message}`);
+              window.location.href = `mailto:knaf@hm.edu?subject=${subject}&body=${body}`;
+            }}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Name</label>
