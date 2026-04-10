@@ -7,7 +7,7 @@ export default function Wissenstransfer() {
   const events = [
     {
       icon: <Presentation className="w-6 h-6 text-hm-red" />,
-      title: "Hochschulentwicklungsplan Tag",
+      title: "HEP Forum",
       desc: "Vorstellung der Projektvision und des ersten Prototypen im Rahmen der HEP-Präsentation."
     },
     {
