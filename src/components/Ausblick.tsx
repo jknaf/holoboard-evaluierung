@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ShieldCheck, Cpu, MessageSquare, Users, CheckCircle2, FileText } from 'lucide-react';
+import { ShieldCheck, Cpu, FileText } from 'lucide-react';
 
 export default function Ausblick() {
   const containerRef = useRef(null);
@@ -64,40 +64,22 @@ export default function Ausblick() {
             </div>
           </div>
 
-          {/* Right: Diagram drawing itself */}
-          <div className="relative flex items-center justify-center h-[80vh]">
-            <div className="absolute inset-0 flex flex-col items-center justify-between py-10">
-              
-              <DiagramNode icon={<Users />} label="Student" />
-              
-              <div className="w-px h-full bg-gray-800 relative">
-                <motion.div 
-                  className="absolute top-0 left-0 w-full bg-hm-turquoise origin-top"
-                  style={{ scaleY: useTransform(scrollYProgress, [0, 0.33], [0, 1]) }}
-                />
+          {/* Right: Exam Scenario Image */}
+          <div className="relative flex items-center justify-center">
+            <motion.div
+              style={{ opacity: useTransform(scrollYProgress, [0, 0.1], [0.6, 1]) }}
+              className="rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10"
+            >
+              <img
+                src="https://holoboard-assets.netlify.app/images/ausblick-pruefungsszenario.png"
+                alt="Prüfungsszenario: Studentin vor der Holobox mit KI-Avatar als Prüfer"
+                className="w-full h-auto"
+                referrerPolicy="no-referrer"
+              />
+              <div className="bg-white/5 backdrop-blur-sm border-t border-white/10 px-6 py-4">
+                <p className="text-sm text-gray-400 font-light text-center">Vision: KI-gestützte mündliche Prüfung mit Avatar-Prüfer in der Holobox</p>
               </div>
-              
-              <DiagramNode icon={<MessageSquare />} label="KI-Prüfungsavatar" />
-              
-              <div className="w-px h-full bg-gray-800 relative">
-                <motion.div 
-                  className="absolute top-0 left-0 w-full bg-hm-blue origin-top"
-                  style={{ scaleY: useTransform(scrollYProgress, [0.33, 0.66], [0, 1]) }}
-                />
-              </div>
-              
-              <DiagramNode icon={<Cpu />} label="Lokale KI-Infrastruktur" />
-              
-              <div className="w-px h-full bg-gray-800 relative">
-                <motion.div 
-                  className="absolute top-0 left-0 w-full bg-hm-red origin-top"
-                  style={{ scaleY: useTransform(scrollYProgress, [0.66, 1], [0, 1]) }}
-                />
-              </div>
-              
-              <DiagramNode icon={<CheckCircle2 />} label="Lehrende (Feedback)" />
-              
-            </div>
+            </motion.div>
           </div>
 
         </div>
@@ -119,11 +101,3 @@ function ScrollText({ progress, range, icon, title, desc }: any) {
   );
 }
 
-function DiagramNode({ icon, label }: any) {
-  return (
-    <div className="bg-black border border-white/20 p-6 rounded-3xl z-10 flex flex-col items-center gap-4 backdrop-blur-md min-w-[280px] shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-      {React.cloneElement(icon, { className: "w-8 h-8 text-white" })}
-      <span className="font-bold text-white tracking-widest uppercase text-sm">{label}</span>
-    </div>
-  );
-}
