@@ -32,8 +32,8 @@ export default function Footer() {
                   referrerPolicy="no-referrer"
                 />
                 <img 
-                  src="https://holoboard-assets.netlify.app/brand/063-logo_assets-logo-hightech-agenda-bayern.jpg" 
-                  alt="Hightech Agenda Bayern" 
+                  src="https://holoboard-assets.netlify.app/brand/hightech-agenda-bayern-vertikal.jpg"
+                  alt="Hightech Agenda Bayern"
                   className="h-12 w-auto object-contain object-left rounded-sm"
                   referrerPolicy="no-referrer"
                 />
