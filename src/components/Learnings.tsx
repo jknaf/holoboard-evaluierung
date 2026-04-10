@@ -1,24 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Wrench, Cpu } from 'lucide-react';
+import { Zap, CreditCard, Box } from 'lucide-react';
 import SpotlightCard from './ui/SpotlightCard';
 
 export default function Learnings() {
   const challenges = [
     {
-      icon: <Cpu className="w-6 h-6 text-orange-500" />,
-      title: "Technische Limitierungen",
-      desc: "Latenzzeiten bei der Echtzeit-Generierung von Avataren erforderten Optimierungen in der Architektur und den Wechsel zu performanteren APIs."
+      icon: <Box className="w-6 h-6 text-orange-500" />,
+      title: "Physische Dimensionen",
+      desc: "Die Holobox ist aufgrund ihrer Größe und ihres Gewichts nur sehr eingeschränkt transportabel. Das macht einen flexiblen Einsatz an wechselnden Standorten nahezu unmöglich und begrenzt die Skalierbarkeit des Konzepts."
     },
     {
-      icon: <Wrench className="w-6 h-6 text-hm-blue" />,
-      title: "Integrationsprobleme",
-      desc: "Die nahtlose Verbindung von lokaler Hardware (Holobox) mit cloudbasierten KI-Diensten stellte hohe Anforderungen an die Netzwerkinfrastruktur."
+      icon: <CreditCard className="w-6 h-6 text-hm-blue" />,
+      title: "Proprietäre Software und Betriebskosten",
+      desc: "Für die Generierung der KI-Avatare ist derzeit proprietäre Software erforderlich. Im Dauerbetrieb führt das zu hohen laufenden Kosten, die eine wirtschaftliche Skalierung erschweren."
     },
     {
-      icon: <AlertTriangle className="w-6 h-6 text-hm-red" />,
-      title: "Hardware Herausforderungen",
-      desc: "Die Beschaffung und Konfiguration leistungsstarker lokaler GPUs für das RAG-System war zeit- und kostenintensiv."
+      icon: <Zap className="w-6 h-6 text-hm-red" />,
+      title: "Hardware-Anforderungen und Innovationstempo",
+      desc: "Lokale KI-Anwendungen erfordern nach wie vor extrem leistungsfähige Hardware. Gleichzeitig ist die Entwicklungsgeschwindigkeit im KI-Bereich so hoch, dass ein kontinuierliches Am-Thema-Bleiben unerlässlich ist, um das System technologisch aktuell zu halten."
     }
   ];
 
