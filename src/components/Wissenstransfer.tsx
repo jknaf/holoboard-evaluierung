@@ -12,8 +12,8 @@ export default function Wissenstransfer() {
     },
     {
       icon: <Users className="w-6 h-6 text-hm-blue" />,
-      title: "Interne Workshops",
-      desc: "Schulungen für Dozierende zur Nutzung generativer KI in der Lehre und Erstellung von Lehrmaterialien."
+      title: "Interner Wissenstransfer",
+      desc: "Fortlaufende Weitergabe der gesammelten KI-Expertise innerhalb des Kollegiums, in eigenen Vorlesungen und über betreute Bachelorarbeiten. So entstand ein kontinuierlicher Wissenstransfer im gesamten Studiengang."
     },
     {
       icon: <Lightbulb className="w-6 h-6 text-hm-turquoise" />,
