@@ -152,7 +152,7 @@ export default function Architektur() {
                     Die Systemarchitektur ist deshalb am präzisesten als hybrides Echtzeit-Ökosystem zu beschreiben: Wahrnehmung, Sprachverarbeitung, Wissensabruf, Zustandssteuerung und räumliche Ausgabe sind entkoppelt implementiert, aber zur Laufzeit eng synchronisiert.
                   </p>
                   <figure className="my-12">
-                    <img src="https://holoboard-assets.netlify.app/images/architektur-01-gesamtarchitektur-und-systemverstaendnis.png" alt="Gesamtarchitektur und Systemverständnis" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                    <img src="https://holoboard-assets.netlify.app/images/architektur-01-neu-gesamtarchitektur.png" alt="Gesamtarchitektur und Systemverständnis" className="w-full rounded-2xl shadow-md border border-gray-200" />
                     <figcaption className="text-sm text-gray-500 mt-3 text-center">Gesamtarchitektur und Systemverständnis</figcaption>
                   </figure>
                 </div>
@@ -168,7 +168,7 @@ export default function Architektur() {
                         Der Nutzer ist im Holoboard keine reine Eingabeinstanz, sondern ein kontinuierlicher Signalgeber. In die Verarbeitung gehen gesprochene Sprache, prosodische Merkmale, Blickrichtung, sichtbare Reaktion, Präsenz im Kameraraum sowie gegebenenfalls Interaktion über Touch- oder Weboberflächen ein. In Tavus-basierten Szenarien werden diese Signale nicht nur transkribiert, sondern in der Perception-Schicht zusätzlich als visuelle und akustische Kontextsignale interpretiert.
                       </p>
                       <figure className="my-8">
-                        <img src="https://holoboard-assets.netlify.app/images/architektur-02-multimodaler-user.png" alt="Multimodaler User" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                        <img src="https://holoboard-assets.netlify.app/images/architektur-02-neu-multimodaler-user.png" alt="Multimodaler User" className="w-full rounded-2xl shadow-md border border-gray-200" />
                         <figcaption className="text-sm text-gray-500 mt-3 text-center">Multimodaler User</figcaption>
                       </figure>
                     </div>
@@ -191,7 +191,7 @@ export default function Architektur() {
                         Damit ist die Webplattform die technisch kritische Vermittlungsschicht zwischen Tavus-Avatar, RAG-System, Workflow-Orchestrierung und Holobox-spezifischer Darstellung.
                       </p>
                       <figure className="my-8">
-                        <img src="https://holoboard-assets.netlify.app/images/architektur-03-webplattform.png" alt="Webplattform" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                        <img src="https://holoboard-assets.netlify.app/images/architektur-03-neu-webplattform.png" alt="Webplattform" className="w-full rounded-2xl shadow-md border border-gray-200" />
                         <figcaption className="text-sm text-gray-500 mt-3 text-center">Webplattform</figcaption>
                       </figure>
                     </div>
@@ -211,7 +211,7 @@ export default function Architektur() {
                         Die Holobox ist deshalb als Rendering-Endpunkt mit physischen und softwareseitigen Randbedingungen zu behandeln. Zur Architektur gehören nicht nur APIs und Modelle, sondern auch Lichtführung, Keying, Overlay-Komposition, Audioausleitung, formatgenaue Bildtransformation, rotierte Interaktionsgeometrie und zustandsbasierte Mediensteuerung.
                       </p>
                       <figure className="my-8">
-                        <img src="https://holoboard-assets.netlify.app/images/architektur-04-holobox-architektur.png" alt="Holobox Architektur" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                        <img src="https://holoboard-assets.netlify.app/images/architektur-04-neu-holobox.png" alt="Holobox Architektur" className="w-full rounded-2xl shadow-md border border-gray-200" />
                         <figcaption className="text-sm text-gray-500 mt-3 text-center">Holobox Architektur</figcaption>
                       </figure>
                     </div>
@@ -231,7 +231,7 @@ export default function Architektur() {
                         <li>dynamischer Kontextaktualisierung während laufender Gespräche.</li>
                       </ul>
                       <figure className="my-8">
-                        <img src="https://holoboard-assets.netlify.app/images/architektur-05-tavus-echtzeit-avatar-pipeline.png" alt="Tavus Echtzeit-Avatar-Pipeline" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                        <img src="https://holoboard-assets.netlify.app/images/architektur-05-neu-tavus-pipeline.png" alt="Tavus Echtzeit-Avatar-Pipeline" className="w-full rounded-2xl shadow-md border border-gray-200" />
                         <figcaption className="text-sm text-gray-500 mt-3 text-center">Tavus Echtzeit-Avatar-Pipeline</figcaption>
                       </figure>
                     </div>
@@ -257,7 +257,7 @@ export default function Architektur() {
                         <li>als entkoppelte Ausführungsumgebung für Retrieval, Datenanreicherung und Rückantwort.</li>
                       </ul>
                       <figure className="my-8">
-                        <img src="https://holoboard-assets.netlify.app/images/architektur-06-n8n-orchestrierung.png" alt="n8n Orchestrierung" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                        <img src="https://holoboard-assets.netlify.app/images/architektur-06-neu-n8n-orchestrierung.png" alt="n8n Orchestrierung" className="w-full rounded-2xl shadow-md border border-gray-200" />
                         <figcaption className="text-sm text-gray-500 mt-3 text-center">n8n Orchestrierung</figcaption>
                       </figure>
                     </div>
@@ -271,7 +271,7 @@ export default function Architektur() {
                         Ein zusätzlicher technischer Grund für die externe RAG-Schicht ist die aktuelle Tavus-Produktlage: Die offizielle Tavus Knowledge Base unterstützt derzeit Dokumente vor allem für englische Inhalte. Für deutschsprachige Hochschul- und Projektdokumente ist daher eine externe RAG-Pipeline architektonisch plausibel und in diesem Projekt technisch sinnvoll.
                       </p>
                       <figure className="my-8">
-                        <img src="https://holoboard-assets.netlify.app/images/architektur-07-rag-wissenssystem.png" alt="RAG Wissenssystem" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                        <img src="https://holoboard-assets.netlify.app/images/architektur-07-neu-rag-system.png" alt="RAG Wissenssystem" className="w-full rounded-2xl shadow-md border border-gray-200" />
                         <figcaption className="text-sm text-gray-500 mt-3 text-center">RAG Wissenssystem</figcaption>
                       </figure>
                     </div>
@@ -347,7 +347,7 @@ export default function Architektur() {
                     Genau diese Entkopplung macht die Architektur erweiterbar, erhöht aber auch die Latenz- und Fehleranforderungen an jede Zwischenschicht.
                   </p>
                   <figure className="my-12">
-                    <img src="https://holoboard-assets.netlify.app/images/architektur-00-gesamtpipeline.png" alt="Gesamtpipeline" className="w-full rounded-2xl shadow-md border border-gray-200" />
+                    <img src="https://holoboard-assets.netlify.app/images/architektur-00-neu-gesamtpipeline.png" alt="Gesamtpipeline" className="w-full rounded-2xl shadow-md border border-gray-200" />
                     <figcaption className="text-sm text-gray-500 mt-3 text-center">Gesamtpipeline</figcaption>
                   </figure>
                 </div>
