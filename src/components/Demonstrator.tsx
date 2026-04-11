@@ -24,8 +24,7 @@ export default function Demonstrator() {
             <p className="text-lg text-gray-600 font-light leading-relaxed mb-4">
               Um trotzdem einmal nachzuempfinden, wie sich die Live-Interaktion mit einem solchen Conversational AI Agent anfühlt, kann hier ein Test-Avatar von{' '}
               <a href="https://www.tavus.io/" target="_blank" rel="noopener noreferrer" className="text-hm-blue hover:underline">Tavus</a>{' '}
-              ausprobiert werden. Tavus zählt aktuell zu den sichtbarsten Anbietern in diesem Bereich. Seit Februar 2026 setzt auch SAP Tavus im Customer Experience Center in Palo Alto ein, um Besuchern die Interaktion mit menschlich wirkenden AI Agents live zu zeigen. Stand: April 2026.
-            </p>
+              ausprobiert werden. Tavus zählt aktuell zu den sichtbarsten Anbietern in diesem Bereich. Seit Februar 2026 setzt auch SAP Tavus im Customer Experience Center in Palo Alto ein, um Besuchern die Interaktion mit menschlich wirkenden AI Agents live zu zeigen.            </p>
 
             <div className="flex flex-wrap gap-3 mb-8">
               <a
