@@ -166,16 +166,16 @@ export default function Exploration() {
 
   return (
     <section id="exploration" ref={containerRef} className="relative h-[700vh] bg-gray-50">
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <div className="sticky top-0 h-screen flex items-start pt-16 lg:items-center lg:pt-0 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16">
           
           {/* Left: Fixed Title */}
           <div className="flex flex-col justify-center">
             <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">Phase 2 – Entwicklung</h2>
-            <h3 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tighter leading-tight">
+            <h3 className="text-3xl sm:text-5xl md:text-7xl font-black text-gray-900 mb-4 lg:mb-6 tracking-tighter leading-tight">
               Forschungs- & <br/> Entwicklungsreise
             </h3>
-            <p className="text-xl text-gray-600 font-light leading-relaxed mb-8">
+            <p className="text-base lg:text-xl text-gray-600 font-light leading-relaxed mb-6 lg:mb-8">
               Vom Problem der Distanz in der Onlinelehre hin zu einem real demonstrierbaren, interaktiven System. 
               Eine Dokumentation der technologischen und didaktischen Evolution.
             </p>
@@ -189,7 +189,7 @@ export default function Exploration() {
                 Entwicklungsdokumentation — {gallerySlides.length} Bilder
               </button>
 
-              <div className="flex items-center gap-3 mt-4">
+              <div className="hidden lg:flex items-center gap-3 mt-4">
                 {[1, 7, 18].map((idx) => (
                   <button
                     key={idx}
@@ -215,7 +215,7 @@ export default function Exploration() {
           </div>
 
           {/* Right: Scrolling Content */}
-          <div className="relative h-[60vh] flex items-center">
+          <div className="relative h-[40vh] lg:h-[60vh] flex items-center">
             {timeline.map((item, index) => {
               // Calculate opacity and y based on scroll progress for each item
               const step = 1 / timeline.length;
@@ -235,10 +235,10 @@ export default function Exploration() {
                   <div className={`text-[8vw] lg:text-[6vw] font-black mb-4 tracking-tighter leading-none transition-colors ${item.highlight ? 'text-hm-red' : 'text-gray-200'}`}>
                     {item.year}
                   </div>
-                  <h4 className={`text-3xl font-bold mb-4 ${item.highlight ? 'text-gray-900' : 'text-hm-blue'}`}>
+                  <h4 className={`text-xl lg:text-3xl font-bold mb-3 lg:mb-4 ${item.highlight ? 'text-gray-900' : 'text-hm-blue'}`}>
                     {item.title}
                   </h4>
-                  <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed font-light">
+                  <p className="text-base lg:text-2xl text-gray-600 leading-relaxed font-light">
                     {item.description}
                   </p>
                 </motion.div>

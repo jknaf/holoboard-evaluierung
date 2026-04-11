@@ -187,7 +187,7 @@ export default function StudentischeProjekte() {
           <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Studentische Projekte</h3>
           <p className="text-lg text-gray-600 font-light leading-relaxed">
             Rund um das Holoboard sind studentische Arbeiten in mehreren Entwicklungsfeldern entstanden.
-            Sichtbar werden dabei nicht nur einzelne Abschlussarbeiten, sondern ein zusammenhängender
+            Die folgende Auswahl zeigt nicht nur einzelne Abschlussarbeiten, sondern einen zusammenhängenden
             Projektkontext aus Holobox-Entwicklung, Automatisierung, Wissenssystemen und didaktischer Gestaltung.
           </p>
         </motion.div>
