@@ -19,7 +19,7 @@ export default function Demonstrator() {
             </div>
             <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Interaktiver Demonstrator</h3>
             <p className="text-lg text-gray-600 font-light leading-relaxed mb-4">
-              Das Erlebnis des Holo-Boards ist ein physisches Erlebnis im Raum.
+              Das Erlebnis des Holoboards ist ein physisches Erlebnis im Raum.
             </p>
             <p className="text-lg text-gray-600 font-light leading-relaxed mb-4">
               Um trotzdem einmal nachzuempfinden, wie sich die Live-Interaktion mit einem solchen Conversational AI Agent anfühlt, kann hier ein Test-Avatar von{' '}
