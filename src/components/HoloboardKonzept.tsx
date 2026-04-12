@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen, ArrowRight } from 'lucide-react';
+import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen, ArrowRight, Play } from 'lucide-react';
+
+const SYNCHRON_POSTER = "https://holoboard-assets.netlify.app/images/113-video-thumb-synchron.jpg";
+const ASYNCHRON_POSTER = "https://holoboard-assets.netlify.app/images/114-video-thumb-asynchron.jpg";
 import ActionCue from './ui/ActionCue';
 
 export default function HoloboardKonzept() {
@@ -125,25 +128,43 @@ export default function HoloboardKonzept() {
                     <motion.div
                       animate={{ y: [0, -2, 0] }}
                       transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut' }}
-                      className="px-5 py-4 rounded-xl bg-hm-red text-white hover:bg-hm-red/90 hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+                      className="group relative overflow-hidden rounded-xl aspect-video bg-hm-red hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+                      style={{ backgroundImage: `url(${SYNCHRON_POSTER})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}
                     >
-                      <div className="text-sm font-bold mb-1">Synchrone Lehre</div>
-                      <div className="text-xs text-white/70 font-light mb-3">Full-Body-KI-Avatar für Live-Interaktion</div>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
-                        <span>Szenario aufklappen</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-hm-red/95 via-hm-red/55 to-hm-red/20" />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="w-20 h-20 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center ring-4 ring-white/60 group-hover:bg-white/35 group-hover:scale-110 transition-all duration-200 shadow-xl">
+                          <Play className="w-9 h-9 text-white fill-white translate-x-0.5" />
+                        </div>
+                      </div>
+                      <div className="relative h-full flex flex-col justify-end p-5 text-white">
+                        <div className="text-sm font-bold mb-1">Synchrone Lehre</div>
+                        <div className="text-xs text-white/80 font-light mb-3">Full-Body-KI-Avatar für Live-Interaktion</div>
+                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
+                          <span>Szenario aufklappen</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </div>
                       </div>
                     </motion.div>
                     <motion.div
                       animate={{ y: [0, -2, 0] }}
                       transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut', delay: 0.3 }}
-                      className="px-5 py-4 rounded-xl bg-hm-blue text-white hover:bg-hm-blue/90 hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+                      className="group relative overflow-hidden rounded-xl aspect-video bg-hm-blue hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+                      style={{ backgroundImage: `url(${ASYNCHRON_POSTER})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}
                     >
-                      <div className="text-sm font-bold mb-1">Asynchrone Lehre</div>
-                      <div className="text-xs text-white/70 font-light mb-3">Holoboard als interaktives Lehrmedium</div>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
-                        <span>Szenario aufklappen</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-hm-blue/95 via-hm-blue/55 to-hm-blue/20" />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="w-20 h-20 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center ring-4 ring-white/60 group-hover:bg-white/35 group-hover:scale-110 transition-all duration-200 shadow-xl">
+                          <Play className="w-9 h-9 text-white fill-white translate-x-0.5" />
+                        </div>
+                      </div>
+                      <div className="relative h-full flex flex-col justify-end p-5 text-white">
+                        <div className="text-sm font-bold mb-1">Asynchrone Lehre</div>
+                        <div className="text-xs text-white/80 font-light mb-3">Holoboard als interaktives Lehrmedium</div>
+                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
+                          <span>Szenario aufklappen</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </div>
                       </div>
                     </motion.div>
                   </div>
