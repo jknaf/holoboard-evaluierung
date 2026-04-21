@@ -35,3 +35,12 @@ body {
 a, button, [role="button"] {
   cursor: none;
 }
+
+@media (hover: none), (pointer: coarse) {
+  body,
+  a,
+  button,
+  [role="button"] {
+    cursor: auto;
+  }
+}
