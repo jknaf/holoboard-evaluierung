@@ -43,7 +43,7 @@ export default function CookieConsent() {
                 <h3 className="text-lg font-bold text-gray-900">Privatsphäre & Cookies</h3>
               </div>
               <p className="text-sm text-gray-600 leading-relaxed font-light">
-                Wir nutzen Cookies und ähnliche Technologien (z.B. Local Storage), um die Funktionalität unserer Website zu gewährleisten (essenzielle Technologien) und um unseren interaktiven KI-Chatbot bereitzustellen. Durch Klicken auf "Alle akzeptieren" stimmen Sie der Nutzung aller Technologien zu, einschließlich der Datenverarbeitung durch Drittanbieter (Google Gemini API für den Chatbot). Unter "Nur essenzielle" können Sie nicht-notwendige Dienste ablehnen. Weitere rechtliche Details finden Sie in unserer Datenschutzerklärung.
+                Wir verwenden auf dieser Website keine Tracking-Cookies. Im Local Storage Ihres Browsers wird ausschließlich gespeichert, ob Sie diesen Hinweis bereits geschlossen haben, damit er nicht bei jedem Besuch erneut erscheint. Der interaktive KI-Chatbot ist unabhängig davon verfügbar; personenbezogene Daten werden dabei erst verarbeitet, wenn Sie ihn aktiv nutzen und eine Nachricht absenden. Weitere rechtliche Details finden Sie in unserer Datenschutzerklärung.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">

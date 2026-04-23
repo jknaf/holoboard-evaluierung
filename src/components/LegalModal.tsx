@@ -14,7 +14,7 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
       title: "Impressum",
       body: (
         <div className="space-y-4 text-gray-600 font-light leading-relaxed">
-          <p><strong>Diensteanbieter gemäß § 5 TMG</strong></p>
+          <p><strong>Diensteanbieter gemäß § 5 DDG</strong></p>
           <p>
             Hochschule für angewandte Wissenschaften München<br />
             Lothstraße 34<br />
@@ -49,7 +49,7 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
 
           <h3 className="text-base font-bold text-gray-900 pt-4">Haftungsausschluss</h3>
           <p>
-            <strong>Haftung für Inhalte:</strong> Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
+            <strong>Haftung für Inhalte:</strong> Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
           </p>
           <p>
             <strong>Haftung für Links:</strong> Diese Website enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
@@ -134,11 +134,14 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
             <h3 className="text-lg font-bold text-gray-900 mb-2">6. Hosting und Auftragsverarbeiter</h3>
             <p className="mb-2"><strong>Webhosting (Vercel)</strong></p>
             <p className="mb-4">
-              Diese Website wird bei der Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA, gehostet (im Folgenden „Vercel"). Beim Aufruf der Website erhebt Vercel automatisch verschiedene Logdateien inklusive Ihrer IP-Adressen. Vercel ist nach dem EU-US Data Privacy Framework zertifiziert. Wir haben mit Vercel einen Auftragsverarbeitungsvertrag gemäß Art. 28 DSGVO abgeschlossen. Details: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">vercel.com/legal/privacy-policy</a>.
+              Diese Website wird bei der Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, USA, gehostet (im Folgenden „Vercel"). Beim Aufruf der Website erhebt Vercel automatisch verschiedene Logdaten inklusive Ihrer IP-Adresse. Vercel ist nach dem EU-US Data Privacy Framework zertifiziert. Wir haben mit Vercel einen Auftragsverarbeitungsvertrag gemäß Art. 28 DSGVO abgeschlossen. Details: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">vercel.com/legal/privacy-policy</a>.
             </p>
             <p className="mb-2"><strong>Asset-Hosting (Netlify)</strong></p>
             <p className="mb-4">
               Bilder und Videos dieser Website werden über Netlify, Inc., 44 Montgomery Street, Suite 300, San Francisco, CA 94104, USA, ausgeliefert. Beim Laden dieser Medieninhalte wird Ihre IP-Adresse an Netlify übermittelt. Netlify ist ebenfalls nach dem EU-US Data Privacy Framework zertifiziert. Details: <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">netlify.com/privacy</a>.
+            </p>
+            <p className="mb-4">
+              Die auf dieser Website verwendeten Schriftarten sind lokal in das Projekt eingebunden. Es erfolgt daher keine Verbindung zu externen Font-Diensten wie Google Fonts.
             </p>
             <p>
               Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer zuverlässigen, performanten Auslieferung der Website).
@@ -148,17 +151,17 @@ export default function LegalModal({ isOpen, onClose, type }: LegalModalProps) {
           <section>
             <h3 className="text-lg font-bold text-gray-900 mb-2">7. Cookies und Local Storage</h3>
             <p>
-              Diese Website verwendet keine Tracking-Cookies. Im Local Storage Ihres Browsers wird ausschließlich Ihre Auswahl zum Cookie-Banner gespeichert (Schlüssel <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">hm_cookie_consent</code>), damit der Hinweis nicht bei jedem Besuch erneut erscheint. Diese Speicherung ist technisch notwendig (Art. 6 Abs. 1 lit. f DSGVO bzw. § 25 Abs. 2 Nr. 2 TTDSG).
+              Diese Website verwendet keine Tracking-Cookies. Im Local Storage Ihres Browsers wird ausschließlich gespeichert, dass Sie den Datenschutzhinweis bereits zur Kenntnis genommen bzw. geschlossen haben (Schlüssel <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">hm_cookie_consent</code>), damit er nicht bei jedem Besuch erneut erscheint. Diese Speicherung ist technisch notwendig (Art. 6 Abs. 1 lit. f DSGVO bzw. § 25 Abs. 2 Nr. 2 TDDDG).
             </p>
           </section>
 
           <section>
             <h3 className="text-lg font-bold text-gray-900 mb-2">8. KI-Chatbot (Google Gemini API)</h3>
             <p className="mb-4">
-              Diese Website bietet einen optionalen interaktiven KI-Assistenten an. Dieser nutzt die Gemini API der Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irland). Wenn Sie den Chatbot aktiv nutzen, werden Ihre Texteingaben an Google-Server übertragen und dort verarbeitet, um eine Antwort zu generieren. Eine Datenübertragung in die USA kann dabei nicht ausgeschlossen werden. Google verfügt über eine Zertifizierung nach dem EU-US Data Privacy Framework.
+              Diese Website bietet einen optionalen interaktiven KI-Assistenten an. Die Verarbeitung erfolgt technisch über Google Cloud Vertex AI mit dem Modell Gemini 2.5 Flash. Wenn Sie den Chatbot aktiv nutzen und eine Nachricht absenden, werden Ihre Texteingaben an von Google bereitgestellte Server verarbeitet, um eine Antwort zu generieren. Die Verarbeitung erfolgt derzeit in der Region <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">us-central1</code>; eine Übermittlung personenbezogener Daten in die USA kann daher nicht ausgeschlossen werden. Google verfügt über eine Zertifizierung nach dem EU-US Data Privacy Framework.
             </p>
             <p className="mb-4">
-              Die Nutzung dieses Dienstes erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Sie über das Cookie-Banner oder durch die aktive Nutzung des Chatbots erteilen. Sie können diese Einwilligung jederzeit für die Zukunft widerrufen, indem Sie den Local-Storage-Eintrag <code className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">hm_cookie_consent</code> in Ihrem Browser löschen oder den Chatbot nicht weiter verwenden.
+              Die Nutzung dieses Dienstes erfolgt ausschließlich auf Ihre freiwillige Initiative hin. Rechtsgrundlage für die Verarbeitung Ihrer Eingaben ist Ihre Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO, die Sie durch das aktive Absenden einer Nachricht an den Chatbot erteilen. Wenn Sie keine Datenverarbeitung durch Google wünschen, nutzen Sie den Chatbot bitte nicht.
             </p>
             <p>
               Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-hm-red hover:underline">policies.google.com/privacy</a>
