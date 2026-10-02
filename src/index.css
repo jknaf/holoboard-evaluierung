@@ -134,6 +134,44 @@ body {
   .chapter-drift { animation: none; }
 }
 
+/* Aurora: ziehende Lichtschleier hinter dunklen Flächen (Hero, Kapitel-Auftakte) */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation: aurora-drift 18s ease-in-out infinite alternate;
+}
+.aurora-b2 { animation-duration: 22s; animation-delay: -6s; }
+.aurora-b3 { animation-duration: 26s; animation-delay: -11s; }
+@keyframes aurora-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6%, -4%) scale(1.12); }
+  100% { transform: translate(-5%, 5%) scale(0.95); }
+}
+
+/* Lichtkegel: folgt auf den Kapitel-Auftakten der Maus und legt ein Raster frei (--x/--y setzt ChapterIntro) */
+.chapter-light {
+  opacity: 0;
+  transition: opacity .4s;
+  background-image: linear-gradient(rgba(51,204,204,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(51,204,204,.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(circle 240px at var(--x, 50%) var(--y, 50%), #000 0%, transparent 100%);
+  mask-image: radial-gradient(circle 240px at var(--x, 50%) var(--y, 50%), #000 0%, transparent 100%);
+}
+.chapter-light-glow {
+  opacity: 0;
+  transition: opacity .4s;
+  background: radial-gradient(circle 320px at var(--x, 50%) var(--y, 50%), rgba(51,204,204,.16), transparent 70%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .chapter-lit .chapter-light, .chapter-lit .chapter-light-glow { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob { animation: none; }
+}
+
 /* Hero-Trailer: drei Begriffe tauchen nacheinander auf und verschwinden, dann erscheint der Titel.
    Läuft einmal (15 s Zeitachse, fill-mode both). Grundzustand jeder Klasse = Endzustand,
    damit bei „Bewegung reduzieren“ ohne Animation sofort der fertige Hero steht. */
@@ -155,6 +193,7 @@ body {
 .hero-gc { color: #33CCCC; animation-name: hero-gc; }
 .hero-gr { color: #FC5555; animation-name: hero-gr; }
 .hero-refl { opacity: .16; -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 65%); mask-image: linear-gradient(to top, #000 0%, transparent 65%); animation-name: hero-refl; }
+.hero-aurora { animation-name: hero-glow; }
 .hero-glow { background: radial-gradient(closest-side at 40% 50%, rgba(252,85,85,.16), transparent), radial-gradient(closest-side at 62% 50%, rgba(51,204,204,.10), transparent); animation-name: hero-glow; }
 .hero-scene { animation-name: hero-scene; }
 .hero-badge { animation-name: hero-badge; }

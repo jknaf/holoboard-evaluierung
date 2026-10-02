@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useT } from '../i18n';
+import Aurora from './ui/Aurora';
 
 const T = {
   de: {
@@ -72,7 +73,7 @@ const SCRAMBLE_START = 4400;
 const SCRAMBLE_DURATION = 800;
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%';
 
-function useScramble(word: string) {
+function useScramble(word: string, run: number) {
   const [text, setText] = useState({ done: '', rest: word });
 
   useEffect(() => {
@@ -93,7 +94,7 @@ function useScramble(word: string) {
       if (k === word.length) window.clearInterval(timer);
     }, 45);
     return () => window.clearInterval(timer);
-  }, [word]);
+  }, [word, run]);
 
   return text;
 }
@@ -104,8 +105,33 @@ const TERM_CLASS =
 
 export default function Hero() {
   const t = useT(T);
-  const scramble = useScramble(t.terms[2]);
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement>(null);
+  const [run, setRun] = useState(0);
+  const scramble = useScramble(t.terms[2], run);
+
+  // Trailer neu starten, wenn der Hero ganz aus dem Bild war und man wieder hochscrollt
+  useEffect(() => {
+    const section = ref.current;
+    if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let wasOut = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          wasOut = true;
+        } else if (wasOut && entry.intersectionRatio >= 0.6) {
+          wasOut = false;
+          section.getAnimations({ subtree: true }).forEach((animation) => {
+            animation.currentTime = 0;
+            animation.play();
+          });
+          setRun((n) => n + 1);
+        }
+      },
+      { threshold: [0, 0.6] },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -117,6 +143,11 @@ export default function Hero() {
 
   return (
     <section ref={ref} id="hero" className="min-h-screen relative overflow-hidden bg-hm-black flex items-center">
+      {/* Lebendiges Schwarz: Aurora blendet mit dem Titel ein */}
+      <div className="hero-an hero-aurora absolute inset-0">
+        <Aurora />
+      </div>
+
       {/* Subtle vertical gradient to ease transition into next section */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-hm-black z-10 pointer-events-none" />
 

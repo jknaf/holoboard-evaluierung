@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useT } from '../i18n';
+import Aurora from './ui/Aurora';
 
 // Kapitel-Auftakt: dunkles Vollbild vor jedem der fünf Kapitel, im Look des Heros.
 const IMAGES: Record<string, string> = {
@@ -48,7 +49,19 @@ export default function ChapterIntro({ index, id, title, items, onSelect }: Chap
   const number = String(index).padStart(2, '0');
 
   return (
-    <section id={`kapitel-${id}`} className="relative min-h-[90vh] overflow-hidden bg-black text-white flex items-center">
+    <section
+      id={`kapitel-${id}`}
+      className="relative min-h-[90vh] overflow-hidden bg-black text-white flex items-center"
+      // Lichtkegel: Mausposition als CSS-Variablen, ohne neu zu rendern
+      onMouseMove={(e) => {
+        const box = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty('--x', `${e.clientX - box.left}px`);
+        e.currentTarget.style.setProperty('--y', `${e.clientY - box.top}px`);
+        e.currentTarget.classList.add('chapter-lit');
+      }}
+      onMouseLeave={(e) => e.currentTarget.classList.remove('chapter-lit')}
+    >
+      <Aurora className="opacity-70" />
       <img
         src={IMAGES[id]}
         alt=""
@@ -58,6 +71,8 @@ export default function ChapterIntro({ index, id, title, items, onSelect }: Chap
       />
       <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-black via-black/80 to-black/60" />
       <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,rgba(255,255,255,0.03)_0_1px,transparent_1px_4px)]" />
+      <div aria-hidden="true" className="chapter-light absolute inset-0 pointer-events-none" />
+      <div aria-hidden="true" className="chapter-light-glow absolute inset-0 pointer-events-none" />
       <div aria-hidden="true" className="chapter-scan absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-hm-turquoise to-transparent" />
 
       <span
