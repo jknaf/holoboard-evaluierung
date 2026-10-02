@@ -2,6 +2,8 @@
 
 Stand: 02.10.2026. Branch: `english`. Live erst nach Abnahme der Vercel-Vorschau.
 
+Live-Adresse: https://holoboard.joachimknaf.de (Vercel-Projekt `holoboard-evaluierung`, gebaut aus diesem Repo). Die alte Adresse `holoboard-evaluierung-six.vercel.app` aus der `CLAUDE.md` taugt nicht zum Testen.
+
 ## Entscheidungen (abgenommen am 02.10.2026)
 
 - **Umschalter statt eigener Adresse:** gleiche URL, Knopf „DE | EN“ in der Navigation, kein `/en/`.
@@ -11,11 +13,11 @@ Stand: 02.10.2026. Branch: `english`. Live erst nach Abnahme der Vercel-Vorschau
 
 ## Schritte
 
-0. **Vorbereitung:** Branch `english` angelegt. Offene Änderung in `api/chat.ts` (GCP-Projekt `holoboard-chatbot-hm`) gesondert klären, sie gehört nicht zu diesem Umbau.
+0. **Vorbereitung:** Branch `english` angelegt. Die lokale, nicht committete Änderung in `api/chat.ts` (GCP-Projekt `holoboard-chatbot-hm`) gehört nicht zu diesem Umbau und wird nicht mitcommittet. Der Live-Chatbot läuft.
 1. **Sprachumschalter:** Kontext mit `lang` (`de` | `en`), Wahl in `localStorage`, beim ersten Besuch Browsersprache. `<html lang>` wechselt mit. Knopf in die Navigation.
 2. **Texte auslagern:** jede Komponente bekommt `const T = { de: {...}, en: {...} }`. Reihenfolge: Navigation und Hero zuerst, `LegalModal.tsx` zuletzt.
 3. **Übersetzen:** nach dem Glossar unten. Glossar vorher von Joachim abnehmen lassen.
-4. **Chatbot:** Frontend schickt `lang` an `api/chat.ts` mit, der Bot antwortet in dieser Sprache. Begrüßung und UI-Texte in `AIAssistant.tsx` zweisprachig.
+4. **Chatbot:** Frontend schickt `lang` an `api/chat.ts` mit, der Bot antwortet in dieser Sprache. Begrüßung und UI-Texte in `AIAssistant.tsx` zweisprachig. Getrennt davon offen: Der Bot kennt das heutige Datum nicht und erfindet eins. Lösung: Datum pro Anfrage an den System-Prompt hängen (eigener Fix, nur nach Freigabe).
 5. **Meta:** `<title>` und Meta-Description zweisprachig.
 6. **Prüfen:** `npm run build`, beide Sprachen im Browser durchklicken, Handy-Ansicht (englische Texte sind 10–20 % länger), Umschalter nach Neuladen, Chatbot in beiden Sprachen.
 7. **Abnahme:** Vercel-Vorschau des Branches ansehen, dann nach `main` mergen.
