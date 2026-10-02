@@ -24,7 +24,7 @@ Bilder, Logos und Videos werden über **drei Netlify-Sites** bereitgestellt:
 
 Die Quelldateien liegen lokal unter:
 ```
-/Users/joachimknaf/Desktop/KI/02_HM/Holoboard/05_Medien_Final/asset-hosting/
+/Users/joachimknaf/Projekte/03_HM/02_HM/Holoboard/05_Medien_Final/asset-hosting/
   public/          → Deploy-Verzeichnis für holoboard-assets (Bilder, Brand, Piktogramme, Videos)
   public-videos-a/ → Deploy-Verzeichnis für holoboard-videos-a
   public-videos-b/ → Deploy-Verzeichnis für holoboard-videos-b
@@ -85,7 +85,7 @@ Eine vollständige Migration der Assets zu Vercel wurde analysiert (10.04.2026):
 
 ```bash
 # Assets (Bilder, Brand, Piktogramme)
-cd /Users/joachimknaf/Desktop/KI/02_HM/Holoboard/05_Medien_Final/asset-hosting
+cd /Users/joachimknaf/Projekte/03_HM/02_HM/Holoboard/05_Medien_Final/asset-hosting
 npx netlify-cli deploy --prod --dir=public --site=09b07a93-8ddd-4eae-9183-860c6f5e3661
 
 # Videos A
