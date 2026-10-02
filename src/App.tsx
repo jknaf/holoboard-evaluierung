@@ -95,11 +95,18 @@ export default function App() {
   };
 
   useEffect(() => {
+    const root = document.documentElement;
     const updateMousePosition = (e: MouseEvent) => {
       cursorX.set(e.clientX - 8);
       cursorY.set(e.clientY - 8);
+      root.classList.add('custom-cursor');
     };
+    // Maus verlässt das Fenster oder die Seite wird verlassen: normalen Zeiger zurückgeben
+    const hideCustomCursor = () => root.classList.remove('custom-cursor');
     window.addEventListener('mousemove', updateMousePosition);
+    document.addEventListener('mouseleave', hideCustomCursor);
+    window.addEventListener('blur', hideCustomCursor);
+    window.addEventListener('pagehide', hideCustomCursor);
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -116,7 +123,11 @@ export default function App() {
 
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
+      document.removeEventListener('mouseleave', hideCustomCursor);
+      window.removeEventListener('blur', hideCustomCursor);
+      window.removeEventListener('pagehide', hideCustomCursor);
       window.removeEventListener('mouseover', handleMouseOver);
+      hideCustomCursor();
     };
   }, []);
 
@@ -137,7 +148,7 @@ export default function App() {
     <div className="min-h-screen bg-hm-white text-hm-black font-sans selection:bg-hm-red selection:text-white no-scrollbar">
       {/* Custom Cursor */}
       <motion.div
-        className="hidden md:block fixed top-0 left-0 w-4 h-4 bg-hm-red rounded-full pointer-events-none z-[100001] mix-blend-difference"
+        className="custom-cursor-dot fixed top-0 left-0 w-4 h-4 bg-hm-red rounded-full pointer-events-none z-[100001] mix-blend-difference"
         style={{ x: smoothCursorX, y: smoothCursorY, scale: isHovering ? 3 : 1 }}
         transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
       />

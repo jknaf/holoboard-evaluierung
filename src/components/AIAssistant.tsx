@@ -154,7 +154,6 @@ export default function AIAssistant() {
               <button 
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors"
-                style={{ cursor: 'none' }}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -213,13 +212,11 @@ export default function AIAssistant() {
                   placeholder={t.placeholder}
                   className="w-full bg-gray-50 border border-gray-200 rounded-full py-3 pl-5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-hm-blue/20 focus:border-hm-blue transition-all"
                   disabled={isLoading}
-                  style={{ cursor: 'none' }}
                 />
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
                   className="absolute right-2 w-8 h-8 rounded-full bg-hm-blue text-white flex items-center justify-center disabled:opacity-50 disabled:bg-gray-300 transition-colors"
-                  style={{ cursor: 'none' }}
                 >
                   {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4 ml-0.5" />}
                 </button>
