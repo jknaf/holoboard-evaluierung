@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useT } from '../i18n';
+import { useT, useLang } from '../i18n';
 import Aurora from './ui/Aurora';
 
 const T = {
@@ -109,10 +109,30 @@ export default function Hero() {
   const [run, setRun] = useState(0);
   const scramble = useScramble(t.terms[2], run);
 
-  // Trailer neu starten, wenn der Hero ganz aus dem Bild war und man wieder hochscrollt
-  useEffect(() => {
+  const { lang } = useLang();
+
+  // Trailer von vorn: alle CSS-Animationen im Hero zurücksetzen, Zeichen-Effekt neu anstoßen
+  const replay = () => {
     const section = ref.current;
     if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    section.getAnimations({ subtree: true }).forEach((animation) => {
+      animation.currentTime = 0;
+      animation.play();
+    });
+    setRun((n) => n + 1);
+  };
+
+  // Neustart beim Sprachwechsel (nicht beim ersten Laden)
+  const firstLang = useRef(lang);
+  useEffect(() => {
+    if (lang !== firstLang.current) replay();
+    firstLang.current = lang;
+  }, [lang]);
+
+  // Neustart, wenn der Hero ganz aus dem Bild war und man wieder hochscrollt
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return;
     let wasOut = false;
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -120,11 +140,7 @@ export default function Hero() {
           wasOut = true;
         } else if (wasOut && entry.intersectionRatio >= 0.6) {
           wasOut = false;
-          section.getAnimations({ subtree: true }).forEach((animation) => {
-            animation.currentTime = 0;
-            animation.play();
-          });
-          setRun((n) => n + 1);
+          replay();
         }
       },
       { threshold: [0, 0.6] },
