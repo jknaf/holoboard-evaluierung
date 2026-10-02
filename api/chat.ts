@@ -152,7 +152,7 @@ export default async function handler(req: any, res: any) {
 
     const ai = new GoogleGenAI({
       vertexai: true,
-      project: 'bildung-480314',
+      project: 'holoboard-chatbot-hm',
       location: 'us-central1',
       googleAuthOptions: authOptions,
     });
