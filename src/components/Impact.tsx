@@ -53,8 +53,6 @@ const T = {
   },
 };
 
-// Instrument Serif nur für die Zitate, selbst gehostet (public/fonts, @font-face in index.css).
-const serif = { fontFamily: "'Instrument Serif', Georgia, serif" };
 
 export default function Impact() {
   const t = useT(T);
@@ -104,8 +102,8 @@ export default function Impact() {
               className="absolute inset-0 w-full h-full object-cover opacity-35"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1),rgba(0,0,0,0.85)_70%)]" aria-hidden="true" />
-            <span className="relative text-hm-red text-[88px] lg:text-[120px] leading-[0.5]" style={serif} aria-hidden="true">“</span>
-            <blockquote className="relative m-0 text-[28px] sm:text-[34px] lg:text-[40px] leading-[1.15] tracking-[-0.01em]" style={serif}>
+            <span className="relative text-hm-red text-[88px] lg:text-[120px] font-black leading-[0.5]" aria-hidden="true">“</span>
+            <blockquote className="relative m-0 text-[24px] sm:text-[30px] lg:text-[34px] font-light leading-[1.25] tracking-[-0.02em]">
               {q1.text}
             </blockquote>
             <figcaption className="relative text-[13px] font-semibold tracking-[0.08em] uppercase text-gray-300">
@@ -118,7 +116,7 @@ export default function Impact() {
             {...reveal(0.08)}
             className="lg:col-span-5 m-0 rounded-3xl bg-hm-red text-white p-7 sm:p-9 flex flex-col justify-between gap-8"
           >
-            <blockquote className="m-0 text-2xl leading-[1.25]" style={serif}>{q2.text}</blockquote>
+            <blockquote className="m-0 text-xl lg:text-[22px] font-normal leading-[1.4] tracking-[-0.01em]">{q2.text}</blockquote>
             <figcaption className="text-xs font-bold tracking-[0.1em] uppercase text-[#111111]">{caption(q2)}</figcaption>
           </motion.figure>
 
@@ -127,7 +125,7 @@ export default function Impact() {
             {...reveal(0.16)}
             className="lg:col-span-5 m-0 rounded-3xl bg-white border border-gray-200 p-7 flex flex-col justify-between gap-6"
           >
-            <blockquote className="m-0 text-[21px] leading-[1.3]" style={serif}>{q3.text}</blockquote>
+            <blockquote className="m-0 text-lg lg:text-xl font-light leading-[1.45] tracking-[-0.01em]">{q3.text}</blockquote>
             <figcaption className="text-[11px] font-bold tracking-[0.1em] uppercase text-gray-500">{caption(q3)}</figcaption>
           </motion.figure>
 

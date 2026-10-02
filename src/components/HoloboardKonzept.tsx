@@ -198,7 +198,6 @@ const T = {
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const serif = { fontFamily: "'Instrument Serif', Georgia, serif" };
 const GLASS = 'rounded-[22px] border border-white/15 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-md';
 
 export default function HoloboardKonzept() {
@@ -322,7 +321,7 @@ export default function HoloboardKonzept() {
                       </div>
                     </div>
 
-                    <blockquote className="m-0 border-l-2 border-hm-red pl-6 text-2xl sm:text-3xl leading-snug text-white max-w-4xl" style={serif}>
+                    <blockquote className="m-0 border-l-2 border-hm-red pl-6 text-xl sm:text-2xl font-light leading-snug tracking-[-0.01em] text-white max-w-4xl">
                       {t.conclusion}
                     </blockquote>
                     <p className="text-sm text-gray-400 italic">{t.foundation}</p>
