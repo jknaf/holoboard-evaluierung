@@ -1,40 +1,73 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Rocket, Globe, Brain, GraduationCap } from 'lucide-react';
+import { useT } from '../i18n';
+
+const T = {
+  de: {
+    eyebrow: "Weiterentwicklung des Holoboards",
+    title: "Zukunftsperspektive",
+    intro: "Der Weg vom Forschungsprototyp zum institutionell verankerten Prüfungswerkzeug — aufbauend auf den Ergebnissen der Innovationsprofessur.",
+    timeline: [
+      {
+        title: "Konzeption und Pilotierung",
+        description: "Entwicklung des KI-gestützten Prüfungsszenarios auf Basis der bestehenden Holobox-Infrastruktur. Erste Pilotprüfungen mit Voice Agents und KI-Avatar in kontrollierten Testumgebungen."
+      },
+      {
+        title: "Datenschutz und Integration",
+        description: "Aufbau der datenschutzkonformen, lokalen Prüfungsinfrastruktur. Integration des RAG-Systems für Fragenkataloge der Lehrenden. Entwicklung der No-Code-Oberfläche für einfache Prüfungserstellung."
+      },
+      {
+        title: "Erprobung im Studienbetrieb",
+        description: "Einsatz in ausgewählten Studiengängen als ergänzendes Prüfungsformat. Evaluation der Prüfungsqualität, Fairness und Akzeptanz bei Studierenden und Lehrenden."
+      },
+      {
+        title: "Institutionelle Verankerung",
+        description: "Überführung in den Regelbetrieb als anerkanntes Prüfungsformat. Skalierung auf weitere Fakultäten und Prüfungsszenarien. Das Holoboard wird vom Forschungsprototyp zum festen Bestandteil der Prüfungsinfrastruktur."
+      },
+    ],
+  },
+  en: {
+    eyebrow: "Next Steps for the Holoboard",
+    title: "Looking Ahead",
+    intro: "The journey from research prototype to an institutionally embedded examination tool, building on the outcomes of the Innovation Professorship for Teaching.",
+    timeline: [
+      {
+        title: "Design and Piloting",
+        description: "Developing the AI-assisted examination scenario on the basis of the existing Holobox infrastructure. Initial pilot examinations with voice agents and an AI avatar in controlled test settings."
+      },
+      {
+        title: "Data Protection and Integration",
+        description: "Building a local, privacy-compliant examination infrastructure. Integrating the RAG system for instructors' question banks. Developing a no-code interface that makes setting up examinations straightforward."
+      },
+      {
+        title: "Trials in Regular Teaching",
+        description: "Use as a supplementary examination format in selected degree programmes. Evaluation of examination quality, fairness and acceptance among students and instructors."
+      },
+      {
+        title: "Institutional Embedding",
+        description: "Transition to routine operation as a recognised examination format. Roll-out to further faculties and examination scenarios. The Holoboard evolves from a research prototype into an integral part of the examination infrastructure."
+      },
+    ],
+  },
+};
+
+const TIMELINE_META = [
+  { year: "2027", icon: <Brain className="w-6 h-6 text-hm-blue" /> },
+  { year: "2028", icon: <Globe className="w-6 h-6 text-hm-turquoise" /> },
+  { year: "2029", icon: <GraduationCap className="w-6 h-6 text-hm-red" /> },
+  { year: "2030", icon: <Rocket className="w-6 h-6 text-white" /> },
+];
 
 export default function Zukunftsperspektive() {
+  const t = useT(T);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
 
-  const timelineData = [
-    {
-      year: "2027",
-      title: "Konzeption und Pilotierung",
-      description: "Entwicklung des KI-gestützten Prüfungsszenarios auf Basis der bestehenden Holobox-Infrastruktur. Erste Pilotprüfungen mit Voice Agents und KI-Avatar in kontrollierten Testumgebungen.",
-      icon: <Brain className="w-6 h-6 text-hm-blue" />
-    },
-    {
-      year: "2028",
-      title: "Datenschutz und Integration",
-      description: "Aufbau der datenschutzkonformen, lokalen Prüfungsinfrastruktur. Integration des RAG-Systems für Fragenkataloge der Lehrenden. Entwicklung der No-Code-Oberfläche für einfache Prüfungserstellung.",
-      icon: <Globe className="w-6 h-6 text-hm-turquoise" />
-    },
-    {
-      year: "2029",
-      title: "Erprobung im Studienbetrieb",
-      description: "Einsatz in ausgewählten Studiengängen als ergänzendes Prüfungsformat. Evaluation der Prüfungsqualität, Fairness und Akzeptanz bei Studierenden und Lehrenden.",
-      icon: <GraduationCap className="w-6 h-6 text-hm-red" />
-    },
-    {
-      year: "2030",
-      title: "Institutionelle Verankerung",
-      description: "Überführung in den Regelbetrieb als anerkanntes Prüfungsformat. Skalierung auf weitere Fakultäten und Prüfungsszenarien. Das Holoboard wird vom Forschungsprototyp zum festen Bestandteil der Prüfungsinfrastruktur.",
-      icon: <Rocket className="w-6 h-6 text-white" />
-    }
-  ];
+  const timelineData = t.timeline.map((it, i) => ({ ...TIMELINE_META[i], ...it }));
 
   return (
     <section id="zukunftsperspektive" ref={containerRef} className="py-32 bg-black text-white relative overflow-hidden">
@@ -45,12 +78,12 @@ export default function Zukunftsperspektive() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-24">
-          <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">Weiterentwicklung des Holoboards</h2>
+          <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">{t.eyebrow}</h2>
           <h3 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
-            Zukunftsperspektive
+            {t.title}
           </h3>
           <p className="text-xl text-gray-400 font-light leading-relaxed">
-            Der Weg vom Forschungsprototyp zum institutionell verankerten Prüfungswerkzeug — aufbauend auf den Ergebnissen der Innovationsprofessur.
+            {t.intro}
           </p>
         </div>
 

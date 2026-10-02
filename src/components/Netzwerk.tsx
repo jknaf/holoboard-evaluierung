@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Network as NetworkIcon, Building2, Users, GraduationCap, Presentation } from 'lucide-react';
 import ActionCue from './ui/ActionCue';
+import { useT } from '../i18n';
 
 type NetworkEntry = {
   name: string;
@@ -10,160 +11,301 @@ type NetworkEntry = {
 };
 
 type NetworkNode = {
-  icon: React.ReactNode;
   title: string;
   desc: string;
   entries: NetworkEntry[];
 };
 
-const nodes: NetworkNode[] = [
-  {
-    icon: <Building2 className="w-5 h-5" />,
-    title: 'Unternehmenskontakte',
-    desc: 'Technologiepartner und Industrieexperten mit direktem Praxisbezug zum Setup und zu möglichen Anwendungen.',
-    entries: [
-      {
-        name: 'Christian Albrecht',
-        org: 'CDC Displays Altendorf',
-        note: 'Technische Klärung rund um Signalein- und -ausgang der Holobox sowie Lieferdetails.',
-      },
-      {
-        name: 'Marc Dörmann / Tobias Drexel',
-        org: 'Teltec AG',
-        note: 'Beratung zur Streaming-Konfiguration und Einschätzung zum Keying-Setup.',
-      },
-      {
-        name: 'Christian Marx',
-        org: 'Z Lab',
-        note: 'Austausch zu innovativen Weiterbildungsformaten und möglichen Anwendungsszenarien.',
-      },
-      {
-        name: 'Jennifer-Marie Winkler',
-        org: 'DB Akademie',
-        note: 'Interesse an KI-basierter Lernunterstützung und digitalen Lernunterlagen.',
-      },
-      {
-        name: 'Nils Friedrich',
-        org: 'W.A.F. Institut',
-        note: 'Rückmeldung zum Holobox-Ansatz mit grundsätzlichem Interesse an einem weiteren Austausch.',
-      },
-    ],
-  },
-  {
-    icon: <Users className="w-5 h-5" />,
-    title: 'Forschungspartner',
-    desc: 'Austausch mit Hochschulen und Instituten zu Förderanträgen, Studios und didaktischen Konzepten.',
-    entries: [
-      {
-        name: 'Robin Hädicke',
-        org: 'Universität Bayreuth',
-        note: 'Austausch zu Authoring-Tools, Interaction Design und Serious-Games-Kontexten.',
-      },
-      {
-        name: 'Florian Petry',
-        org: 'Fakultät 11, Hochschule München',
-        note: 'Input zur Prototyp-Gestaltung mit Fokus auf einen belastbaren technischen Aufbau.',
-      },
-      {
-        name: 'Mikko Turunen',
-        org: 'Tampere University of Applied Sciences',
-        note: 'Kontakt für internationale Forschungsanträge und AR-bezogene Lehrszenarien.',
-      },
-      {
-        name: 'Alin Moldoveanu',
-        org: 'Politehnica University of Bucharest',
-        note: 'Austausch zu möglichen Forschungsanträgen im Umfeld immersiver Bildung.',
-      },
-      {
-        name: 'Leonardo Springer / Ana Coelho',
-        org: 'ISEC Lisboa',
-        note: 'Internationale Gastlehre und Austausch zu KI in Kommunikation, Design und Medien im Rahmen einer akademischen Mobilität am 2. und 5. März 2026.',
-      },
-      {
-        name: 'Stefanie Lukasz',
-        org: 'Hochschule München, Studienberatung',
-        note: 'Austausch zur Holobox in der Studienberatung und zu möglichen Schnittstellen zum Chatbot der HM.',
-      },
-      {
-        name: 'Dr. Simon Schneider',
-        org: 'LMU München, GeoForum',
-        note: 'Kontakt aus dem Umfeld universitärer Koordination und potenzieller Anwendungs- beziehungsweise Transferkontexte.',
-      },
-      {
-        name: 'Christian Mahler',
-        org: 'HAWK Hildesheim',
-        note: 'Austausch zu Interaction Design, Hochschuleinsatz und möglichen Anknüpfungspunkten für das Projekt.',
-      },
-    ],
-  },
-  {
-    icon: <GraduationCap className="w-5 h-5" />,
-    title: 'Experteninterviews',
-    desc: 'Einblicke aus Weiterbildung, XR-Produktion, Handwerk und Digital Learning zur Abschätzung von Nutzen und Hürden.',
-    entries: [
-      {
-        name: 'Oswin Breidenbach',
-        org: 'TÜV Süd',
-        note: 'Perspektive auf Zielgruppen, Autorenwerkzeuge und hochwertige digitale Lernformate.',
-      },
-      {
-        name: 'Thomas Ebner',
-        org: 'Volucap GmbH',
-        note: 'Einschätzungen zu volumetrischen Studios, Workflows und wirtschaftlicher Tragfähigkeit.',
-      },
-      {
-        name: 'Christian Lütgenau',
-        org: 'W.A.F. Institut',
-        note: 'Praxisblick auf skalierbare Seminarformate, Studios und Interesse an holografischen Szenarien.',
-      },
-      {
-        name: 'Jens Bille',
-        org: 'Heinz-Piest-Institut',
-        note: 'Rückmeldungen zu niederschwelligen Lernformaten für Handwerk und Weiterbildung.',
-      },
-    ],
-  },
-  {
-    icon: <Presentation className="w-5 h-5" />,
-    title: 'Konferenzen',
-    desc: 'Präsentation von Zwischenergebnissen und Networking auf fachlichen Veranstaltungen und Messen.',
-    entries: [
-      {
-        name: 'TURN Conference 2024',
-        org: 'Berlin',
-        note: 'Diskussion digitaler Avatare und neuer Kontakte im Hochschulkontext.',
-      },
-      {
-        name: 'Learntec',
-        org: 'Karlsruhe',
-        note: 'Mehrere Gespräche mit Akteuren aus Weiterbildung und EdTech.',
-      },
-      {
-        name: 'TEKOM',
-        org: 'Stuttgart',
-        note: 'Einblicke in Avatar- und Dokumentationskontexte mit Bezug zur Praxis.',
-      },
-      {
-        name: 'AWE / IBC',
-        org: 'Lissabon / Amsterdam',
-        note: 'Internationale Impulse zu XR, Medienproduktion und Technologietrends.',
-      },
-    ],
-  },
+// Icons je Karte, gleiche Reihenfolge wie in T.nodes.
+const nodeIcons = [
+  <Building2 className="w-5 h-5" />,
+  <Users className="w-5 h-5" />,
+  <GraduationCap className="w-5 h-5" />,
+  <Presentation className="w-5 h-5" />,
 ];
 
-export default function Netzwerk() {
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    Unternehmenskontakte: true,
-    Forschungspartner: true,
-    Experteninterviews: false,
-    Konferenzen: false,
-  });
+const T: { de: { title: string; intro: string; nodes: NetworkNode[] }; en: { title: string; intro: string; nodes: NetworkNode[] } } = {
+  de: {
+    title: 'Zusammenarbeit und Netzwerk',
+    intro: `Das Projekt profitierte stark von einem weitreichenden Netzwerk aus Industrie, Forschung und
+            hochschulinternen Akteuren. Dieser Austausch war essenziell für die technologische Ausrichtung.`,
+    nodes: [
+      {
+        title: 'Unternehmenskontakte',
+        desc: 'Technologiepartner und Industrieexperten mit direktem Praxisbezug zum Setup und zu möglichen Anwendungen.',
+        entries: [
+          {
+            name: 'Christian Albrecht',
+            org: 'CDC Displays Altendorf',
+            note: 'Technische Klärung rund um Signalein- und -ausgang der Holobox sowie Lieferdetails.',
+          },
+          {
+            name: 'Marc Dörmann / Tobias Drexel',
+            org: 'Teltec AG',
+            note: 'Beratung zur Streaming-Konfiguration und Einschätzung zum Keying-Setup.',
+          },
+          {
+            name: 'Christian Marx',
+            org: 'Z Lab',
+            note: 'Austausch zu innovativen Weiterbildungsformaten und möglichen Anwendungsszenarien.',
+          },
+          {
+            name: 'Jennifer-Marie Winkler',
+            org: 'DB Akademie',
+            note: 'Interesse an KI-basierter Lernunterstützung und digitalen Lernunterlagen.',
+          },
+          {
+            name: 'Nils Friedrich',
+            org: 'W.A.F. Institut',
+            note: 'Rückmeldung zum Holobox-Ansatz mit grundsätzlichem Interesse an einem weiteren Austausch.',
+          },
+        ],
+      },
+      {
+        title: 'Forschungspartner',
+        desc: 'Austausch mit Hochschulen und Instituten zu Förderanträgen, Studios und didaktischen Konzepten.',
+        entries: [
+          {
+            name: 'Robin Hädicke',
+            org: 'Universität Bayreuth',
+            note: 'Austausch zu Authoring-Tools, Interaction Design und Serious-Games-Kontexten.',
+          },
+          {
+            name: 'Florian Petry',
+            org: 'Fakultät 11, Hochschule München',
+            note: 'Input zur Prototyp-Gestaltung mit Fokus auf einen belastbaren technischen Aufbau.',
+          },
+          {
+            name: 'Mikko Turunen',
+            org: 'Tampere University of Applied Sciences',
+            note: 'Kontakt für internationale Forschungsanträge und AR-bezogene Lehrszenarien.',
+          },
+          {
+            name: 'Alin Moldoveanu',
+            org: 'Politehnica University of Bucharest',
+            note: 'Austausch zu möglichen Forschungsanträgen im Umfeld immersiver Bildung.',
+          },
+          {
+            name: 'Leonardo Springer / Ana Coelho',
+            org: 'ISEC Lisboa',
+            note: 'Internationale Gastlehre und Austausch zu KI in Kommunikation, Design und Medien im Rahmen einer akademischen Mobilität am 2. und 5. März 2026.',
+          },
+          {
+            name: 'Stefanie Lukasz',
+            org: 'Hochschule München, Studienberatung',
+            note: 'Austausch zur Holobox in der Studienberatung und zu möglichen Schnittstellen zum Chatbot der HM.',
+          },
+          {
+            name: 'Dr. Simon Schneider',
+            org: 'LMU München, GeoForum',
+            note: 'Kontakt aus dem Umfeld universitärer Koordination und potenzieller Anwendungs- beziehungsweise Transferkontexte.',
+          },
+          {
+            name: 'Christian Mahler',
+            org: 'HAWK Hildesheim',
+            note: 'Austausch zu Interaction Design, Hochschuleinsatz und möglichen Anknüpfungspunkten für das Projekt.',
+          },
+        ],
+      },
+      {
+        title: 'Experteninterviews',
+        desc: 'Einblicke aus Weiterbildung, XR-Produktion, Handwerk und Digital Learning zur Abschätzung von Nutzen und Hürden.',
+        entries: [
+          {
+            name: 'Oswin Breidenbach',
+            org: 'TÜV Süd',
+            note: 'Perspektive auf Zielgruppen, Autorenwerkzeuge und hochwertige digitale Lernformate.',
+          },
+          {
+            name: 'Thomas Ebner',
+            org: 'Volucap GmbH',
+            note: 'Einschätzungen zu volumetrischen Studios, Workflows und wirtschaftlicher Tragfähigkeit.',
+          },
+          {
+            name: 'Christian Lütgenau',
+            org: 'W.A.F. Institut',
+            note: 'Praxisblick auf skalierbare Seminarformate, Studios und Interesse an holografischen Szenarien.',
+          },
+          {
+            name: 'Jens Bille',
+            org: 'Heinz-Piest-Institut',
+            note: 'Rückmeldungen zu niederschwelligen Lernformaten für Handwerk und Weiterbildung.',
+          },
+        ],
+      },
+      {
+        title: 'Konferenzen',
+        desc: 'Präsentation von Zwischenergebnissen und Networking auf fachlichen Veranstaltungen und Messen.',
+        entries: [
+          {
+            name: 'TURN Conference 2024',
+            org: 'Berlin',
+            note: 'Diskussion digitaler Avatare und neuer Kontakte im Hochschulkontext.',
+          },
+          {
+            name: 'Learntec',
+            org: 'Karlsruhe',
+            note: 'Mehrere Gespräche mit Akteuren aus Weiterbildung und EdTech.',
+          },
+          {
+            name: 'TEKOM',
+            org: 'Stuttgart',
+            note: 'Einblicke in Avatar- und Dokumentationskontexte mit Bezug zur Praxis.',
+          },
+          {
+            name: 'AWE / IBC',
+            org: 'Lissabon / Amsterdam',
+            note: 'Internationale Impulse zu XR, Medienproduktion und Technologietrends.',
+          },
+        ],
+      },
+    ],
+  },
+  en: {
+    title: 'Collaboration and Networking',
+    intro: 'The project drew heavily on a broad network spanning industry, research and colleagues across the university. These exchanges played a key role in shaping its technological direction.',
+    nodes: [
+      {
+        title: 'Industry Contacts',
+        desc: 'Technology partners and industry experts with first-hand practical links to the set-up and its potential applications.',
+        entries: [
+          {
+            name: 'Christian Albrecht',
+            org: 'CDC Displays Altendorf',
+            note: 'Technical clarification of the Holobox\'s signal inputs and outputs, plus delivery details.',
+          },
+          {
+            name: 'Marc Dörmann / Tobias Drexel',
+            org: 'Teltec AG',
+            note: 'Advice on the streaming configuration and an assessment of the keying setup.',
+          },
+          {
+            name: 'Christian Marx',
+            org: 'Z Lab',
+            note: 'Discussions on innovative formats for continuing education and potential use cases.',
+          },
+          {
+            name: 'Jennifer-Marie Winkler',
+            org: 'DB Akademie',
+            note: 'Interest in AI-based learning support and digital learning materials.',
+          },
+          {
+            name: 'Nils Friedrich',
+            org: 'W.A.F. Institut',
+            note: 'Feedback on the Holobox approach and a general interest in continuing the conversation.',
+          },
+        ],
+      },
+      {
+        title: 'Research Partners',
+        desc: 'Dialogue with universities and research institutes on funding applications, studios and pedagogical concepts.',
+        entries: [
+          {
+            name: 'Robin Hädicke',
+            org: 'University of Bayreuth',
+            note: 'Discussions on authoring tools, interaction design and serious games.',
+          },
+          {
+            name: 'Florian Petry',
+            org: 'Faculty 11, Munich University of Applied Sciences (HM)',
+            note: 'Input on prototype design, focusing on a robust technical build.',
+          },
+          {
+            name: 'Mikko Turunen',
+            org: 'Tampere University of Applied Sciences',
+            note: 'Contact for international research proposals and AR-based teaching scenarios.',
+          },
+          {
+            name: 'Alin Moldoveanu',
+            org: 'Politehnica University of Bucharest',
+            note: 'Discussions on potential research proposals in the field of immersive education.',
+          },
+          {
+            name: 'Leonardo Springer / Ana Coelho',
+            org: 'ISEC Lisboa',
+            note: 'International guest teaching and discussions on AI in communication, design and media during an academic mobility visit on 2 and 5 March 2026.',
+          },
+          {
+            name: 'Stefanie Lukasz',
+            org: 'Munich University of Applied Sciences (HM), Student Advisory Service',
+            note: 'Discussions on using the Holobox in student advisory services and on potential links with the HM chatbot.',
+          },
+          {
+            name: 'Dr. Simon Schneider',
+            org: 'LMU Munich, GeoForum',
+            note: 'A contact in university coordination, with links to potential application and knowledge transfer settings.',
+          },
+          {
+            name: 'Christian Mahler',
+            org: 'HAWK Hildesheim',
+            note: 'Discussions on interaction design, use in higher education and potential points of contact with the project.',
+          },
+        ],
+      },
+      {
+        title: 'Expert Interviews',
+        desc: 'Insights from continuing education, XR production, the skilled trades and digital learning, used to gauge benefits and barriers.',
+        entries: [
+          {
+            name: 'Oswin Breidenbach',
+            org: 'TÜV Süd',
+            note: 'Perspectives on target groups, authoring tools and high-quality digital learning formats.',
+          },
+          {
+            name: 'Thomas Ebner',
+            org: 'Volucap GmbH',
+            note: 'Views on volumetric studios, workflows and commercial viability.',
+          },
+          {
+            name: 'Christian Lütgenau',
+            org: 'W.A.F. Institut',
+            note: 'A practitioner\'s view of scalable seminar formats and studios, plus interest in holographic scenarios.',
+          },
+          {
+            name: 'Jens Bille',
+            org: 'Heinz-Piest-Institut',
+            note: 'Feedback on easily accessible learning formats for the skilled trades and continuing education.',
+          },
+        ],
+      },
+      {
+        title: 'Conferences',
+        desc: 'Presenting interim results and networking at specialist events and trade fairs.',
+        entries: [
+          {
+            name: 'TURN Conference 2024',
+            org: 'Berlin',
+            note: 'Discussions on digital avatars and new contacts within higher education.',
+          },
+          {
+            name: 'Learntec',
+            org: 'Karlsruhe',
+            note: 'Several conversations with stakeholders from continuing education and EdTech.',
+          },
+          {
+            name: 'TEKOM',
+            org: 'Stuttgart',
+            note: 'Practical insights into avatars and technical documentation in real-world settings.',
+          },
+          {
+            name: 'AWE / IBC',
+            org: 'Lisbon / Amsterdam',
+            note: 'International input on XR, media production and technology trends.',
+          },
+        ],
+      },
+    ],
+  },
+};
 
-  const toggleSection = (title: string) => {
+export default function Netzwerk() {
+  const t = useT(T);
+  const [openSections, setOpenSections] = useState<Record<number, boolean>>({ 0: true, 1: true });
+
+  const toggleSection = (index: number) => {
     setOpenSections((current) => ({
       ...current,
-      [title]: !current[title],
+      [index]: !current[index],
     }));
   };
 
@@ -179,16 +321,15 @@ export default function Netzwerk() {
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-hm-turquoise/10 text-hm-turquoise mb-6">
             <NetworkIcon className="w-6 h-6" />
           </div>
-          <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Zusammenarbeit und Netzwerk</h3>
+          <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">{t.title}</h3>
           <p className="text-lg text-gray-600 font-light leading-relaxed">
-            Das Projekt profitierte stark von einem weitreichenden Netzwerk aus Industrie, Forschung und
-            hochschulinternen Akteuren. Dieser Austausch war essenziell für die technologische Ausrichtung.
+            {t.intro}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {nodes.map((node, index) => {
-            const isOpen = openSections[node.title];
+          {t.nodes.map((node, index) => {
+            const isOpen = openSections[index];
 
             return (
               <motion.div
@@ -201,14 +342,14 @@ export default function Netzwerk() {
               >
                 <button
                   type="button"
-                  onClick={() => toggleSection(node.title)}
+                  onClick={() => toggleSection(index)}
                   className="w-full p-6 sm:p-7 text-left cursor-pointer"
                   aria-expanded={isOpen}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center mb-4 text-hm-turquoise">
-                        {node.icon}
+                        {nodeIcons[index]}
                       </div>
                       <h4 className="text-xl font-bold text-gray-900 mb-2">{node.title}</h4>
                       <p className="text-sm text-gray-600 font-light leading-relaxed">

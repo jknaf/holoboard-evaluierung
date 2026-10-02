@@ -1,6 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { useT } from '../../i18n';
+
+const T = {
+  de: { less: 'Weniger anzeigen', more: 'Mehr anzeigen', detail: 'Details ansehen', external: 'Extern öffnen' },
+  en: { less: 'Show less', more: 'Show more', detail: 'View details', external: 'Open externally' },
+};
 
 type ActionCueProps = {
   mode: 'expand' | 'detail' | 'external';
@@ -34,14 +40,8 @@ export default function ActionCue({
   className = '',
 }: ActionCueProps) {
   const accentStyle = accentClasses[accent];
-  const label =
-    mode === 'expand'
-      ? expanded
-        ? 'Weniger anzeigen'
-        : 'Mehr anzeigen'
-      : mode === 'detail'
-        ? 'Details ansehen'
-        : 'Extern öffnen';
+  const t = useT(T);
+  const label = mode === 'expand' ? (expanded ? t.less : t.more) : mode === 'detail' ? t.detail : t.external;
 
   const icon =
     mode === 'expand' ? (

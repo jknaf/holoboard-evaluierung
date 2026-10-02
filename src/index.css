@@ -100,3 +100,21 @@ a, button, [role="button"] {
     cursor: auto;
   }
 }
+
+/* Hero: türkiser Glanz läuft über den Titel, wie eine Spiegelung auf der Glasscheibe */
+.holo-sheen {
+  background-image: linear-gradient(110deg, currentColor 0%, currentColor 42%, #bff5f5 50%, currentColor 58%, currentColor 100%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holo-sheen 7s ease-in-out 3.4s infinite;
+}
+@keyframes holo-sheen {
+  0% { background-position: 100% 0; }
+  30%, 100% { background-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .holo-sheen { animation: none; }
+}

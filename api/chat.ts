@@ -142,7 +142,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { messages } = req.body;
+    const { messages, lang } = req.body;
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: 'messages array required' });
     }
@@ -171,7 +171,11 @@ export default async function handler(req: any, res: any) {
     const response = await ai.models.generateContentStream({
       model: 'gemini-2.5-flash',
       config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
+        // ponytail: ein deutscher Prompt für beide Sprachen, die Antwortsprache steuert diese Zusatzzeile.
+        systemInstruction: `${SYSTEM_INSTRUCTION}
+Heute ist ${new Date().toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Berlin' })}.
+Wenn du etwas nicht weißt, sag das, statt es zu erfinden.
+${lang === 'en' ? 'Antworte immer auf Englisch (British English), auch wenn die Projektinfos oben deutsch sind.' : 'Antworte auf Deutsch.'}`,
         temperature: 0.7,
       },
       contents,

@@ -1,6 +1,60 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Video, Mic, MessageSquare, Sparkles } from 'lucide-react';
+import { useT } from '../i18n';
+
+const T = {
+  de: {
+    eyebrow: "Technologie",
+    title: "KI Avatar Integration",
+    intro: "Der KI-Avatar bildet die menschliche Schnittstelle des Systems. Eine Besonderheit des Projekts: Während marktübliche Systeme auf Kopf-Schulter-Darstellungen beschränkt sind, wurde hier erstmals ein Ganzkörper-Avatar zu vertretbaren Kosten realisiert — eine eigenständige technische Innovation, die eine glaubwürdigere und räumlich wirksamere digitale Präsenz ermöglicht.",
+    steps: [
+      {
+        title: "Ganzkörper-Avatar",
+        desc: "Von der Videoaufnahme zur fotorealistischen Ganzkörper-Replika. Marktübliche Anbieter liefern Avatare von der Brust aufwärts — hier wurde erstmals der gesamte Körper überzeugend digital abgebildet."
+      },
+      {
+        title: "Echtzeit-Video-Synthese",
+        desc: "Generierung von Lippenbewegungen, Gestik und Körperhaltung passend zum gesprochenen Text — in Echtzeit, nicht vorproduziert."
+      },
+      {
+        title: "Dialogfähigkeit durch Voice Agents",
+        desc: "Natürliche Sprachinteraktion über Speech-to-Text und Text-to-Speech. Der Avatar hört zu, versteht und antwortet — kein Skript, echtes Gespräch."
+      },
+    ],
+    imageAlt: "Digitale Avatar Integration",
+    processing: "Processing Audio...",
+    listening: "Listening to student query...",
+  },
+  en: {
+    eyebrow: "Technology",
+    title: "AI Avatar Integration",
+    intro: "The AI avatar serves as the system's human interface. What sets the project apart is this: while commercially available systems are limited to head-and-shoulders views, it achieved a full-body avatar at reasonable cost for the first time. This is a technical innovation in its own right, enabling a more convincing digital presence with greater spatial impact.",
+    steps: [
+      {
+        title: "Full-Body Avatar",
+        desc: "From video footage to a photorealistic full-body replica. Commercial providers offer avatars from the chest up; here, for the first time, the entire body was convincingly rendered in digital form."
+      },
+      {
+        title: "Real-Time Video Synthesis",
+        desc: "Lip movements, gestures and posture are generated to match the spoken text, in real time rather than pre-recorded."
+      },
+      {
+        title: "Conversational Capability via Voice Agents",
+        desc: "Natural spoken interaction via speech-to-text and text-to-speech. The avatar listens, understands and responds: not a script, but a genuine conversation."
+      },
+    ],
+    imageAlt: "Digital avatar integration",
+    processing: "Processing audio...",
+    listening: "Listening to student query...",
+  },
+};
+
+const STEP_ICONS = [
+  <Video className="w-6 h-6" />,
+  <Sparkles className="w-6 h-6" />,
+  <MessageSquare className="w-6 h-6" />,
+];
 
 export default function AvatarIntegration() {
   const containerRef = useRef(null);
@@ -11,23 +65,8 @@ export default function AvatarIntegration() {
 
   const yImage = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
-  const steps = [
-    {
-      icon: <Video className="w-6 h-6" />,
-      title: "Ganzkörper-Avatar",
-      desc: "Von der Videoaufnahme zur fotorealistischen Ganzkörper-Replika. Marktübliche Anbieter liefern Avatare von der Brust aufwärts — hier wurde erstmals der gesamte Körper überzeugend digital abgebildet."
-    },
-    {
-      icon: <Sparkles className="w-6 h-6" />,
-      title: "Echtzeit-Video-Synthese",
-      desc: "Generierung von Lippenbewegungen, Gestik und Körperhaltung passend zum gesprochenen Text — in Echtzeit, nicht vorproduziert."
-    },
-    {
-      icon: <MessageSquare className="w-6 h-6" />,
-      title: "Dialogfähigkeit durch Voice Agents",
-      desc: "Natürliche Sprachinteraktion über Speech-to-Text und Text-to-Speech. Der Avatar hört zu, versteht und antwortet — kein Skript, echtes Gespräch."
-    }
-  ];
+  const t = useT(T);
+  const steps = t.steps.map((st, i) => ({ ...st, icon: STEP_ICONS[i] }));
 
   return (
     <section id="avatar" ref={containerRef} className="py-32 bg-gray-900 text-white relative overflow-hidden">
@@ -44,10 +83,10 @@ export default function AvatarIntegration() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">Technologie</h2>
-            <h3 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter">KI Avatar Integration</h3>
+            <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
+            <h3 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter">{t.title}</h3>
             <p className="text-xl text-gray-300 font-light leading-relaxed mb-12">
-              Der KI-Avatar bildet die menschliche Schnittstelle des Systems. Eine Besonderheit des Projekts: Während marktübliche Systeme auf Kopf-Schulter-Darstellungen beschränkt sind, wurde hier erstmals ein Ganzkörper-Avatar zu vertretbaren Kosten realisiert — eine eigenständige technische Innovation, die eine glaubwürdigere und räumlich wirksamere digitale Präsenz ermöglicht.
+              {t.intro}
             </p>
 
             <div className="space-y-10">
@@ -76,7 +115,7 @@ export default function AvatarIntegration() {
             <motion.div style={{ y: yImage }} className="absolute inset-0 h-[140%] -top-[20%]">
               <img 
                 src="https://holoboard-assets.netlify.app/images/080-confluence_media-bildschirmfoto-2025-01-28-um-15.43.40.png" 
-                alt="Digitale Avatar Integration" 
+                alt={t.imageAlt} 
                 className="w-full h-full object-cover opacity-60 mix-blend-luminosity"
                 referrerPolicy="no-referrer"
               />
@@ -89,12 +128,12 @@ export default function AvatarIntegration() {
                   <div className="h-full bg-hm-red w-2/3 animate-pulse" />
                 </div>
                 <div className="flex justify-between text-xs text-gray-400 font-mono tracking-widest uppercase">
-                  <span>Processing Audio...</span>
+                  <span>{t.processing}</span>
                   <span>68%</span>
                 </div>
                 <div className="flex items-center gap-3 mt-6 pt-4 border-t border-white/10">
                   <Mic className="w-5 h-5 text-hm-turquoise animate-pulse" />
-                  <span className="text-sm text-white font-medium tracking-wide">Listening to student query...</span>
+                  <span className="text-sm text-white font-medium tracking-wide">{t.listening}</span>
                 </div>
               </div>
             </div>

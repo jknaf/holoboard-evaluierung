@@ -1,36 +1,68 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Target, Users, Video, Lightbulb } from 'lucide-react';
+import { useT } from '../i18n';
+
+const T = {
+  de: {
+    eyebrow: "Phase 1 – Ausgangsvision 2022",
+    title: "Der Ausgangspunkt",
+    intro: `Der ursprüngliche Projektantrag fokussierte sich auf die Erforschung immersiver Lehrformate. 
+            Das Ziel war es, die Distanz in der digitalen Lehre durch neue Technologien zu überwinden und eine stärkere Interaktion zu ermöglichen.`,
+    cards: [
+      {
+        title: "Hintergrund der Onlinelehre",
+        shortDesc: "Digitale Lehre zwischen Pragmatismus und Erschöpfung",
+        description: "Zwischen 2020 und 2022 wurde videobasierte Lehre an Hochschulen zum Normalfall. Zoom-Meetings, Lernvideos und digitale Plattformen ermöglichten zwar Kontinuität, machten aber auch ihre Grenzen sichtbar: geringe Interaktion, sinkende Aufmerksamkeit und ein wachsendes Gefühl von Distanz zwischen Lehrenden und Lernenden.",
+      },
+      {
+        title: "Die Ursprungsidee",
+        shortDesc: "Präsenz und Interaktion digital neu denken",
+        description: "Als Gegenentwurf zur klassischen Bildschirmlehre entstand die Vision eines Systems, das synchrone Kommunikation, sichtbare Lehrpräsenz, Tafelanschrieb und interaktive Inhalte in einer gemeinsamen Lernszene verbindet. Ziel war nicht nur ein neues Display, sondern eine neue Form digitaler Präsenz.",
+      },
+      {
+        title: "Zielgruppen",
+        shortDesc: "Lehrende, Studierende und Hochschule im Fokus",
+        description: "Im Mittelpunkt standen Lehrende, die ohne komplexe Produktionsumgebungen interaktive Inhalte bereitstellen sollen, Studierende, die von mehr Präsenz und Beteiligung profitieren, sowie die Hochschule München, die digitale Lehre nicht nur verwalten, sondern aktiv weiterentwickeln will.",
+      },
+    ],
+  },
+  en: {
+    eyebrow: "Phase 1: The 2022 Vision",
+    title: "The Starting Point",
+    intro: `The original project proposal centred on exploring immersive teaching formats. 
+            The aim was to use new technologies to bridge the distance inherent in digital teaching and to foster greater interaction.`,
+    cards: [
+      {
+        title: "The Context of Online Teaching",
+        shortDesc: "Digital teaching, caught between pragmatism and fatigue",
+        description: "Between 2020 and 2022, video-based teaching became standard practice in higher education. Zoom meetings, instructional videos and digital platforms kept teaching going, but they also laid bare their limitations: little interaction, waning attention and a growing sense of distance between instructors and learners.",
+      },
+      {
+        title: "The Original Idea",
+        shortDesc: "Reimagining presence and interaction in digital teaching",
+        description: "As a counterpoint to conventional screen-based teaching, a vision took shape: a system that brings together synchronous communication, a visible teaching presence, board writing and interactive content within a single shared learning space. The aim was not simply a new display, but a new form of digital presence.",
+      },
+      {
+        title: "Target Groups",
+        shortDesc: "Centred on instructors, students and the university",
+        description: "At the heart of the project were instructors, who should be able to provide interactive content without complex production set-ups; students, who benefit from greater presence and participation; and Munich University of Applied Sciences (HM), which aims not merely to manage digital teaching but to actively shape its development.",
+      },
+    ],
+  },
+};
+
+const CARD_META = [
+  { icon: <Video className="w-6 h-6" />, image: "https://holoboard-assets.netlify.app/images/110-unsplash-stress-laptop.jpg", color: "from-hm-red/90 to-hm-red/20" },
+  { icon: <Lightbulb className="w-6 h-6" />, image: "https://holoboard-assets.netlify.app/images/104-confluence_media-proof-of-concept.png", color: "from-hm-blue/90 to-hm-blue/20" },
+  { icon: <Users className="w-6 h-6" />, image: "https://holoboard-assets.netlify.app/images/111-unsplash-lecture-hall.jpg", color: "from-hm-turquoise/90 to-hm-turquoise/20" },
+];
 
 export default function Ausgangspunkt() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
 
-  const cards = [
-    {
-      icon: <Video className="w-6 h-6" />,
-      title: "Hintergrund der Onlinelehre",
-      shortDesc: "Digitale Lehre zwischen Pragmatismus und Erschöpfung",
-      description: "Zwischen 2020 und 2022 wurde videobasierte Lehre an Hochschulen zum Normalfall. Zoom-Meetings, Lernvideos und digitale Plattformen ermöglichten zwar Kontinuität, machten aber auch ihre Grenzen sichtbar: geringe Interaktion, sinkende Aufmerksamkeit und ein wachsendes Gefühl von Distanz zwischen Lehrenden und Lernenden.",
-      image: "https://holoboard-assets.netlify.app/images/110-unsplash-stress-laptop.jpg",
-      color: "from-hm-red/90 to-hm-red/20"
-    },
-    {
-      icon: <Lightbulb className="w-6 h-6" />,
-      title: "Die Ursprungsidee",
-      shortDesc: "Präsenz und Interaktion digital neu denken",
-      description: "Als Gegenentwurf zur klassischen Bildschirmlehre entstand die Vision eines Systems, das synchrone Kommunikation, sichtbare Lehrpräsenz, Tafelanschrieb und interaktive Inhalte in einer gemeinsamen Lernszene verbindet. Ziel war nicht nur ein neues Display, sondern eine neue Form digitaler Präsenz.",
-      image: "https://holoboard-assets.netlify.app/images/104-confluence_media-proof-of-concept.png",
-      color: "from-hm-blue/90 to-hm-blue/20"
-    },
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "Zielgruppen",
-      shortDesc: "Lehrende, Studierende und Hochschule im Fokus",
-      description: "Im Mittelpunkt standen Lehrende, die ohne komplexe Produktionsumgebungen interaktive Inhalte bereitstellen sollen, Studierende, die von mehr Präsenz und Beteiligung profitieren, sowie die Hochschule München, die digitale Lehre nicht nur verwalten, sondern aktiv weiterentwickeln will.",
-      image: "https://holoboard-assets.netlify.app/images/111-unsplash-lecture-hall.jpg",
-      color: "from-hm-turquoise/90 to-hm-turquoise/20"
-    }
-  ];
+  const t = useT(T);
+  const cards = t.cards.map((c, i) => ({ ...CARD_META[i], ...c }));
 
   return (
     <section id="ausgangspunkt" className="py-32 bg-white overflow-hidden">
@@ -41,11 +73,10 @@ export default function Ausgangspunkt() {
           viewport={{ once: true }}
           className="max-w-3xl mb-16"
         >
-          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">Phase 1 – Ausgangsvision 2022</h2>
-          <h3 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tighter">Der Ausgangspunkt</h3>
+          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
+          <h3 className="text-5xl md:text-6xl font-black text-gray-900 mb-6 tracking-tighter">{t.title}</h3>
           <p className="text-xl text-gray-600 font-light leading-relaxed">
-            Der ursprüngliche Projektantrag fokussierte sich auf die Erforschung immersiver Lehrformate. 
-            Das Ziel war es, die Distanz in der digitalen Lehre durch neue Technologien zu überwinden und eine stärkere Interaktion zu ermöglichen.
+            {t.intro}
           </p>
         </motion.div>
 

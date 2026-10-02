@@ -26,6 +26,48 @@ import Contact from './components/Contact';
 import Download from './components/Download';
 import Footer from './components/Footer';
 import CookieConsent from './components/CookieConsent';
+import { useT, useLang } from './i18n';
+
+const CHAPTERS = [
+  { id: 'projekt', items: ['ausgangspunkt', 'exploration', 'wandel', 'konzept'] },
+  { id: 'technik', items: ['architektur', 'avatar', 'prototyp', 'demonstrator'] },
+  { id: 'praxis', items: ['netzwerk', 'studentische-projekte', 'wissenstransfer', 'nutzen'] },
+  { id: 'evaluation', items: ['evaluation', 'impact', 'learnings'] },
+  { id: 'ausblick', items: ['ausblick', 'zukunftsperspektive', 'download', 'kontakt'] },
+];
+
+const T = {
+  de: {
+    labels: {
+      projekt: 'Projekt', technik: 'Technik', praxis: 'Praxis', evaluation: 'Evaluation', ausblick: 'Ausblick',
+      ausgangspunkt: 'Ausgangspunkt', exploration: 'Exploration', wandel: 'Wandel', konzept: 'Holoboard',
+      architektur: 'Architektur', avatar: 'Avatar', prototyp: 'Prototyp', demonstrator: 'Demonstrator',
+      netzwerk: 'Netzwerk', 'studentische-projekte': 'Studentische Projekte', wissenstransfer: 'Wissenstransfer', nutzen: 'Nutzen',
+      impact: 'Impact', learnings: 'Learnings',
+      zukunftsperspektive: 'Zukunftsperspektive', download: 'Download', kontakt: 'Kontakt',
+    } as Record<string, string>,
+    logoAlt: 'Hochschule München Logo',
+    summaryPdf: 'Zusammenfassung PDF',
+    menuToggle: 'Menü umschalten',
+    inThisChapter: 'In diesem Kapitel',
+    langSwitch: 'Sprache wählen',
+  },
+  en: {
+    labels: {
+      projekt: 'Project', technik: 'Technology', praxis: 'Practice', evaluation: 'Evaluation', ausblick: 'Outlook',
+      ausgangspunkt: 'Starting Point', exploration: 'Exploration', wandel: 'Tech Shift', konzept: 'Holoboard',
+      architektur: 'Architecture', avatar: 'Avatar', prototyp: 'Prototype', demonstrator: 'Demonstrator',
+      netzwerk: 'Network', 'studentische-projekte': 'Student Projects', wissenstransfer: 'Knowledge Transfer', nutzen: 'Benefits',
+      impact: 'Impact', learnings: 'Lessons Learned',
+      zukunftsperspektive: 'Looking Ahead', download: 'Download', kontakt: 'Contact',
+    } as Record<string, string>,
+    logoAlt: 'Munich University of Applied Sciences logo',
+    summaryPdf: 'Summary PDF',
+    menuToggle: 'Toggle menu',
+    inThisChapter: 'In this chapter',
+    langSwitch: 'Choose language',
+  },
+};
 
 export default function App() {
   const { scrollYProgress } = useScroll();
@@ -39,57 +81,13 @@ export default function App() {
   const smoothCursorX = useSpring(cursorX, { stiffness: 500, damping: 28, mass: 0.5 });
   const smoothCursorY = useSpring(cursorY, { stiffness: 500, damping: 28, mass: 0.5 });
 
-  const chapters = [
-    {
-      id: 'projekt',
-      label: 'Projekt',
-      items: [
-        { id: 'ausgangspunkt', label: 'Ausgangspunkt' },
-        { id: 'exploration', label: 'Exploration' },
-        { id: 'wandel', label: 'Wandel' },
-        { id: 'konzept', label: 'Holoboard' },
-      ],
-    },
-    {
-      id: 'technik',
-      label: 'Technik',
-      items: [
-        { id: 'architektur', label: 'Architektur' },
-        { id: 'avatar', label: 'Avatar' },
-        { id: 'prototyp', label: 'Prototyp' },
-        { id: 'demonstrator', label: 'Demonstrator' },
-      ],
-    },
-    {
-      id: 'praxis',
-      label: 'Praxis',
-      items: [
-        { id: 'netzwerk', label: 'Netzwerk' },
-        { id: 'studentische-projekte', label: 'Studentische Projekte' },
-        { id: 'wissenstransfer', label: 'Wissenstransfer' },
-        { id: 'nutzen', label: 'Nutzen' },
-      ],
-    },
-    {
-      id: 'evaluation',
-      label: 'Evaluation',
-      items: [
-        { id: 'evaluation', label: 'Evaluation' },
-        { id: 'impact', label: 'Impact' },
-        { id: 'learnings', label: 'Learnings' },
-      ],
-    },
-    {
-      id: 'ausblick',
-      label: 'Ausblick',
-      items: [
-        { id: 'ausblick', label: 'Ausblick' },
-        { id: 'zukunftsperspektive', label: 'Zukunftsperspektive' },
-        { id: 'download', label: 'Download' },
-        { id: 'kontakt', label: 'Kontakt' },
-      ],
-    },
-  ];
+  const t = useT(T);
+  const { lang, setLang } = useLang();
+  const chapters = CHAPTERS.map((chapter) => ({
+    id: chapter.id,
+    label: t.labels[chapter.id],
+    items: chapter.items.map((id) => ({ id, label: t.labels[id] })),
+  }));
   const activeChapterItems = chapters.find((chapter) => chapter.id === activeChapter)?.items ?? chapters[0].items;
 
   const scrollToSection = (id: string) => {
@@ -159,7 +157,7 @@ export default function App() {
             <div className="flex-shrink-0 flex flex-col justify-center">
               <img 
                 src="https://holoboard-assets.netlify.app/brand/061-logo_assets-hm-logo-rgb.png" 
-                alt="Hochschule München Logo" 
+                alt={t.logoAlt} 
                 className="h-8 sm:h-10 w-auto object-contain"
                 referrerPolicy="no-referrer"
               />
@@ -196,6 +194,21 @@ export default function App() {
 
             {/* Right Actions */}
             <div className="flex-shrink-0 flex items-center gap-3">
+              <div role="group" aria-label={t.langSwitch} className="flex items-center rounded-full border border-gray-200 p-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">
+                {(['de', 'en'] as const).map((code) => (
+                  <button
+                    key={code}
+                    type="button"
+                    onClick={() => setLang(code)}
+                    aria-pressed={lang === code}
+                    className={`rounded-full px-2 py-1 sm:px-2.5 transition-colors ${
+                      lang === code ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-hm-red'
+                    }`}
+                  >
+                    {code}
+                  </button>
+                ))}
+              </div>
               <a
                 href="#download"
                 onClick={(e) => {
@@ -205,7 +218,7 @@ export default function App() {
                 className="flex items-center gap-1.5 bg-hm-red text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest hover:bg-red-700 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap"
               >
                 <DownloadIcon className="w-3 h-3" />
-                <span className="hidden sm:block">Zusammenfassung PDF</span>
+                <span className="hidden sm:block">{t.summaryPdf}</span>
                 <span className="block sm:hidden">PDF</span>
               </a>
 
@@ -213,7 +226,7 @@ export default function App() {
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-1.5 text-gray-600 hover:text-hm-red hover:bg-gray-100 rounded-full transition-colors"
-                aria-label="Menü umschalten"
+                aria-label={t.menuToggle}
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -225,7 +238,7 @@ export default function App() {
           <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-center gap-5 py-3">
               <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.24em] text-gray-400">
-                In diesem Kapitel
+                {t.inThisChapter}
               </span>
               <div className="h-6 w-px bg-gray-200" />
               <div className="flex items-center gap-2 xl:gap-3 overflow-x-auto no-scrollbar">

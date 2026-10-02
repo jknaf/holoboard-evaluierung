@@ -1,11 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, User, Sparkles, Loader2 } from 'lucide-react';
+import { useT, useLang } from '../i18n';
+
+const T = {
+  de: {
+    greeting: 'Hallo! Ich bin der KI-Assistent des Holoboard-Projekts. Haben Sie Fragen zur Architektur, den Zielen oder der Zukunft (z.B. KI-Prüfungen)?',
+    error: 'Entschuldigung, es gab einen Fehler bei der Kommunikation mit dem Server. Bitte versuchen Sie es später noch einmal.',
+    fabTitle: 'KI-Assistent',
+    fabSubtitle: 'Fragen zum Projekt?',
+    title: 'Holoboard KI',
+    placeholder: 'Fragen Sie die KI zum Projekt...',
+  },
+  en: {
+    greeting: 'Hello! I\'m the Holoboard project\'s AI assistant. Do you have any questions about its architecture, its goals or what lies ahead (e.g. AI-based exams)?',
+    error: 'Sorry, something went wrong while contacting the server. Please try again later.',
+    fabTitle: 'AI Assistant',
+    fabSubtitle: 'Questions about the project?',
+    title: 'Holoboard AI',
+    placeholder: 'Ask the AI about the project...',
+  },
+};
 
 export default function AIAssistant() {
+  const t = useT(T);
+  const { lang } = useLang();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([
-    { role: 'model', text: 'Hallo! Ich bin der KI-Assistent des Holoboard-Projekts. Haben Sie Fragen zur Architektur, den Zielen oder der Zukunft (z.B. KI-Prüfungen)?' }
+    // Begrüßung wird beim Rendern aus T genommen, damit sie mit der Sprache wechselt.
+    { role: 'model', text: T.de.greeting }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +61,7 @@ export default function AIAssistant() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: historyToSend }),
+        body: JSON.stringify({ messages: historyToSend, lang }),
       });
 
       if (!response.ok) throw new Error('API request failed');
@@ -76,7 +99,7 @@ export default function AIAssistant() {
       console.error("Error sending message:", error);
       setMessages(prev => {
         const newMessages = [...prev];
-        newMessages[newMessages.length - 1].text = "Entschuldigung, es gab einen Fehler bei der Kommunikation mit dem Server. Bitte versuchen Sie es später noch einmal.";
+        newMessages[newMessages.length - 1].text = t.error;
         return newMessages;
       });
     } finally {
@@ -99,8 +122,8 @@ export default function AIAssistant() {
           <Bot className="w-5 h-5 text-white" />
         </div>
         <div className="relative z-10 text-left hidden sm:block">
-          <div className="text-sm font-bold text-white">KI-Assistent</div>
-          <div className="text-[10px] text-white/60 font-medium">Fragen zum Projekt?</div>
+          <div className="text-sm font-bold text-white">{t.fabTitle}</div>
+          <div className="text-[10px] text-white/60 font-medium">{t.fabSubtitle}</div>
         </div>
       </motion.button>
 
@@ -121,7 +144,7 @@ export default function AIAssistant() {
                   <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 text-sm">Holoboard KI</h3>
+                  <h3 className="font-bold text-gray-900 text-sm">{t.title}</h3>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span className="text-xs text-gray-500 font-medium">Online (Gemini 2.5 Flash)</span>
@@ -158,7 +181,7 @@ export default function AIAssistant() {
                       : 'bg-white border border-gray-100 text-gray-800 shadow-sm rounded-tl-sm'
                   }`}>
                     {/* Simple markdown bold rendering for the chat */}
-                    {msg.text.split('**').map((part, i) => 
+                    {(idx === 0 ? t.greeting : msg.text).split('**').map((part, i) => 
                       i % 2 === 1 ? <strong key={i}>{part}</strong> : part
                     )}
                     {msg.role === 'model' && msg.text === '' && isLoading && (
@@ -187,7 +210,7 @@ export default function AIAssistant() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Fragen Sie die KI zum Projekt..."
+                  placeholder={t.placeholder}
                   className="w-full bg-gray-50 border border-gray-200 rounded-full py-3 pl-5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-hm-blue/20 focus:border-hm-blue transition-all"
                   disabled={isLoading}
                   style={{ cursor: 'none' }}

@@ -1,8 +1,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, MonitorPlay } from 'lucide-react';
+import { useT } from '../i18n';
+
+const T = {
+  de: {
+    title: "Interaktiver Demonstrator",
+    p1: "Das Erlebnis des Holoboards ist ein physisches Erlebnis im Raum.",
+    p2a: "Um trotzdem einmal nachzuempfinden, wie sich die Live-Interaktion mit einem solchen Conversational AI Agent anfühlt, kann hier ein Test-Avatar von",
+    p2b: "ausprobiert werden. Tavus zählt aktuell zu den sichtbarsten Anbietern in diesem Bereich. Seit Februar 2026 setzt auch SAP Tavus im Customer Experience Center in Palo Alto ein, um Besuchern die Interaktion mit menschlich wirkenden AI Agents live zu zeigen.",
+    sapLink: "SAP Experience Centers",
+    alt: "Tavus Conversational AI Avatar — Test-Demo",
+  },
+  en: {
+    title: "Interactive Demonstrator",
+    p1: "The Holoboard is designed to be experienced in person, in a physical space.",
+    p2a: "Even so, to get a feel for what live interaction with this kind of conversational AI agent is like, you can try out a test avatar from",
+    p2b: "here. Tavus is currently one of the most prominent providers in this field. Since February 2026, SAP has also been using Tavus at its Customer Experience Center in Palo Alto to give visitors a live demonstration of interaction with lifelike AI agents.",
+    sapLink: "SAP Experience Centers",
+    alt: "Tavus conversational AI avatar: test demo",
+  },
+};
 
 export default function Demonstrator() {
+  const t = useT(T);
   return (
     <section id="demonstrator" className="py-32 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,14 +38,14 @@ export default function Demonstrator() {
               <MonitorPlay className="w-4 h-4" />
               Live Demo
             </div>
-            <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Interaktiver Demonstrator</h3>
+            <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">{t.title}</h3>
             <p className="text-lg text-gray-600 font-light leading-relaxed mb-4">
-              Das Erlebnis des Holoboards ist ein physisches Erlebnis im Raum.
+              {t.p1}
             </p>
             <p className="text-lg text-gray-600 font-light leading-relaxed mb-4">
-              Um trotzdem einmal nachzuempfinden, wie sich die Live-Interaktion mit einem solchen Conversational AI Agent anfühlt, kann hier ein Test-Avatar von{' '}
+              {t.p2a}{' '}
               <a href="https://www.tavus.io/" target="_blank" rel="noopener noreferrer" className="text-hm-blue hover:underline">Tavus</a>{' '}
-              ausprobiert werden. Tavus zählt aktuell zu den sichtbarsten Anbietern in diesem Bereich. Seit Februar 2026 setzt auch SAP Tavus im Customer Experience Center in Palo Alto ein, um Besuchern die Interaktion mit menschlich wirkenden AI Agents live zu zeigen.            </p>
+              {t.p2b}</p>
 
             <div className="flex flex-wrap gap-3 mb-8">
               <a
@@ -43,7 +64,7 @@ export default function Demonstrator() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm text-hm-blue hover:underline"
               >
-                SAP Experience Centers
+                {t.sapLink}
                 <ExternalLink className="w-3 h-3" />
               </a>
               <span className="text-gray-300">|</span>
@@ -84,7 +105,7 @@ export default function Demonstrator() {
               <div className="relative h-[calc(100%-2rem)] bg-gray-900">
                 <img
                   src="https://holoboard-assets.netlify.app/images/112-tavus-demo-thumbnail.png"
-                  alt="Tavus Conversational AI Avatar — Test-Demo"
+                  alt={t.alt}
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">

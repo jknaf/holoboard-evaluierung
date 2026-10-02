@@ -5,77 +5,199 @@ import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen, ArrowRight, Play } fr
 const SYNCHRON_POSTER = "https://holoboard-assets.netlify.app/images/113-video-thumb-synchron.jpg";
 const ASYNCHRON_POSTER = "https://holoboard-assets.netlify.app/images/114-video-thumb-asynchron.jpg";
 import ActionCue from './ui/ActionCue';
+import { useT } from '../i18n';
+
+// Icons, Bilder und Videos je Kachel; die Texte stehen in T.<lang>.features (gleiche Reihenfolge).
+const featureMeta = [
+  {
+    id: 1,
+    icon: <Cpu className="w-6 h-6 text-hm-turquoise" />,
+    image: "https://holoboard-assets.netlify.app/images/architektur-07-rag-wissenssystem.png"
+  },
+  {
+    id: 2,
+    icon: <Monitor className="w-6 h-6 text-hm-red" />,
+    image: "https://holoboard-assets.netlify.app/images/084-confluence_media-img-1086.jpg",
+    secondaryImage: "https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg"
+  },
+  {
+    id: 3,
+    icon: <Layout className="w-6 h-6 text-hm-blue" />,
+    image: "https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg",
+    video: "https://holoboard-videos-a.netlify.app/videos/087-confluence_media-holobox-deu.mp4"
+  },
+  {
+    id: 4,
+    icon: <MessageSquare className="w-6 h-6 text-gray-700" />,
+    image: "https://holoboard-assets.netlify.app/images/081-confluence_media-bildschirmfoto-2025-01-28-um-18.22.56.png"
+  }
+];
+
+const T = {
+  de: {
+    eyebrow: 'Phase 4 – Weiterentwicklung',
+    title: 'Das Holoboard Konzept',
+    intro: 'Klicken Sie auf die Kacheln, um tiefer in die technologischen Details der einzelnen Komponenten einzutauchen.',
+    conceptTitle: 'Didaktisches Lehrkonzept',
+    conceptIntro: 'Das Grundproblem digitaler Lehre ist multidimensional: Es reicht nicht aus, Lerninhalte nur technisch verfügbar zu machen. Forschung zu Online-Lernen zeigt, dass digitale Formate besonders dann an Wirksamkeit verlieren, wenn soziale Präsenz, emotionale Bindung und sichtbare Lehrendenpräsenz fehlen.',
+    twoScenarios: 'Zwei Lehrszenarien im Detail',
+    syncTitle: 'Synchrone Lehre',
+    syncSub: 'Full-Body-KI-Avatar für Live-Interaktion',
+    asyncTitle: 'Asynchrone Lehre',
+    asyncSub: 'Holoboard als interaktives Lehrmedium',
+    expand: 'Szenario aufklappen',
+    passive: 'Passive Bildschirmformate fördern häufig weder nachhaltige Aufmerksamkeit noch tiefes Engagement. Erfolgreiche digitale Lehre braucht deshalb mehr als Medientechnik: Sie braucht Interaktion, Personalisierung, Authentizität und eine als menschlich wahrnehmbare Lernumgebung.',
+    syncHeading: 'Synchrone Lehre mit Full-Body-KI-Avatar',
+    syncText: 'Für Live-Situationen entsteht ein KI-gestützter Full-Body-Avatar, der in Echtzeit mit Lernenden interagiert. Er basiert auf einem Retrieval-Augmented-Generation-System (RAG), das über eine No-Code-Plattform eingebunden ist. So können auch technisch wenig versierte Lehrende oder Ausstellende Inhalte pflegen, aktualisieren und steuern. Der didaktische Mehrwert liegt in der Verbindung von Interaktion, Personalisierung und Authentizität: Inhalte erscheinen nicht als anonyme Systemantwort, sondern in der verkörperten Form vertrauter Personen wie Lehrender, Forschender oder Projektverantwortlicher. Dadurch wird digitale Kommunikation sozial anschlussfähiger, glaubwürdiger und emotional wirksamer.',
+    syncVideo: 'Demonstration: Synchrone Lehre mit Full-Body-KI-Avatar',
+    asyncHeading: 'Asynchrone Lehre mit Holoboard',
+    asyncText: 'Für aufgezeichnete Lehrinhalte wird das klassische Lightboard zum Holoboard weiterentwickelt. Lehrende schreiben auf einer transparenten Glasfläche und können gleichzeitig digitale Elemente wie Animationen, Videos oder zusätzliche visuelle Ebenen einblenden. Dank eines infrarotgesteuerten Touchscreens ist das Board interaktiv nutzbar. Didaktisch entsteht dadurch ein Format, das sichtbare Lehrendenpräsenz, Anschrieb, Gestik, Visualisierung und mediale Erweiterung in einer gemeinsamen Lernszene verbindet. Die Holoboard schafft so eine immersive und visuell prägnante Lernumgebung, die asynchrone Formate aktiver, verständlicher und engagementstärker macht.',
+    asyncVideo: 'Demonstration: Asynchrone Lehre mit Holoboard',
+    conclusion: 'Das Holoboard ist deshalb nicht nur ein technisches System, sondern ein didaktischer Ansatz zur Wiedergewinnung von Präsenz, Interaktion und Authentizität in digitalen Lernumgebungen.',
+    foundation: 'Wissenschaftliche Grundlage: Community of Inquiry, Social Presence, Instructor Presence, ICAP, Personalization Principle.',
+    setupAlt: 'Visualisierung des Holoboard-Aufbaus',
+    close: 'Schließen',
+    detailSuffix: ' Detail',
+    videoFallback: 'Ihr Browser unterstützt das Video-Tag nicht.',
+    features: [
+      {
+        title: "Lokale KI und RAG",
+        description: "Datensouveräne Intelligenz direkt am System",
+        detailedText: (
+          <div className="space-y-4">
+            <p>Ein zentraler Bestandteil des Holoboards ist eine lokal laufende KI-Infrastruktur. „Lokal“ bedeutet hier, dass Modelle, Datenverarbeitung und Wissenszugriff nicht zwingend über externe Cloud-Dienste laufen müssen, sondern direkt auf eigener Hardware betrieben werden können. Das ist besonders relevant, wenn sensible Inhalte, interne Dokumente oder hochschulnahe Daten verarbeitet werden.</p>
+            <p>RAG („Retrieval-Augmented Generation“) ergänzt die KI um gezielten Dokumentenzugriff. Das System antwortet dann nicht nur aus einem allgemeinen Modellwissen heraus, sondern auf Basis konkreter, projektbezogener Inhalte. So entstehen nachvollziehbarere, kontextbezogene und für Lehre und Demonstration nutzbare Antworten.</p>
+            <div>
+              <p className="font-bold mb-2">Vorteile:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>kontrollierbare Datenverarbeitung</li>
+                <li>geringere Abhängigkeit von externen Plattformen</li>
+                <li>gezielter Zugriff auf projektspezifisches Wissen</li>
+                <li>robuste Grundlage für interaktive Lehr- und Assistenzszenarien</li>
+              </ul>
+            </div>
+          </div>
+        ),
+      },
+      {
+        title: "Lightboard 2.0",
+        description: "Weiterentwicklung eines etablierten Lehrprinzips",
+        detailedText: (
+          <div className="space-y-4">
+            <p>Das Holoboard baut auf dem bekannten Lightboard-Prinzip auf, bei dem Lehrende direkt in ein transparentes Schreibmedium hinein erklären und Inhalte für Lernende sichtbar machen. Für das Projekt wurde dieses Prinzip nicht einfach übernommen, sondern technisch und räumlich weiterentwickelt.</p>
+            <p>Entscheidend war die Frage, wie sich das direkte Erklären, Schreiben und Zeigen mit einer neuen Form digitaler Präsenz verbinden lässt. Aus dem klassischen Lightboard wurde so eine erweiterte Systemidee, die stärker auf Interaktion, hybride Nutzung und visuelle Wirkung ausgelegt ist.</p>
+          </div>
+        ),
+      },
+      {
+        title: "Interaktive Holobox",
+        description: "Display, Präsenzraum und Interaktionsfläche",
+        detailedText: (
+          <div className="space-y-4">
+            <p>Die Holobox ist das zentrale räumliche Display des Konzepts. Sie verbindet visuelle Präsenz, Präsentationsfläche und Interaktion in einem gemeinsamen System. Dadurch entsteht nicht nur eine technische Oberfläche, sondern ein neuer Wahrnehmungsraum für digitale Lehre.</p>
+            <p>Im Projekt wurde untersucht, wie eine solche Box nicht nur Inhalte anzeigen, sondern Kommunikation, Blickbezug, räumliche Wirkung und Interaktion unterstützen kann. Die Holobox ist damit nicht bloß Hardware, sondern ein integraler Teil des didaktischen Erlebnisses.</p>
+          </div>
+        ),
+      },
+      {
+        title: "Digitale Avatare",
+        description: "Vom Talking Head zum Ganzkörper-Avatar",
+        detailedText: (
+          <div className="space-y-4">
+            <p>Ein zentraler Entwicklungsschritt im Projekt war die Frage, wie sich digitale Avatare nicht nur als klassische Kopf-Schulter-Darstellung, sondern als glaubwürdige Ganzkörper-Präsenz einsetzen lassen. Genau hier liegt eine besondere technische Herausforderung: Viele bestehende Anbieter konzentrieren sich auf Avatare im Gesichts- oder Brustbereich, weil Ganzkörperdarstellungen deutlich komplexer in Aufbau, Steuerung und Wirkung sind.</p>
+            <p>Im Holoboard-Kontext wurde deshalb untersucht, wie sich mit einem besonderen Verfahren eine erweiterte Avatarform realisieren lässt, die über übliche Talking-Head-Systeme hinausgeht. Ziel war eine digitale Präsenz, die stärker verkörpert wirkt und damit besser zu einem räumlichen, interaktiven Lehrsystem passt.</p>
+            <p>Diese Arbeit ist nicht nur eine Ergänzung des Konzepts, sondern ein eigenständiger Innovationsbeitrag: die Verbindung von Avatar-Technologie mit einer glaubwürdigeren, körperlicheren Form digitaler Interaktion.</p>
+          </div>
+        ),
+      },
+    ],
+  },
+  en: {
+    eyebrow: 'Phase 4: Refinement',
+    title: 'The Holoboard Concept',
+    intro: 'Click on the tiles to explore the technical details of each component.',
+    conceptTitle: 'Pedagogical Concept',
+    conceptIntro: 'The core problem of digital teaching has several dimensions: simply making learning content technically available is not enough. Research on online learning shows that digital formats become markedly less effective when social presence, emotional connection and visible instructor presence are lacking.',
+    twoScenarios: 'Two teaching scenarios in detail',
+    syncTitle: 'Synchronous Teaching',
+    syncSub: 'Full-body AI avatar for live interaction',
+    asyncTitle: 'Asynchronous Teaching',
+    asyncSub: 'The Holoboard as an interactive teaching medium',
+    expand: 'Expand scenario',
+    passive: 'Passive screen-based formats often fail to sustain attention or foster deep engagement. Successful digital teaching therefore takes more than media technology: it needs interaction, personalisation, authenticity and a learning environment that feels human.',
+    syncHeading: 'Synchronous Teaching with a Full-Body AI Avatar',
+    syncText: 'For live settings, an AI-powered full-body avatar interacts with learners in real time. It runs on a retrieval-augmented generation (RAG) system connected through a no-code platform, so even instructors or exhibitors with little technical background can maintain, update and manage the content. Its pedagogical value lies in combining interaction, personalisation and authenticity: rather than appearing as an anonymous system response, content is delivered in the embodied form of familiar people, such as lecturers, researchers or project leads. As a result, digital communication becomes more socially relatable, more credible and more emotionally compelling.',
+    syncVideo: 'Demonstration: synchronous teaching with a full-body AI avatar',
+    asyncHeading: 'Asynchronous Teaching with the Holoboard',
+    asyncText: 'For recorded teaching content, the classic Lightboard evolves into the Holoboard. Instructors write on a transparent glass surface while overlaying digital elements such as animations, videos or additional visual layers. An infrared touchscreen makes the board interactive. Pedagogically, the result is a format that brings together visible instructor presence, writing on the board, gesture, visualisation and media enrichment in a single learning scene. The Holoboard thus creates an immersive, visually striking learning environment that makes asynchronous formats more active, easier to follow and more engaging.',
+    asyncVideo: 'Demonstration: asynchronous teaching with the Holoboard',
+    conclusion: 'The Holoboard is therefore more than a technical system: it is a pedagogical approach to restoring presence, interaction and authenticity in digital learning environments.',
+    foundation: 'Research basis: Community of Inquiry, social presence, instructor presence, ICAP, personalisation principle.',
+    setupAlt: 'Visualisation of the Holoboard set-up',
+    close: 'Close',
+    detailSuffix: ' (detail)',
+    videoFallback: 'Your browser does not support the video tag.',
+    features: [
+      {
+        title: "Local AI and RAG",
+        description: "Data-sovereign AI running on the system itself",
+        detailedText: (
+          <div className="space-y-4">
+            <p>A core component of the Holoboard is a locally hosted AI infrastructure. “Local” here means that models, data processing and knowledge retrieval need not rely on external cloud services but can run directly on the institution’s own hardware. This matters particularly when sensitive content, internal documents or university data are being processed.</p>
+            <p>RAG (“retrieval-augmented generation”) gives the AI targeted access to documents. Instead of drawing only on the model’s general knowledge, the system bases its answers on specific, project-related content. The resulting answers are more traceable, better grounded in context and suitable for teaching and demonstration purposes.</p>
+            <div>
+              <p className="font-bold mb-2">Benefits:</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>control over data processing</li>
+                <li>less reliance on external platforms</li>
+                <li>targeted access to project-specific knowledge</li>
+                <li>a robust foundation for interactive teaching and assistant scenarios</li>
+              </ul>
+            </div>
+          </div>
+        ),
+      },
+      {
+        title: "Lightboard 2.0",
+        description: "Taking an established teaching principle further",
+        detailedText: (
+          <div className="space-y-4">
+            <p>The Holoboard builds on the familiar Lightboard principle: instructors stand behind a transparent writing surface and explain directly through it, making content visible to learners as they go. Rather than simply adopting this principle, the project developed it further, both technically and spatially.</p>
+            <p>The key question was how explaining, writing and pointing could be combined with a new form of digital presence. The classic Lightboard thus grew into a broader system concept, designed with a stronger focus on interaction, hybrid use and visual impact.</p>
+          </div>
+        ),
+      },
+      {
+        title: "Interactive Holobox",
+        description: "Display, presence space and interactive surface",
+        detailedText: (
+          <div className="space-y-4">
+            <p>The Holobox is the concept’s central spatial display. It brings visual presence, presentation surface and interaction together in one system. The result is more than a technical interface: it opens up a new perceptual space for digital teaching.</p>
+            <p>The project explored how such a box could do more than display content, supporting communication, eye contact, a sense of space and interaction as well. The Holobox is therefore not simply hardware but an integral part of the pedagogical experience.</p>
+          </div>
+        ),
+      },
+      {
+        title: "Digital Avatars",
+        description: "From talking head to full-body avatar",
+        detailedText: (
+          <div className="space-y-4">
+            <p>A key step in the project was working out how digital avatars could be used not just in the classic head-and-shoulders format, but as a convincing full-body presence. This is precisely where a particular technical challenge lies: many existing providers focus on avatars that show only the face or upper body, because full-body representations are considerably more complex to build, control and render convincingly.</p>
+            <p>Within the Holoboard project, the team therefore investigated how a special technique could produce an extended form of avatar that goes beyond conventional talking-head systems. The goal was a digital presence that feels more embodied and so fits better into a spatial, interactive teaching system.</p>
+            <p>This work is not merely an add-on to the concept but an innovation in its own right: combining avatar technology with a more credible, more physical form of digital interaction.</p>
+          </div>
+        ),
+      },
+    ],
+  },
+};
 
 export default function HoloboardKonzept() {
+  const t = useT(T);
   const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
   const [isConceptExpanded, setIsConceptExpanded] = useState(false);
 
-  const features = [
-    {
-      id: 1,
-      icon: <Cpu className="w-6 h-6 text-hm-turquoise" />,
-      title: "Lokale KI und RAG",
-      description: "Datensouveräne Intelligenz direkt am System",
-      detailedText: (
-        <div className="space-y-4">
-          <p>Ein zentraler Bestandteil des Holoboards ist eine lokal laufende KI-Infrastruktur. „Lokal“ bedeutet hier, dass Modelle, Datenverarbeitung und Wissenszugriff nicht zwingend über externe Cloud-Dienste laufen müssen, sondern direkt auf eigener Hardware betrieben werden können. Das ist besonders relevant, wenn sensible Inhalte, interne Dokumente oder hochschulnahe Daten verarbeitet werden.</p>
-          <p>RAG („Retrieval-Augmented Generation“) ergänzt die KI um gezielten Dokumentenzugriff. Das System antwortet dann nicht nur aus einem allgemeinen Modellwissen heraus, sondern auf Basis konkreter, projektbezogener Inhalte. So entstehen nachvollziehbarere, kontextbezogene und für Lehre und Demonstration nutzbare Antworten.</p>
-          <div>
-            <p className="font-bold mb-2">Vorteile:</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>kontrollierbare Datenverarbeitung</li>
-              <li>geringere Abhängigkeit von externen Plattformen</li>
-              <li>gezielter Zugriff auf projektspezifisches Wissen</li>
-              <li>robuste Grundlage für interaktive Lehr- und Assistenzszenarien</li>
-            </ul>
-          </div>
-        </div>
-      ),
-      image: "https://holoboard-assets.netlify.app/images/architektur-07-rag-wissenssystem.png"
-    },
-    {
-      id: 2,
-      icon: <Monitor className="w-6 h-6 text-hm-red" />,
-      title: "Lightboard 2.0",
-      description: "Weiterentwicklung eines etablierten Lehrprinzips",
-      detailedText: (
-        <div className="space-y-4">
-          <p>Das Holoboard baut auf dem bekannten Lightboard-Prinzip auf, bei dem Lehrende direkt in ein transparentes Schreibmedium hinein erklären und Inhalte für Lernende sichtbar machen. Für das Projekt wurde dieses Prinzip nicht einfach übernommen, sondern technisch und räumlich weiterentwickelt.</p>
-          <p>Entscheidend war die Frage, wie sich das direkte Erklären, Schreiben und Zeigen mit einer neuen Form digitaler Präsenz verbinden lässt. Aus dem klassischen Lightboard wurde so eine erweiterte Systemidee, die stärker auf Interaktion, hybride Nutzung und visuelle Wirkung ausgelegt ist.</p>
-        </div>
-      ),
-      image: "https://holoboard-assets.netlify.app/images/084-confluence_media-img-1086.jpg",
-      secondaryImage: "https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg"
-    },
-    {
-      id: 3,
-      icon: <Layout className="w-6 h-6 text-hm-blue" />,
-      title: "Interaktive Holobox",
-      description: "Display, Präsenzraum und Interaktionsfläche",
-      detailedText: (
-        <div className="space-y-4">
-          <p>Die Holobox ist das zentrale räumliche Display des Konzepts. Sie verbindet visuelle Präsenz, Präsentationsfläche und Interaktion in einem gemeinsamen System. Dadurch entsteht nicht nur eine technische Oberfläche, sondern ein neuer Wahrnehmungsraum für digitale Lehre.</p>
-          <p>Im Projekt wurde untersucht, wie eine solche Box nicht nur Inhalte anzeigen, sondern Kommunikation, Blickbezug, räumliche Wirkung und Interaktion unterstützen kann. Die Holobox ist damit nicht bloß Hardware, sondern ein integraler Teil des didaktischen Erlebnisses.</p>
-        </div>
-      ),
-      image: "https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg",
-      video: "https://holoboard-videos-a.netlify.app/videos/087-confluence_media-holobox-deu.mp4"
-    },
-    {
-      id: 4,
-      icon: <MessageSquare className="w-6 h-6 text-gray-700" />,
-      title: "Digitale Avatare",
-      description: "Vom Talking Head zum Ganzkörper-Avatar",
-      detailedText: (
-        <div className="space-y-4">
-          <p>Ein zentraler Entwicklungsschritt im Projekt war die Frage, wie sich digitale Avatare nicht nur als klassische Kopf-Schulter-Darstellung, sondern als glaubwürdige Ganzkörper-Präsenz einsetzen lassen. Genau hier liegt eine besondere technische Herausforderung: Viele bestehende Anbieter konzentrieren sich auf Avatare im Gesichts- oder Brustbereich, weil Ganzkörperdarstellungen deutlich komplexer in Aufbau, Steuerung und Wirkung sind.</p>
-          <p>Im Holoboard-Kontext wurde deshalb untersucht, wie sich mit einem besonderen Verfahren eine erweiterte Avatarform realisieren lässt, die über übliche Talking-Head-Systeme hinausgeht. Ziel war eine digitale Präsenz, die stärker verkörpert wirkt und damit besser zu einem räumlichen, interaktiven Lehrsystem passt.</p>
-          <p>Diese Arbeit ist nicht nur eine Ergänzung des Konzepts, sondern ein eigenständiger Innovationsbeitrag: die Verbindung von Avatar-Technologie mit einer glaubwürdigeren, körperlicheren Form digitaler Interaktion.</p>
-        </div>
-      ),
-      image: "https://holoboard-assets.netlify.app/images/081-confluence_media-bildschirmfoto-2025-01-28-um-18.22.56.png"
-    }
-  ];
+  const features = featureMeta.map((m, i) => ({ ...m, ...t.features[i] }));
 
   return (
     <section id="konzept" className="py-32 bg-gray-50 relative overflow-hidden">
@@ -91,10 +213,10 @@ export default function HoloboardKonzept() {
           viewport={{ once: true }}
           className="max-w-3xl mb-16"
         >
-          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">Phase 4 – Weiterentwicklung</h2>
-          <h3 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tighter">Das Holoboard Konzept</h3>
+          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
+          <h3 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tighter">{t.title}</h3>
           <p className="text-xl text-gray-600 font-light leading-relaxed">
-            Klicken Sie auf die Kacheln, um tiefer in die technologischen Details der einzelnen Komponenten einzutauchen.
+            {t.intro}
           </p>
         </motion.div>
 
@@ -114,16 +236,16 @@ export default function HoloboardKonzept() {
                 <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform duration-500">
                   <BookOpen className="w-6 h-6 text-hm-red" />
                 </div>
-                <h4 className="text-3xl font-black text-gray-900 tracking-tighter">Didaktisches Lehrkonzept</h4>
+                <h4 className="text-3xl font-black text-gray-900 tracking-tighter">{t.conceptTitle}</h4>
               </div>
               
               <p className="text-lg text-gray-700 leading-relaxed font-light mb-6">
-                Das Grundproblem digitaler Lehre ist multidimensional: Es reicht nicht aus, Lerninhalte nur technisch verfügbar zu machen. Forschung zu Online-Lernen zeigt, dass digitale Formate besonders dann an Wirksamkeit verlieren, wenn soziale Präsenz, emotionale Bindung und sichtbare Lehrendenpräsenz fehlen.
+                {t.conceptIntro}
               </p>
 
               {!isConceptExpanded ? (
                 <div className="pt-2">
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Zwei Lehrszenarien im Detail</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">{t.twoScenarios}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <motion.div
                       animate={{ y: [0, -2, 0] }}
@@ -138,10 +260,10 @@ export default function HoloboardKonzept() {
                         </div>
                       </div>
                       <div className="relative h-full flex flex-col justify-end p-5 text-white">
-                        <div className="text-sm font-bold mb-1">Synchrone Lehre</div>
-                        <div className="text-xs text-white/80 font-light mb-3">Full-Body-KI-Avatar für Live-Interaktion</div>
+                        <div className="text-sm font-bold mb-1">{t.syncTitle}</div>
+                        <div className="text-xs text-white/80 font-light mb-3">{t.syncSub}</div>
                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
-                          <span>Szenario aufklappen</span>
+                          <span>{t.expand}</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </div>
                       </div>
@@ -159,10 +281,10 @@ export default function HoloboardKonzept() {
                         </div>
                       </div>
                       <div className="relative h-full flex flex-col justify-end p-5 text-white">
-                        <div className="text-sm font-bold mb-1">Asynchrone Lehre</div>
-                        <div className="text-xs text-white/80 font-light mb-3">Holoboard als interaktives Lehrmedium</div>
+                        <div className="text-sm font-bold mb-1">{t.asyncTitle}</div>
+                        <div className="text-xs text-white/80 font-light mb-3">{t.asyncSub}</div>
                         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
-                          <span>Szenario aufklappen</span>
+                          <span>{t.expand}</span>
                           <ArrowRight className="w-3.5 h-3.5" />
                         </div>
                       </div>
@@ -188,44 +310,44 @@ export default function HoloboardKonzept() {
                 <div className="p-8 md:p-12 pt-0 border-t border-gray-100">
                   <div className="max-w-4xl mx-auto pt-8">
                     <p className="text-lg text-gray-700 leading-relaxed font-light mb-12">
-                      Passive Bildschirmformate fördern häufig weder nachhaltige Aufmerksamkeit noch tiefes Engagement. Erfolgreiche digitale Lehre braucht deshalb mehr als Medientechnik: Sie braucht Interaktion, Personalisierung, Authentizität und eine als menschlich wahrnehmbare Lernumgebung.
+                      {t.passive}
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
                       {/* Szenario 1 */}
                       <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
-                        <h5 className="text-xl font-bold text-hm-red mb-4">Synchrone Lehre mit Full-Body-KI-Avatar</h5>
+                        <h5 className="text-xl font-bold text-hm-red mb-4">{t.syncHeading}</h5>
                         <p className="text-gray-700 leading-relaxed font-light">
-                          Für Live-Situationen entsteht ein KI-gestützter Full-Body-Avatar, der in Echtzeit mit Lernenden interagiert. Er basiert auf einem Retrieval-Augmented-Generation-System (RAG), das über eine No-Code-Plattform eingebunden ist. So können auch technisch wenig versierte Lehrende oder Ausstellende Inhalte pflegen, aktualisieren und steuern. Der didaktische Mehrwert liegt in der Verbindung von Interaktion, Personalisierung und Authentizität: Inhalte erscheinen nicht als anonyme Systemantwort, sondern in der verkörperten Form vertrauter Personen wie Lehrender, Forschender oder Projektverantwortlicher. Dadurch wird digitale Kommunikation sozial anschlussfähiger, glaubwürdiger und emotional wirksamer.
+                          {t.syncText}
                         </p>
                         <DidacticVideo 
                           src="https://holoboard-videos-b.netlify.app/videos/073-final_videos-webseite-ger.mp4" 
-                          title="Demonstration: Synchrone Lehre mit Full-Body-KI-Avatar" 
+                          title={t.syncVideo} 
                         />
                       </div>
 
                       {/* Szenario 2 */}
                       <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
-                        <h5 className="text-xl font-bold text-hm-blue mb-4">Asynchrone Lehre mit Holoboard</h5>
+                        <h5 className="text-xl font-bold text-hm-blue mb-4">{t.asyncHeading}</h5>
                         <p className="text-gray-700 leading-relaxed font-light">
-                          Für aufgezeichnete Lehrinhalte wird das klassische Lightboard zum Holoboard weiterentwickelt. Lehrende schreiben auf einer transparenten Glasfläche und können gleichzeitig digitale Elemente wie Animationen, Videos oder zusätzliche visuelle Ebenen einblenden. Dank eines infrarotgesteuerten Touchscreens ist das Board interaktiv nutzbar. Didaktisch entsteht dadurch ein Format, das sichtbare Lehrendenpräsenz, Anschrieb, Gestik, Visualisierung und mediale Erweiterung in einer gemeinsamen Lernszene verbindet. Die Holoboard schafft so eine immersive und visuell prägnante Lernumgebung, die asynchrone Formate aktiver, verständlicher und engagementstärker macht.
+                          {t.asyncText}
                         </p>
                         <DidacticVideo 
                           src="https://video.hm.edu/getMedium/default/8ff6a30eadda7484c8df6efe74a78163.mp4" 
-                          title="Demonstration: Asynchrone Lehre mit Holoboard" 
+                          title={t.asyncVideo} 
                         />
                       </div>
                     </div>
 
                     <div className="bg-gray-900 text-white p-8 rounded-2xl text-center mb-8">
                       <p className="text-xl font-light leading-relaxed">
-                        Das Holoboard ist deshalb nicht nur ein technisches System, sondern ein didaktischer Ansatz zur Wiedergewinnung von Präsenz, Interaktion und Authentizität in digitalen Lernumgebungen.
+                        {t.conclusion}
                       </p>
                     </div>
 
                     <div className="text-center">
                       <p className="text-sm text-gray-500 italic">
-                        Wissenschaftliche Grundlage: Community of Inquiry, Social Presence, Instructor Presence, ICAP, Personalization Principle.
+                        {t.foundation}
                       </p>
                     </div>
                   </div>
@@ -246,7 +368,7 @@ export default function HoloboardKonzept() {
             <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl bg-gray-900 relative transform-gpu hover:rotate-y-12 hover:rotate-x-12 transition-transform duration-700 ease-out p-8 flex items-center justify-center">
               <img 
                 src="https://holoboard-assets.netlify.app/images/083-confluence_media-d.png" 
-                alt="Holoboard Setup Visualization" 
+                alt={t.setupAlt} 
                 className="w-full h-full object-contain opacity-95 relative z-10"
                 referrerPolicy="no-referrer"
               />
@@ -310,6 +432,7 @@ export default function HoloboardKonzept() {
                       <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
                       <button 
                         onClick={() => setSelectedFeature(null)}
+                        aria-label={t.close}
                         className="absolute top-6 right-6 w-10 h-10 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors"
                       >
                         <X className="w-5 h-5" />
@@ -331,7 +454,7 @@ export default function HoloboardKonzept() {
                       </div>
                       {f.secondaryImage && (
                         <div className="mt-8 rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-                          <img src={f.secondaryImage} alt={`${f.title} Detail`} className="w-full h-auto" referrerPolicy="no-referrer" />
+                          <img src={f.secondaryImage} alt={`${f.title}${t.detailSuffix}`} className="w-full h-auto" referrerPolicy="no-referrer" />
                         </div>
                       )}
                     </div>
@@ -397,6 +520,7 @@ function SpotlightCard({ feature, index, onClick }: { key?: React.Key, feature: 
 }
 
 function DidacticVideo({ src, title }: { src: string; title: string }) {
+  const t = useT(T);
   return (
     <div className="mt-6 rounded-2xl overflow-hidden border border-gray-100 bg-black aspect-video shadow-sm">
       <video
@@ -408,7 +532,7 @@ function DidacticVideo({ src, title }: { src: string; title: string }) {
         playsInline
         className="w-full h-full"
       >
-        Ihr Browser unterstützt das Video-Tag nicht.
+        {t.videoFallback}
       </video>
     </div>
   );

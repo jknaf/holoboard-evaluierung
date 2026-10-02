@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldAlert } from 'lucide-react';
+import { useT } from '../i18n';
+
+const T = {
+  de: {
+    title: 'Privatsphäre & Cookies',
+    text: 'Wir verwenden auf dieser Website keine Tracking-Cookies. Im Local Storage Ihres Browsers wird ausschließlich gespeichert, ob Sie diesen Hinweis bereits geschlossen haben, damit er nicht bei jedem Besuch erneut erscheint. Der interaktive KI-Chatbot ist unabhängig davon verfügbar; personenbezogene Daten werden dabei erst verarbeitet, wenn Sie ihn aktiv nutzen und eine Nachricht absenden. Weitere rechtliche Details finden Sie in unserer Datenschutzerklärung.',
+    essential: 'Nur essenzielle',
+    all: 'Alle akzeptieren',
+  },
+  en: {
+    title: 'Privacy & Cookies',
+    text: 'We do not use tracking cookies on this website. Your browser\'s local storage only records whether you have already closed this notice, so that it does not reappear on every visit. The interactive AI chatbot is available regardless; personal data is only processed once you actively use it and send a message. For further legal details, please see our Privacy Policy.',
+    essential: 'Essential only',
+    all: 'Accept all',
+  },
+};
 
 export default function CookieConsent() {
+  const t = useT(T);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -40,10 +57,10 @@ export default function CookieConsent() {
                 <div className="w-10 h-10 rounded-full bg-hm-red/10 flex items-center justify-center text-hm-red">
                   <ShieldAlert className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">Privatsphäre & Cookies</h3>
+                <h3 className="text-lg font-bold text-gray-900">{t.title}</h3>
               </div>
               <p className="text-sm text-gray-600 leading-relaxed font-light">
-                Wir verwenden auf dieser Website keine Tracking-Cookies. Im Local Storage Ihres Browsers wird ausschließlich gespeichert, ob Sie diesen Hinweis bereits geschlossen haben, damit er nicht bei jedem Besuch erneut erscheint. Der interaktive KI-Chatbot ist unabhängig davon verfügbar; personenbezogene Daten werden dabei erst verarbeitet, wenn Sie ihn aktiv nutzen und eine Nachricht absenden. Weitere rechtliche Details finden Sie in unserer Datenschutzerklärung.
+                {t.text}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
@@ -51,13 +68,13 @@ export default function CookieConsent() {
                 onClick={handleAcceptEssential}
                 className="px-6 py-3.5 rounded-xl font-medium text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors whitespace-nowrap"
               >
-                Nur essenzielle
+                {t.essential}
               </button>
               <button
                 onClick={handleAcceptAll}
                 className="px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-hm-red hover:bg-red-700 transition-colors whitespace-nowrap shadow-sm"
               >
-                Alle akzeptieren
+                {t.all}
               </button>
             </div>
           </div>

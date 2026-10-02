@@ -1,16 +1,41 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
+import { useT } from '../i18n';
+
+const T = {
+  de: {
+    benefits: [
+      "Etablierung neuer, interaktiver Lehrformate",
+      "Aufbau einer modernen technologischen Infrastruktur",
+      "Steigerung der KI-Kompetenz bei Lehrenden und Studierenden",
+      "Starke Innovationsimpulse für die gesamte Hochschule",
+      "Positionierung der HM als Vorreiter in der digitalen Lehre",
+      "Förderung interdisziplinärer Zusammenarbeit"
+    ],
+    alt: "Holoboard-Projekt auf der TURN-Konferenz",
+    eyebrow: "Mehrwert",
+    title: "Nutzen für die Hochschule München",
+    intro: "Die Innovationsprofessur liefert einen direkten und nachhaltigen Mehrwert für die Hochschule München, der weit über das eigentliche Projekt hinausgeht.",
+  },
+  en: {
+    benefits: [
+      "Establishing new, interactive teaching formats",
+      "Building modern technological infrastructure",
+      "Strengthening AI skills among instructors and students",
+      "Powerful impetus for innovation across the university",
+      "Positioning HM as a pioneer in digital teaching",
+      "Fostering interdisciplinary collaboration"
+    ],
+    alt: "Holoboard project at the TURN Conference",
+    eyebrow: "Added Value",
+    title: "Benefits for Munich University of Applied Sciences",
+    intro: "The Innovation Professorship delivers direct, lasting value for Munich University of Applied Sciences (HM), reaching far beyond the project itself.",
+  },
+};
 
 export default function Nutzen() {
-  const benefits = [
-    "Etablierung neuer, interaktiver Lehrformate",
-    "Aufbau einer modernen technologischen Infrastruktur",
-    "Steigerung der KI-Kompetenz bei Lehrenden und Studierenden",
-    "Starke Innovationsimpulse für die gesamte Hochschule",
-    "Positionierung der HM als Vorreiter in der digitalen Lehre",
-    "Förderung interdisziplinärer Zusammenarbeit"
-  ];
+  const t = useT(T);
 
   return (
     <section id="nutzen" className="py-24 bg-gray-50">
@@ -25,7 +50,7 @@ export default function Nutzen() {
             <div className="aspect-square rounded-full overflow-hidden shadow-2xl border-8 border-white bg-white relative">
               <img 
                 src="https://holoboard-assets.netlify.app/images/075-confluence_media-20241115-114416.jpg" 
-                alt="Holoboard-Projekt auf der TURN-Konferenz" 
+                alt={t.alt} 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -41,15 +66,14 @@ export default function Nutzen() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">Mehrwert</h2>
-            <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">Nutzen für die Hochschule München</h3>
+            <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
+            <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">{t.title}</h3>
             <p className="text-lg text-gray-600 font-light leading-relaxed mb-8">
-              Die Innovationsprofessur liefert einen direkten und nachhaltigen Mehrwert für die Hochschule München, 
-              der weit über das eigentliche Projekt hinausgeht.
+              {t.intro}
             </p>
 
             <ul className="space-y-4">
-              {benefits.map((benefit, index) => (
+              {t.benefits.map((benefit, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-hm-red flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700 font-medium">{benefit}</span>
