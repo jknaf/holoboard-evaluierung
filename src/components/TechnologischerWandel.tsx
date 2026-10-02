@@ -38,20 +38,20 @@ export default function TechnologischerWandel() {
         </div>
       </div>
 
-      {/* Nachher: wischt einmal von links herein, sobald sichtbar */}
-      <motion.div
-        initial={reduced ? false : { clipPath: 'inset(0 100% 0 0)' }}
-        whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-        className="flex items-center bg-hm-blue text-white px-6 py-20 sm:px-10 lg:p-16 xl:p-24"
-      >
-        <div className="max-w-xl">
+      {/* Nachher: blaue Fläche immer sichtbar, nur der Text blendet ein (ein Wisch per clip-path ließ sie leer) */}
+      <div className="flex items-center bg-hm-blue text-white px-6 py-20 sm:px-10 lg:p-16 xl:p-24">
+        <motion.div
+          className="max-w-xl"
+          initial={reduced ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        >
           <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">{t.newEyebrow}</h2>
           <h3 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">{t.newTitle}</h3>
           <p className="text-lg md:text-xl text-blue-100 font-light leading-relaxed">{t.newText}</p>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 }
