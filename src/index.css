@@ -104,20 +104,145 @@ body {
   }
 }
 
-/* Hero: türkiser Glanz läuft über den Titel, wie eine Spiegelung auf der Glasscheibe */
-.holo-sheen {
-  background-image: linear-gradient(110deg, currentColor 0%, currentColor 42%, #bff5f5 50%, currentColor 58%, currentColor 100%);
-  background-size: 300% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: holo-sheen 7s ease-in-out 3.4s infinite;
-}
-@keyframes holo-sheen {
-  0% { background-position: 100% 0; }
-  30%, 100% { background-position: 0 0; }
-}
+/* Hero-Trailer: drei Begriffe tauchen nacheinander auf und verschwinden, dann erscheint der Titel.
+   Läuft einmal (15 s Zeitachse, fill-mode both). Grundzustand jeder Klasse = Endzustand,
+   damit bei „Bewegung reduzieren“ ohne Animation sofort der fertige Hero steht. */
+.hero-an { animation-duration: 15s; animation-fill-mode: both; animation-timing-function: cubic-bezier(.16,1,.3,1); }
+.hero-term { opacity: 0; }
+.hero-t1 { animation-name: hero-t1; }
+.hero-t2 { animation-name: hero-t2; }
+.hero-t3 { animation-name: hero-t3; }
+.hero-scan { position: absolute; left: -12%; right: -12%; bottom: 0; height: 2px; opacity: 0; background: linear-gradient(90deg, transparent, #33CCCC, transparent); box-shadow: 0 0 14px 3px rgba(51,204,204,.75); animation-name: hero-scan; }
+.hero-glass { position: absolute; inset: -22px -34px; border-radius: 14px; border: 1px solid rgba(255,255,255,.3); background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.03) 45%, rgba(255,255,255,.1) 55%, rgba(255,255,255,.02)); opacity: 0; animation-name: hero-glass; }
+.hero-pen { position: absolute; top: 50%; left: 100%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: #FC5555; box-shadow: 0 0 14px 4px rgba(252,85,85,.85); opacity: 0; animation-name: hero-pen; }
+.hero-flash { opacity: 0; animation-name: hero-flash; background: radial-gradient(closest-side, #ffffff, rgba(191,245,245,.6), transparent); border-radius: 50%; }
+.hero-dolly { animation-name: hero-dolly; }
+.hero-tclip { animation-name: hero-tclip; }
+.hero-mat { background-size: 300% 100%, 100% 100%; background-position: 100% 0, 0 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: hero-sheen 7s ease-in-out 8.2s infinite; }
+.hero-holo { background-image: linear-gradient(110deg, transparent 42%, rgba(214,255,255,.95) 50%, transparent 58%), linear-gradient(180deg, #ffffff 0%, #f1fbfb 50%, #9fb6bb 100%); }
+.hero-brd { background-image: linear-gradient(110deg, transparent 42%, rgba(255,225,225,.95) 50%, transparent 58%), linear-gradient(180deg, #ff9090 0%, #FC5555 50%, #c22e2e 100%); }
+.hero-ghost { opacity: 0; mix-blend-mode: screen; }
+.hero-gc { color: #33CCCC; animation-name: hero-gc; }
+.hero-gr { color: #FC5555; animation-name: hero-gr; }
+.hero-refl { opacity: .16; -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 65%); mask-image: linear-gradient(to top, #000 0%, transparent 65%); animation-name: hero-refl; }
+.hero-glow { background: radial-gradient(closest-side at 40% 50%, rgba(252,85,85,.16), transparent), radial-gradient(closest-side at 62% 50%, rgba(51,204,204,.10), transparent); animation-name: hero-glow; }
+.hero-scene { animation-name: hero-scene; }
+.hero-badge { animation-name: hero-badge; }
+.hero-txt { animation-name: hero-txt; }
 @media (prefers-reduced-motion: reduce) {
-  .holo-sheen { animation: none; }
+  .hero-an, .hero-mat { animation: none !important; }
+}
+@keyframes hero-t1 {
+  0.00% { opacity: 1; clip-path: inset(100% 0 0 0) }
+  2.00% { opacity: 1; clip-path: inset(100% 0 0 0); text-shadow: -6px 0 rgba(51,204,204,.9), 6px 0 rgba(252,85,85,.9); animation-timing-function: linear }
+  5.33% { opacity: 1; clip-path: inset(0 0 0 0) }
+  5.80% { opacity: .3 }
+  6.33% { opacity: 1 }
+  7.33% { text-shadow: 0 0 transparent, 0 0 transparent; opacity: 1; filter: blur(0); transform: scale(1) }
+  11.33% { opacity: 1; filter: blur(0); transform: scale(1); clip-path: inset(0 0 0 0) }
+  14.00% { opacity: 0; filter: blur(14px); transform: translateY(-16px) scale(1.04) }
+  100.00% { opacity: 0 }
+}
+@keyframes hero-scan {
+  0.00% { opacity: 0; bottom: 0% }
+  2.00% { opacity: 1; bottom: 0%; animation-timing-function: linear }
+  5.33% { opacity: 1; bottom: 100% }
+  6.33% { opacity: 0; bottom: 100% }
+  100.00% { opacity: 0 }
+}
+@keyframes hero-glass {
+  0.00% { opacity: 0; transform: scale(.94) }
+  14.33% { opacity: 0; transform: scale(.94) }
+  16.00% { opacity: 1; transform: scale(1) }
+  25.33% { opacity: 1; transform: scale(1) }
+  28.00% { opacity: 0; filter: blur(14px); transform: scale(1.06) }
+  100.00% { opacity: 0 }
+}
+@keyframes hero-t2 {
+  0.00% { opacity: 1; clip-path: inset(-20% 100% -20% 0) }
+  16.00% { opacity: 1; clip-path: inset(-20% 100% -20% 0); animation-timing-function: cubic-bezier(.4,0,.6,1) }
+  20.00% { opacity: 1; clip-path: inset(-20% 0 -20% 0) }
+  25.33% { opacity: 1; filter: blur(0); transform: scale(1); clip-path: inset(-20% 0 -20% 0) }
+  28.00% { opacity: 0; filter: blur(14px); transform: scale(1.06) }
+  100.00% { opacity: 0 }
+}
+@keyframes hero-pen {
+  0.00% { opacity: 0; left: 0% }
+  15.67% { opacity: 1; left: 0%; animation-timing-function: cubic-bezier(.4,0,.6,1) }
+  20.00% { opacity: 1; left: 100% }
+  21.33% { opacity: 0; left: 100% }
+  100.00% { opacity: 0; left: 100% }
+}
+@keyframes hero-t3 {
+  0.00% { opacity: 0 }
+  29.20% { opacity: 0 }
+  29.67% { opacity: 1; filter: blur(0); transform: scale(1) }
+  40.00% { opacity: 1; filter: blur(0); transform: scale(1) }
+  42.67% { opacity: 0; filter: blur(14px); transform: scale(.94) }
+  100.00% { opacity: 0 }
+}
+@keyframes hero-flash {
+  0.00% { opacity: 0; width: 6px }
+  43.33% { opacity: 0; width: 6px }
+  44.53% { opacity: 1; width: 50px }
+  48.00% { opacity: 0; width: 1100px }
+  100.00% { opacity: 0; width: 1100px }
+}
+@keyframes hero-tclip {
+  0.00% { clip-path: inset(0 50% 0 50%); letter-spacing: .16em }
+  44.00% { clip-path: inset(0 50% 0 50%); letter-spacing: .16em }
+  50.00% { clip-path: inset(-10% -5% -10% -5%); letter-spacing: -.05em }
+  100.00% { clip-path: inset(-10% -5% -10% -5%); letter-spacing: -.05em }
+}
+@keyframes hero-dolly {
+  0.00% { transform: scale(1.12) }
+  44.00% { transform: scale(1.12); animation-timing-function: cubic-bezier(.2,.6,.2,1) }
+  65.33% { transform: scale(1) }
+  100.00% { transform: scale(1) }
+}
+@keyframes hero-gc {
+  0.00% { opacity: 0 }
+  44.00% { opacity: .9; transform: translateX(-10px) }
+  50.00% { opacity: 0; transform: translateX(0) }
+  100.00% { opacity: 0 }
+}
+@keyframes hero-gr {
+  0.00% { opacity: 0 }
+  44.00% { opacity: .9; transform: translateX(10px) }
+  50.00% { opacity: 0; transform: translateX(0) }
+  100.00% { opacity: 0 }
+}
+@keyframes hero-refl {
+  0.00% { opacity: 0 }
+  49.33% { opacity: 0 }
+  54.67% { opacity: .16 }
+  100.00% { opacity: .16 }
+}
+@keyframes hero-glow {
+  0.00% { opacity: 0 }
+  44.00% { opacity: 0 }
+  50.67% { opacity: 1 }
+  100.00% { opacity: 1 }
+}
+@keyframes hero-scene {
+  0.00% { opacity: 0; filter: brightness(.3) }
+  50.67% { opacity: 0; filter: brightness(.3) }
+  58.67% { opacity: 1; filter: brightness(1) }
+  100.00% { opacity: 1; filter: none }
+}
+@keyframes hero-badge {
+  0.00% { opacity: 0; transform: translateY(-8px) }
+  52.00% { opacity: 0; transform: translateY(-8px) }
+  56.67% { opacity: 1; transform: none }
+  100.00% { opacity: 1; transform: none }
+}
+@keyframes hero-txt {
+  0.00% { opacity: 0; transform: translateY(10px) }
+  53.33% { opacity: 0; transform: translateY(10px) }
+  58.67% { opacity: 1; transform: none }
+  100.00% { opacity: 1; transform: none }
+}
+@keyframes hero-sheen {
+  0% { background-position: 100% 0, 0 0; }
+  30%, 100% { background-position: 0 0, 0 0; }
 }
