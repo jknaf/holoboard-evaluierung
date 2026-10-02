@@ -1,47 +1,29 @@
-import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { BookOpen, Bot, Boxes, Database } from 'lucide-react';
+import { useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import celikCover from '../assets/studentische-projekte-celik.png';
-import ActionCue from './ui/ActionCue';
+import SectionHeader from './ui/SectionHeader';
 import { useT } from '../i18n';
 
 // Sprachunabhängige Daten je Cluster und Projekt (gleiche Reihenfolge wie in T).
-const clusterMeta = [
-  {
-    icon: <Boxes className="w-5 h-5 text-hm-red" />,
-    accent: 'from-hm-red/10 via-white to-hm-red/5',
-    projects: [
-      { author: 'Daniil Tyves', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-tyves.png' },
-      { author: 'Tobias Klass', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-klass.png' },
-      { author: 'Arda Çelik', year: '2024', image: celikCover },
-    ],
-  },
-  {
-    icon: <Bot className="w-5 h-5 text-hm-blue" />,
-    accent: 'from-hm-blue/10 via-white to-hm-blue/5',
-    projects: [
-      { author: 'Markus Dieplinger', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-dieplinger.png' },
-      { author: 'Jakob Seitz', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-seitz.png' },
-      { author: 'Julius Papst', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-papst.png' },
-    ],
-  },
-  {
-    icon: <Database className="w-5 h-5 text-hm-darkblue" />,
-    accent: 'from-hm-darkblue/10 via-white to-hm-darkblue/5',
-    projects: [
-      { author: 'Yunus Alp Baydemir', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-baydemir.png' },
-    ],
-  },
-  {
-    icon: <BookOpen className="w-5 h-5 text-hm-turquoise" />,
-    accent: 'from-hm-turquoise/15 via-white to-hm-turquoise/5',
-    projects: [
-      { author: 'Maximilian Gawronski', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-gawronski.png', link: 'https://www.holobox-leitfaden.de' },
-      { author: 'Zübeyde Celep', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-celep.png' },
-      { author: 'Saliha Guynerane', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-guynerane.png' },
-    ],
-  },
-] as { icon: React.ReactNode; accent: string; projects: { author: string; year: string; image: string; link?: string }[] }[];
+const clusterMeta: { author: string; year: string; image: string; link?: string }[][] = [
+  [
+    { author: 'Daniil Tyves', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-tyves.png' },
+    { author: 'Tobias Klass', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-klass.png' },
+    { author: 'Arda Çelik', year: '2024', image: celikCover },
+  ],
+  [
+    { author: 'Markus Dieplinger', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-dieplinger.png' },
+    { author: 'Jakob Seitz', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-seitz.png' },
+    { author: 'Julius Papst', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-papst.png' },
+  ],
+  [{ author: 'Yunus Alp Baydemir', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-baydemir.png' }],
+  [
+    { author: 'Maximilian Gawronski', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-gawronski.png', link: 'https://www.holobox-leitfaden.de' },
+    { author: 'Zübeyde Celep', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-celep.png' },
+    { author: 'Saliha Guynerane', year: '2025', image: 'https://holoboard-assets.netlify.app/images/studentische-projekte-guynerane.png' },
+  ],
+];
 
 // Titel der Abschlussarbeiten bleiben in beiden Sprachen deutsch.
 const T = {
@@ -51,8 +33,8 @@ const T = {
     intro: `Rund um das Holoboard sind studentische Arbeiten in mehreren Entwicklungsfeldern entstanden.
             Die folgende Auswahl zeigt nicht nur einzelne Abschlussarbeiten, sondern einen zusammenhängenden
             Projektkontext aus Holobox-Entwicklung, Automatisierung, Wissenssystemen und didaktischer Gestaltung.`,
-    work: 'Arbeit',
-    works: 'Arbeiten',
+    all: 'Alle',
+    filterLabel: 'Nach Thema filtern',
     coverAlt: (kind: string, author: string) => `Erste Seite von ${kind} ${author}`,
     clusters: [
       {
@@ -155,8 +137,8 @@ const T = {
     intro: `Student work on the Holoboard spans several areas of development.
             The selection below is more than a set of individual theses: together, they form a connected
             body of work covering Holobox development, automation, knowledge systems and pedagogical design.`,
-    work: 'project',
-    works: 'projects',
+    all: 'All',
+    filterLabel: 'Filter by topic',
     coverAlt: (kind: string, author: string) => `First page of the ${kind} by ${author}`,
     clusters: [
       {
@@ -255,139 +237,125 @@ const T = {
   },
 };
 
+const pill = 'min-h-11 rounded-full px-4 text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hm-red focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F4F1]';
+
 export default function StudentischeProjekte() {
   const t = useT(T);
-  const [openClusters, setOpenClusters] = useState<Record<number, boolean>>({ 0: true });
+  const reduce = useReducedMotion();
+  const [filter, setFilter] = useState<number | null>(null);
+  const [selected, setSelected] = useState('Tobias Klass');
 
-  const toggleCluster = (index: number) => {
-    setOpenClusters((current) => ({
-      ...current,
-      [index]: !current[index],
-    }));
-  };
-
-  const clusters = t.clusters.map((c, i) => ({
-    ...clusterMeta[i],
-    ...c,
-    projects: c.projects.map((p, j) => ({ ...clusterMeta[i].projects[j], ...p })),
-  }));
+  const books = t.clusters.flatMap((c, ci) =>
+    c.projects.map((p, pi) => ({ ...clusterMeta[ci][pi], ...p, cluster: c.title, ci })),
+  );
+  const visible = books.filter((b) => filter === null || b.ci === filter);
+  const sel = visible.find((b) => b.author === selected) ?? visible[0];
 
   return (
-    <section id="studentische-projekte" className="py-32 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mb-16"
-        >
-          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
-          <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">{t.title}</h3>
-          <p className="text-lg text-gray-600 font-light leading-relaxed">
-            {t.intro}
-          </p>
-        </motion.div>
-
-        <div className="space-y-8">
-          {clusters.map((cluster, clusterIndex) => {
-            const isOpen = openClusters[clusterIndex];
-
-            return (
-              <motion.div
-                key={cluster.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: clusterIndex * 0.08 }}
-                className={`rounded-[2rem] border border-gray-200 bg-gradient-to-br ${cluster.accent} shadow-sm transition-shadow hover:shadow-lg`}
-              >
+    <section id="studentische-projekte" className="relative overflow-hidden py-24 lg:py-32 bg-[#F4F4F1] text-[#111111]">
+      <div className="max-w-[90rem] mx-auto px-6 lg:px-24">
+        <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
+          <SectionHeader index="03.2" eyebrow={t.eyebrow} title={t.title} intro={t.intro} tone="light" />
+          <div role="group" aria-label={t.filterLabel} className="flex flex-wrap gap-2 xl:max-w-[34rem] xl:justify-end">
+            {[t.all, ...t.clusters.map((c) => c.title)].map((label, i) => {
+              const on = (i === 0 ? null : i - 1) === filter;
+              return (
                 <button
+                  key={label}
                   type="button"
-                  onClick={() => toggleCluster(clusterIndex)}
-                  className="w-full p-6 md:p-8 text-left cursor-pointer"
-                  aria-expanded={isOpen}
+                  aria-pressed={on}
+                  onClick={() => setFilter(i === 0 ? null : i - 1)}
+                  className={`${pill} border ${on ? 'bg-[#111111] border-[#111111] text-white' : 'border-gray-300 text-gray-700 hover:border-hm-red hover:text-hm-red'}`}
                 >
-                  <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-                    <div className="max-w-3xl">
-                      <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500 mb-4">
-                        {cluster.icon}
-                        <span>{cluster.eyebrow}</span>
-                      </div>
-                      <h4 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight mb-3">{cluster.title}</h4>
-                      <p className="text-base md:text-lg text-gray-600 font-light leading-relaxed">{cluster.description}</p>
-                    </div>
-
-                    <div className="flex items-center gap-3 self-start">
-                      <span className="text-sm font-medium text-gray-500 bg-white/85 rounded-2xl px-4 py-3 border border-gray-200">
-                        {cluster.projects.length} {cluster.projects.length === 1 ? t.work : t.works}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-gray-200/80">
-                    <ActionCue mode="expand" expanded={isOpen} accent={isOpen ? 'red' : 'turquoise'} />
-                  </div>
+                  {label}
                 </button>
+              );
+            })}
+          </div>
+        </div>
 
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 md:px-8 pb-6 md:pb-8">
-                        <div className="h-px w-full bg-gray-200/80 mb-8" />
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                          {cluster.projects.map((project) => (
-                            <article
-                              key={project.title}
-                              className="group overflow-hidden rounded-[1.75rem] border border-gray-200 bg-white shadow-sm hover:shadow-xl transition-shadow duration-500"
-                            >
-                              <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
-                                <img
-                                  src={project.image}
-                                  alt={t.coverAlt(project.kind, project.author)}
-                                  className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
-                                  loading="lazy"
-                                />
-                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent p-4">
-                                  <div className="flex items-center justify-between gap-3 text-white">
-                                    <span className="text-xs font-bold uppercase tracking-[0.22em]">{project.kind}</span>
-                                    <span className="text-sm font-medium">{project.year}</span>
-                                  </div>
-                                </div>
-                              </div>
+        {/* Gefiltertes Thema: Eyebrow und Beschreibung des Clusters */}
+        <AnimatePresence mode="wait" initial={false}>
+          {filter !== null && (
+            <motion.div
+              key={filter}
+              initial={reduce ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? undefined : { opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              aria-live="polite"
+              className="mt-10 max-w-3xl"
+            >
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-hm-red">{t.clusters[filter].eyebrow}</p>
+              <p className="mt-2 text-base lg:text-lg leading-relaxed text-gray-600">{t.clusters[filter].description}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-                              <div className="p-5">
-                                <p className="text-sm font-semibold text-hm-red mb-2">{project.author}</p>
-                                <h5 className="text-lg font-bold text-gray-900 leading-snug mb-3">{project.title}</h5>
-                                <p className="text-sm leading-relaxed text-gray-600 font-light">{project.contribution}</p>
+        {/* Regal: Titelseiten leicht gedreht, die gewählte Arbeit dreht sich nach vorn. Mobil waagerecht scrollbar. */}
+        <div className="relative mt-12 lg:mt-16">
+          <div className="-mx-6 overflow-x-auto no-scrollbar snap-x snap-mandatory px-6 pt-12 pb-4 lg:mx-0 lg:px-2">
+            <motion.div
+              key={filter ?? 'alle'}
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="mx-auto flex w-max items-end gap-2 [perspective:1400px]"
+            >
+              {visible.map((b) => {
+                const on = b.author === sel.author;
+                return (
+                  <button
+                    key={b.author}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => setSelected(b.author)}
+                    className={`snap-center shrink-0 rounded-[3px_6px_6px_3px] bg-white transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-hm-turquoise ${
+                      on
+                        ? 'w-[120px] h-[170px] sm:w-[150px] sm:h-[212px] lg:w-[168px] lg:h-[236px] [transform:translateY(-24px)_rotateY(0deg)] shadow-[0_30px_50px_-18px_rgba(0,0,0,0.45),0_0_0_3px_#FC5555,0_0_30px_rgba(252,85,85,0.25)]'
+                        : 'w-[86px] h-[122px] sm:w-[104px] sm:h-[147px] lg:w-[112px] lg:h-[158px] [transform:rotateY(-22deg)] shadow-[-8px_12px_24px_-10px_rgba(0,0,0,0.35)] hover:[transform:rotateY(-10deg)_translateY(-6px)]'
+                    }`}
+                  >
+                    <img
+                      src={b.image}
+                      alt={t.coverAlt(b.kind, b.author)}
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="block h-full w-full rounded-[3px_6px_6px_3px] object-cover object-top"
+                    />
+                  </button>
+                );
+              })}
+            </motion.div>
+          </div>
+          {/* Regalbrett */}
+          <div aria-hidden="true" className="-mx-2 h-3.5 rounded-[3px] bg-[linear-gradient(180deg,#d9d6cf,#bdb8ae)] shadow-[0_18px_30px_-12px_rgba(0,0,0,0.35)] lg:-mx-9" />
+        </div>
 
-                                {project.link && (
-                                  <div className="mt-5 pt-4 border-t border-gray-100">
-                                    <a
-                                      href={project.link}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="inline-flex"
-                                    >
-                                      <ActionCue mode="external" accent="blue" />
-                                    </a>
-                                  </div>
-                                )}
-                              </div>
-                            </article>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
+        {/* Details der gewählten Arbeit */}
+        <div aria-live="polite" className="mt-10 lg:mt-12 grid gap-6 lg:grid-cols-[200px_minmax(0,1fr)_auto] lg:gap-10 lg:items-start">
+          <div className="flex flex-col gap-1.5">
+            <span className="text-xs font-bold uppercase tracking-[0.18em] text-hm-red">{sel.kind} {sel.year}</span>
+            <span className="text-base font-bold">{sel.author}</span>
+          </div>
+          <div className="flex flex-col gap-3">
+            <h3 className="text-2xl lg:text-[30px] font-extrabold leading-[1.15] tracking-tight" lang="de">{sel.title}</h3>
+            <p className="max-w-3xl text-base leading-relaxed text-gray-600">{sel.contribution}</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 lg:flex-col lg:items-end">
+            <span className="rounded-full border border-gray-300 px-3.5 py-2 text-[13px] text-gray-700">{sel.cluster}</span>
+            {sel.link && (
+              <a
+                href={sel.link}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full bg-hm-red px-5 text-xs font-bold uppercase tracking-[0.2em] text-white transition-colors hover:bg-[#111111] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hm-red focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4F4F1]"
+              >
+                {new URL(sel.link).hostname.replace(/^www\./, '')}
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </section>

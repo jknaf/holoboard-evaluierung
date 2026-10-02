@@ -46,7 +46,7 @@ const timelineMeta: { year: string; slide: number }[] = [
 
 const T = {
   de: {
-    eyebrow: 'Phase 2 – Entwicklung',
+    eyebrow: 'Phase 2: Entwicklung',
     titleA: 'Forschungs- &',
     titleB: 'Entwicklungsreise',
     intro: 'Vom Problem der Distanz in der Onlinelehre hin zu einem real demonstrierbaren, interaktiven System. Eine Dokumentation der technologischen und didaktischen Evolution.',
@@ -216,7 +216,7 @@ export default function Exploration() {
         {/* Kopf: Eyebrow und Titel links, Galerie und Vor/Zurück rechts */}
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-bold tracking-[0.24em] text-hm-red uppercase mb-3">{t.eyebrow}</p>
+            <p className="text-xs font-bold tracking-[0.24em] text-hm-red uppercase mb-3"><span className="mr-2">01.2</span>{t.eyebrow}</p>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter leading-[0.95]">
               {t.titleA} {t.titleB}
             </h2>

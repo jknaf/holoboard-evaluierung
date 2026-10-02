@@ -1,14 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Zap, CreditCard, Box } from 'lucide-react';
-import SpotlightCard from './ui/SpotlightCard';
+import SectionHeader from './ui/SectionHeader';
+import Aurora from './ui/Aurora';
 import { useT } from '../i18n';
 
-const icons = [
-  <Box className="w-6 h-6 text-orange-500" />,
-  <CreditCard className="w-6 h-6 text-hm-blue" />,
-  <Zap className="w-6 h-6 text-hm-red" />,
-];
+const icons = [Box, CreditCard, Zap];
 
 const T = {
   de: {
@@ -53,34 +49,40 @@ const T = {
 
 export default function Learnings() {
   const t = useT(T);
+  const reduce = useReducedMotion();
 
   return (
-    <section id="learnings" className="py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mb-16"
-        >
-          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
-          <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">{t.title}</h3>
-          <p className="text-lg text-gray-600 font-light leading-relaxed">
-            {t.intro}
-          </p>
-        </motion.div>
+    <section id="learnings" className="relative overflow-hidden py-24 lg:py-32 bg-black text-white">
+      <Aurora className="opacity-40" />
+      <div className="relative max-w-[90rem] mx-auto px-6 lg:px-24">
+        <SectionHeader index="04.3" eyebrow={t.eyebrow} title={t.title} intro={t.intro} tone="dark" className="mb-12 lg:mb-16" />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {t.challenges.map((challenge, index) => (
-            <SpotlightCard
-              key={index}
-              icon={icons[index]}
-              title={challenge.title}
-              description={challenge.desc}
-              index={index}
-            />
-          ))}
-        </div>
+        <ol className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {t.challenges.map((challenge, i) => {
+            const Icon = icons[i];
+            return (
+              <motion.li
+                key={challenge.title}
+                initial={reduce ? false : { opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: i * 0.08 }}
+                className="flex flex-col gap-5 rounded-[22px] border border-white/15 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-7 lg:p-8 backdrop-blur-md"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <span aria-hidden="true" className="text-6xl lg:text-7xl font-black leading-none tracking-[-0.04em] text-white/20">
+                    0{i + 1}
+                  </span>
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-hm-turquoise/30 bg-hm-turquoise/10 text-hm-turquoise">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                </div>
+                <h3 className="text-xl lg:text-2xl font-extrabold tracking-tight leading-tight">{challenge.title}</h3>
+                <p className="text-[15px] leading-relaxed text-gray-300">{challenge.desc}</p>
+              </motion.li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

@@ -1,146 +1,119 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, MonitorPlay } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowUpRight, ExternalLink, MonitorPlay } from 'lucide-react';
+import SectionHeader from './ui/SectionHeader';
 import { useT } from '../i18n';
 
 const T = {
   de: {
+    eyebrow: "Ausprobieren",
     title: "Interaktiver Demonstrator",
     p1: "Das Erlebnis des Holoboards ist ein physisches Erlebnis im Raum.",
     p2a: "Um trotzdem einmal nachzuempfinden, wie sich die Live-Interaktion mit einem solchen Conversational AI Agent anfühlt, kann hier ein Test-Avatar von",
     p2b: "ausprobiert werden. Tavus zählt aktuell zu den sichtbarsten Anbietern in diesem Bereich. Seit Februar 2026 setzt auch SAP Tavus im Customer Experience Center in Palo Alto ein, um Besuchern die Interaktion mit menschlich wirkenden AI Agents live zu zeigen.",
     sapLink: "SAP Experience Centers",
-    alt: "Tavus Conversational AI Avatar — Test-Demo",
+    alt: "Tavus Conversational AI Avatar: Test-Demo",
+    cta: "Test-Avatar ausprobieren",
+    newTab: "öffnet in neuem Tab",
   },
   en: {
+    eyebrow: "Try it yourself",
     title: "Interactive Demonstrator",
     p1: "The Holoboard is designed to be experienced in person, in a physical space.",
     p2a: "Even so, to get a feel for what live interaction with this kind of conversational AI agent is like, you can try out a test avatar from",
     p2b: "here. Tavus is currently one of the most prominent providers in this field. Since February 2026, SAP has also been using Tavus at its Customer Experience Center in Palo Alto to give visitors a live demonstration of interaction with lifelike AI agents.",
     sapLink: "SAP Experience Centers",
     alt: "Tavus conversational AI avatar: test demo",
+    cta: "Try the test avatar",
+    newTab: "opens in a new tab",
   },
 };
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+const TAVUS = "https://www.tavus.io/";
+
 export default function Demonstrator() {
   const t = useT(T);
-  return (
-    <section id="demonstrator" className="py-32 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="max-w-xl"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hm-blue/10 text-hm-blue text-sm font-medium mb-6">
-              <MonitorPlay className="w-4 h-4" />
-              Live Demo
-            </div>
-            <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">{t.title}</h3>
-            <p className="text-lg text-gray-600 font-light leading-relaxed mb-4">
-              {t.p1}
-            </p>
-            <p className="text-lg text-gray-600 font-light leading-relaxed mb-4">
-              {t.p2a}{' '}
-              <a href="https://www.tavus.io/" target="_blank" rel="noopener noreferrer" className="text-hm-blue hover:underline">Tavus</a>{' '}
-              {t.p2b}</p>
+  const reduce = useReducedMotion();
 
-            <div className="flex flex-wrap gap-3 mb-8">
-              <a
-                href="https://www.tavus.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-hm-blue hover:underline"
-              >
-                Tavus
-                <ExternalLink className="w-3 h-3" />
-              </a>
-              <span className="text-gray-300">|</span>
-              <a
-                href="https://www.sap.com/germany/about/company/innovation/experience-centers.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-hm-blue hover:underline"
-              >
-                {t.sapLink}
-                <ExternalLink className="w-3 h-3" />
-              </a>
-              <span className="text-gray-300">|</span>
-              <a
-                href="https://www.linkedin.com/posts/tavus-io_were-proud-to-be-part-of-saps-brand-new-activity-7431757041649614848-xhXA/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-hm-blue hover:underline"
-              >
-                Tavus x SAP
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            </div>
+  const reveal = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.3 },
+          transition: { duration: 0.9, delay, ease: EASE },
+        };
+
+  const links = [
+    { href: TAVUS, label: "Tavus" },
+    { href: "https://www.sap.com/germany/about/company/innovation/experience-centers.html", label: t.sapLink },
+    { href: "https://www.linkedin.com/posts/tavus-io_were-proud-to-be-part-of-saps-brand-new-activity-7431757041649614848-xhXA/", label: "Tavus x SAP" },
+  ];
+
+  return (
+    <section id="demonstrator" className="relative py-24 lg:py-32 bg-[#F4F4F1] text-[#111111]">
+      <div className="relative max-w-[90rem] mx-auto px-6 lg:px-24">
+        <SectionHeader index="02.4" eyebrow={t.eyebrow} title={t.title} intro={t.p1} tone="light" />
+
+        <div className="mt-16 lg:mt-20 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <motion.div {...reveal()} className="lg:col-span-5 lg:order-2">
+            <p className="text-lg text-gray-600 leading-relaxed mb-8">
+              {t.p2a}{' '}
+              <a href={TAVUS} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#111111] underline decoration-hm-red decoration-2 underline-offset-4 hover:decoration-[#111111]">Tavus</a>{' '}
+              {t.p2b}
+            </p>
+
+            <ul className="flex flex-wrap gap-3">
+              {links.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 min-h-[44px] px-5 rounded-full bg-white border border-gray-200 text-sm font-semibold text-[#111111] hover:border-hm-red transition-colors"
+                  >
+                    {l.label}
+                    <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span className="sr-only">({t.newTab})</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative"
+            {...reveal(0.1)}
+            className="lg:col-span-7 lg:order-1 relative rounded-3xl overflow-hidden bg-[#0b0b0b] aspect-[4/5] sm:aspect-[16/10]"
           >
+            <img
+              src="https://holoboard-assets.netlify.app/images/112-tavus-demo-thumbnail.png"
+              alt={t.alt}
+              className="absolute inset-0 w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" aria-hidden="true" />
+
+            <span className="absolute top-4 left-4 sm:top-6 sm:left-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white">
+              <MonitorPlay className="w-4 h-4 text-hm-turquoise" aria-hidden="true" />
+              Live Demo
+            </span>
+
             <a
-              href="https://www.tavus.io/"
+              href={TAVUS}
               target="_blank"
               rel="noopener noreferrer"
-              className="block aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl border border-gray-200 bg-white relative group cursor-pointer"
+              className="absolute bottom-4 left-4 right-4 sm:right-auto sm:bottom-6 sm:left-6 inline-flex items-center justify-center gap-2 min-h-[48px] px-6 rounded-full bg-hm-red text-white text-lg font-bold shadow-[0_0_30px_rgba(252,85,85,0.35)] hover:bg-[#e94848] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
             >
-              {/* Simulated Browser Chrome */}
-              <div className="h-8 bg-gray-100 border-b border-gray-200 flex items-center px-4 gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-                <div className="ml-4 flex-1 h-5 bg-white rounded text-[10px] text-gray-400 flex items-center px-2 font-mono truncate">
-                  tavus.io
-                </div>
-              </div>
-
-              <div className="relative h-[calc(100%-2rem)] bg-gray-900">
-                <img
-                  src="https://holoboard-assets.netlify.app/images/112-tavus-demo-thumbnail.png"
-                  alt={t.alt}
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/40 group-hover:scale-110 transition-transform duration-300">
-                    <Play className="w-6 h-6 text-white ml-1" />
-                  </div>
-                </div>
-              </div>
+              {t.cta}
+              <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
+              <span className="sr-only">({t.newTab})</span>
             </a>
-
-            {/* Decorative glow */}
-            <div className="absolute -inset-4 bg-hm-blue/10 rounded-3xl blur-2xl -z-10" />
           </motion.div>
         </div>
       </div>
     </section>
   );
-}
-
-// Simple Play icon component since it's not imported from lucide-react in this file
-function Play(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="6 3 20 12 6 21 6 3" />
-    </svg>
-  )
 }

@@ -353,7 +353,7 @@ export default function Architektur() {
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-14 flex max-w-3xl flex-col gap-4 md:mb-20">
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-hm-turquoise">{t.eyebrow}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-hm-turquoise"><span className="mr-2">02.1</span>{t.eyebrow}</p>
             <h2 className="text-4xl font-black leading-[0.95] tracking-tighter md:text-6xl">{t.title}</h2>
             <p className="text-lg font-light text-gray-400">{t.hint}</p>
           </div>

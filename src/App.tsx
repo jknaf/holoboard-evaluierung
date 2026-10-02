@@ -18,7 +18,6 @@ import Impact from './components/Impact';
 import Wissenstransfer from './components/Wissenstransfer';
 import Nutzen from './components/Nutzen';
 import Learnings from './components/Learnings';
-import Zukunftsperspektive from './components/Zukunftsperspektive';
 import Evaluation from './components/Evaluation';
 import Ausblick from './components/Ausblick';
 import AIAssistant from './components/AIAssistant';
@@ -34,7 +33,7 @@ const CHAPTERS = [
   { id: 'technik', items: ['architektur', 'avatar', 'prototyp', 'demonstrator'] },
   { id: 'praxis', items: ['netzwerk', 'studentische-projekte', 'wissenstransfer', 'nutzen'] },
   { id: 'evaluation', items: ['evaluation', 'impact', 'learnings'] },
-  { id: 'ausblick', items: ['ausblick', 'zukunftsperspektive', 'download', 'kontakt'] },
+  { id: 'ausblick', items: ['ausblick', 'download', 'kontakt'] },
 ];
 
 const T = {
@@ -355,7 +354,6 @@ export default function App() {
         <Learnings />
         <ChapterIntro index={5} id="ausblick" title={chapters[4].label} items={chapters[4].items} onSelect={scrollToSection} />
         <Ausblick />
-        <Zukunftsperspektive />
         <Download />
         <Contact />
       </main>

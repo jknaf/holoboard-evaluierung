@@ -85,8 +85,8 @@ export default function Impact() {
     <section id="impact" className="py-24 bg-[#F4F4F1] text-[#111111]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div {...reveal()} className="max-w-3xl mb-12">
-          <h2 className="text-xs font-bold tracking-[0.24em] text-hm-red uppercase mb-3">{t.eyebrow}</h2>
-          <h3 className="text-4xl md:text-[56px] font-black leading-[0.95] tracking-[-0.04em] mb-6">{t.title}</h3>
+          <p className="text-xs font-bold tracking-[0.24em] text-hm-red uppercase mb-3"><span className="mr-2">04.2</span>{t.eyebrow}</p>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[0.95] tracking-[-0.04em] mb-6">{t.title}</h2>
           <p className="text-lg text-gray-600 leading-relaxed">{t.intro}</p>
         </motion.div>
 

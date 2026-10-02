@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { X, Maximize2 } from 'lucide-react';
+import SectionHeader from './ui/SectionHeader';
 import { useT } from '../i18n';
 
 const IMAGE_URLS = [["https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg", "https://holoboard-assets.netlify.app/images/004-imported_downloads-img-4850.jpg"], ["https://holoboard-assets.netlify.app/images/014-imported_downloads-img-5776.jpg", "https://holoboard-assets.netlify.app/images/015-imported_downloads-img-5777.jpg"], ["https://holoboard-assets.netlify.app/images/processing-screenshot-code.png", "https://holoboard-assets.netlify.app/images/processing-screenshot-layers.png"], ["https://holoboard-assets.netlify.app/images/016-imported_downloads-img-5818.jpg", "https://holoboard-assets.netlify.app/images/IT_Hardware_Holoboard.JPG"]];
 
 const T = {
   de: {
-    eyebrow: "Phase 5 – Ergebnisse",
+    eyebrow: "Phase 5: Ergebnisse",
     title: "Umsetzung und Prototyp",
-    intro: `Von der Konzeption zur Realität: Einblicke in den Aufbau des Studios, die Softwareentwicklung 
-            und die finale Integration der Hardware-Komponenten.`,
-    enlarged: "Enlarged view",
+    intro: "Von der Konzeption zur Realität: Einblicke in den Aufbau des Studios, die Softwareentwicklung und die finale Integration der Hardware-Komponenten.",
+    enlarge: "Bild vergrößern",
+    close: "Vergrößerte Ansicht schließen",
     sections: [
     {
       heading: "Erster Versuch: Eigenbau-Rahmen im Studio",
-      desc: "Im Greenscreen-Studio wurde ein Aluminiumrahmen mit Glasscheibe gebaut, um darauf von innen zu schreiben und durch die Scheibe hindurch zu filmen. Der Rahmen erwies sich jedoch als zu schmal — das vollständige Bild konnte nicht eingefangen werden.",
+      desc: "Im Greenscreen-Studio wurde ein Aluminiumrahmen mit Glasscheibe gebaut, um darauf von innen zu schreiben und durch die Scheibe hindurch zu filmen. Der Rahmen erwies sich jedoch als zu schmal, das vollständige Bild konnte nicht eingefangen werden.",
       images: [
         {
           title: "Erster Versuch: Glasrahmen im Studio",
-          desc: "Der selbst gebaute Rahmen mit Glasscheibe vor dem Greenscreen — zu schmal für das Ganzkörperformat."
+          desc: "Der selbst gebaute Rahmen mit Glasscheibe vor dem Greenscreen, zu schmal für das Ganzkörperformat."
         },
         {
           title: "Material für den Rahmenbau",
@@ -33,7 +34,7 @@ const T = {
       images: [
         {
           title: "Aufnahme-Setup an der Hochschulfassade",
-          desc: "Kamera, Beleuchtung und Scheibe — das improvisierte Aufnahmeszenario vor der Glasfront der Hochschule."
+          desc: "Kamera, Beleuchtung und Scheibe: das improvisierte Aufnahmeszenario vor der Glasfront der Hochschule."
         },
         {
           title: "Kamera-Perspektive durch die Scheibe",
@@ -43,7 +44,7 @@ const T = {
     },
     {
       heading: "Interaktive Steuerung mit Processing",
-      desc: "Das gesamte interaktive Szenario — Buttons, Layer, Video-Steuerung — wurde in Processing (Java) programmiert. Die Entwicklung erforderte aufwendige Anpassungen, da alle interaktiven Elemente seitenverkehrt dargestellt und korrekt ausgerichtet werden mussten.",
+      desc: "Das gesamte interaktive Szenario (Buttons, Layer, Video-Steuerung) wurde in Processing (Java) programmiert. Die Entwicklung erforderte aufwendige Anpassungen, da alle interaktiven Elemente seitenverkehrt dargestellt und korrekt ausgerichtet werden mussten.",
       images: [
         {
           title: "Processing-Code für die Holoboard-Steuerung",
@@ -51,7 +52,7 @@ const T = {
         },
         {
           title: "Interaktive Layer mit seitenverkehrten Elementen",
-          desc: "Erster Versuch der interaktiven Oberfläche — Buttons und Beschriftungen mussten seitenverkehrt korrigiert werden."
+          desc: "Erster Versuch der interaktiven Oberfläche: Buttons und Beschriftungen mussten seitenverkehrt korrigiert werden."
         }
       ]
     },
@@ -74,9 +75,9 @@ const T = {
   en: {
     eyebrow: "Phase 5: Results",
     title: "Implementation and Prototype",
-    intro: `From concept to reality: a look at how the studio was built, how the software was developed 
-            and how the hardware components were finally brought together.`,
-    enlarged: "Enlarged view",
+    intro: "From concept to reality: a look at how the studio was built, how the software was developed and how the hardware components were finally brought together.",
+    enlarge: "Enlarge image",
+    close: "Close enlarged view",
     sections: [
       {
         heading: "First Attempt: A Custom-Built Frame in the Studio",
@@ -138,8 +139,14 @@ const T = {
   },
 };
 
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+type Img = { title: string; desc: string; url: string };
+
 export default function Prototyp() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Img | null>(null);
+  const reduce = useReducedMotion();
 
   const t = useT(T);
   const sections = t.sections.map((sec, i) => ({
@@ -147,83 +154,117 @@ export default function Prototyp() {
     images: sec.images.map((img, j) => ({ ...img, url: IMAGE_URLS[i][j] })),
   }));
 
-  return (
-    <section id="prototyp" className="py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mb-16"
-        >
-          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
-          <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">{t.title}</h3>
-          <p className="text-lg text-gray-600 font-light leading-relaxed">
-            {t.intro}
-          </p>
-        </motion.div>
+  // Esc schließt die Lightbox.
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setSelected(null);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selected]);
 
-        <div className="space-y-20">
-          {sections.map((section, sIdx) => (
-            <motion.div
-              key={sIdx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h4 className="text-2xl font-bold text-gray-900 mb-2 tracking-tight">{section.heading}</h4>
-              <p className="text-gray-600 font-light leading-relaxed mb-6 max-w-3xl">{section.desc}</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {section.images.map((img, index) => (
-                  <div
-                    key={index}
-                    className="group relative aspect-video rounded-3xl overflow-hidden cursor-pointer bg-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500"
-                    onClick={() => setSelectedImage(img.url)}
-                  >
-                    <img
-                      src={img.url}
-                      alt={img.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                      <h4 className="text-white font-semibold text-lg">{img.title}</h4>
-                      <p className="text-gray-300 text-sm mt-1">{img.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+  const reveal = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.3 },
+          transition: { duration: 0.9, delay, ease: EASE },
+        };
+
+  return (
+    <section
+      id="prototyp"
+      className="relative py-24 lg:py-32 bg-[#05070A] text-white bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:40px_40px]"
+    >
+      <div className="relative max-w-[90rem] mx-auto px-6 lg:px-24">
+        <SectionHeader index="02.3" eyebrow={t.eyebrow} title={t.title} intro={t.intro} tone="dark" />
+
+        <ol className="mt-16 lg:mt-24 flex flex-col gap-20 lg:gap-28">
+          {sections.map((section, sIdx) => {
+            const mirrored = sIdx % 2 === 1;
+            return (
+              <li key={sIdx} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+                <motion.div {...reveal()} className={`lg:col-span-5 ${mirrored ? 'lg:order-2' : ''}`}>
+                  <span aria-hidden="true" className="block text-6xl lg:text-7xl font-black leading-none tracking-[-0.04em] text-hm-red tabular-nums mb-6">
+                    {String(sIdx + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="text-2xl lg:text-3xl font-extrabold tracking-tight mb-4">{section.heading}</h3>
+                  <p className="text-gray-300 leading-relaxed text-lg">{section.desc}</p>
+                </motion.div>
+
+                <div className={`lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 ${mirrored ? 'lg:order-1' : ''}`}>
+                  {section.images.map((img, index) => (
+                    <motion.figure
+                      key={index}
+                      {...reveal(0.1 + index * 0.1)}
+                      className="m-0 rounded-[22px] border border-white/15 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-md p-2"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setSelected(img)}
+                        aria-label={`${t.enlarge}: ${img.title}`}
+                        className="group relative block w-full aspect-[4/3] rounded-[16px] overflow-hidden bg-black cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-hm-turquoise"
+                      >
+                        <img
+                          src={img.url}
+                          alt=""
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          referrerPolicy="no-referrer"
+                          loading="lazy"
+                        />
+                        <span className="absolute top-3 right-3 w-9 h-9 rounded-full border border-white/20 bg-black/40 backdrop-blur-md flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity" aria-hidden="true">
+                          <Maximize2 className="w-4 h-4" />
+                        </span>
+                      </button>
+                      <figcaption className="px-3 pt-4 pb-3">
+                        <p className="font-bold text-white tracking-tight">{img.title}</p>
+                        <p className="text-sm text-gray-400 leading-relaxed mt-1">{img.desc}</p>
+                      </figcaption>
+                    </motion.figure>
+                  ))}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
 
       {/* Lightbox */}
       <AnimatePresence>
-        {selectedImage && (
-          <motion.div 
+        {selected && (
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={selected.title}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 sm:p-8"
-            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center gap-4 p-4 sm:p-8"
+            onClick={() => setSelected(null)}
           >
-            <button 
-              className="absolute top-6 right-6 text-white/70 hover:text-white transition-colors"
-              onClick={() => setSelectedImage(null)}
+            <button
+              type="button"
+              autoFocus
+              aria-label={t.close}
+              className="absolute top-4 right-4 w-12 h-12 rounded-full border border-white/20 bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+              onClick={() => setSelected(null)}
             >
-              <X className="w-8 h-8" />
+              <X className="w-6 h-6" />
             </button>
-            <motion.img 
-              initial={{ scale: 0.9 }}
+            <motion.img
+              initial={reduce ? false : { scale: 0.95 }}
               animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              src={selectedImage} 
-              alt={t.enlarged} 
-              className="max-w-full max-h-full object-contain rounded-lg"
+              exit={reduce ? undefined : { scale: 0.95 }}
+              src={selected.url}
+              alt={selected.title}
+              className="max-w-full max-h-[80vh] object-contain rounded-[16px]"
               onClick={(e) => e.stopPropagation()}
               referrerPolicy="no-referrer"
             />
+            <p className="text-sm text-gray-300 text-center max-w-2xl" onClick={(e) => e.stopPropagation()}>
+              {selected.title}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,7 +1,12 @@
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Monitor, Cpu, MessageSquare, Layout, X, BookOpen, ArrowRight, Play } from 'lucide-react';
+import SectionHeader from './ui/SectionHeader';
+import Aurora from './ui/Aurora';
 
+const SETUP_IMAGE = "https://holoboard-assets.netlify.app/images/083-confluence_media-d.png";
+const SYNC_VIDEO = "https://holoboard-videos-b.netlify.app/videos/073-final_videos-webseite-ger.mp4";
+const ASYNC_VIDEO = "https://video.hm.edu/getMedium/default/8ff6a30eadda7484c8df6efe74a78163.mp4";
 const SYNCHRON_POSTER = "https://holoboard-assets.netlify.app/images/113-video-thumb-synchron.jpg";
 const ASYNCHRON_POSTER = "https://holoboard-assets.netlify.app/images/114-video-thumb-asynchron.jpg";
 import ActionCue from './ui/ActionCue';
@@ -11,31 +16,31 @@ import { useT } from '../i18n';
 const featureMeta = [
   {
     id: 1,
-    icon: <Cpu className="w-6 h-6 text-hm-turquoise" />,
+    icon: <Cpu className="w-5 h-5 text-hm-turquoise" />,
     image: "https://holoboard-assets.netlify.app/images/architektur-07-rag-wissenssystem.png"
   },
   {
     id: 2,
-    icon: <Monitor className="w-6 h-6 text-hm-red" />,
+    icon: <Monitor className="w-5 h-5 text-hm-red" />,
     image: "https://holoboard-assets.netlify.app/images/084-confluence_media-img-1086.jpg",
     secondaryImage: "https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg"
   },
   {
     id: 3,
-    icon: <Layout className="w-6 h-6 text-hm-blue" />,
+    icon: <Layout className="w-5 h-5 text-hm-turquoise" />,
     image: "https://holoboard-assets.netlify.app/images/103-confluence_media-processed-f8697a99-ce94-4f1b-b1d2-1b1ae2f28c11.jpeg",
     video: "https://holoboard-videos-a.netlify.app/videos/087-confluence_media-holobox-deu.mp4"
   },
   {
     id: 4,
-    icon: <MessageSquare className="w-6 h-6 text-gray-700" />,
+    icon: <MessageSquare className="w-5 h-5 text-hm-red" />,
     image: "https://holoboard-assets.netlify.app/images/081-confluence_media-bildschirmfoto-2025-01-28-um-18.22.56.png"
   }
 ];
 
 const T = {
   de: {
-    eyebrow: 'Phase 4 – Weiterentwicklung',
+    eyebrow: 'Phase 4: Weiterentwicklung',
     title: 'Das Holoboard Konzept',
     intro: 'Klicken Sie auf die Kacheln, um tiefer in die technologischen Details der einzelnen Komponenten einzutauchen.',
     conceptTitle: 'Didaktisches Lehrkonzept',
@@ -192,274 +197,240 @@ const T = {
   },
 };
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+const serif = { fontFamily: "'Instrument Serif', Georgia, serif" };
+const GLASS = 'rounded-[22px] border border-white/15 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-md';
+
 export default function HoloboardKonzept() {
   const t = useT(T);
+  const reduce = useReducedMotion();
   const [selectedFeature, setSelectedFeature] = useState<number | null>(null);
   const [isConceptExpanded, setIsConceptExpanded] = useState(false);
 
   const features = featureMeta.map((m, i) => ({ ...m, ...t.features[i] }));
+  const selected = features.find((f) => f.id === selectedFeature);
+
+  // Modal mit Escape schließen
+  useEffect(() => {
+    if (selectedFeature === null) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setSelectedFeature(null);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selectedFeature]);
+
+  const reveal = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 24 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, amount: 0.3 },
+          transition: { duration: 0.9, ease: EASE, delay },
+        };
+
+  const teaser = (title: string, sub: string, poster: string, accent: string) => (
+    <button
+      type="button"
+      onClick={() => setIsConceptExpanded(true)}
+      aria-expanded={false}
+      aria-controls="konzept-szenarien"
+      className="group relative overflow-hidden rounded-2xl aspect-video border border-white/15 text-left text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hm-turquoise"
+    >
+      <img src={poster} alt="" loading="lazy" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/5" />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/40 flex items-center justify-center group-hover:bg-white/25 transition-colors">
+          <Play className="w-7 h-7 text-white fill-white translate-x-0.5" />
+        </div>
+      </div>
+      <div className="relative h-full flex flex-col justify-end p-5">
+        <span className="text-base font-extrabold tracking-tight">{title}</span>
+        <span className="text-sm text-gray-300 mb-3">{sub}</span>
+        <span className={`flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] ${accent}`}>
+          {t.expand}
+          <ArrowRight className="w-3.5 h-3.5" />
+        </span>
+      </div>
+    </button>
+  );
 
   return (
-    <section id="konzept" className="py-32 bg-gray-50 relative overflow-hidden">
-      {/* Massive Background Text */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full overflow-hidden pointer-events-none opacity-[0.03] select-none flex justify-center z-0">
-        <span className="text-[20vw] font-black whitespace-nowrap tracking-tighter">HOLOBOARD</span>
-      </div>
+    <section id="konzept" className="relative py-24 lg:py-32 bg-black text-white overflow-hidden">
+      <Aurora className="opacity-40" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mb-16"
-        >
-          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
-          <h3 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 tracking-tighter">{t.title}</h3>
-          <p className="text-xl text-gray-600 font-light leading-relaxed">
-            {t.intro}
-          </p>
-        </motion.div>
+      <div className="relative max-w-[90rem] mx-auto px-6 lg:px-24">
+        <SectionHeader index="01.4" eyebrow={t.eyebrow} title={t.title} intro={t.intro} tone="dark" className="mb-14 lg:mb-20" />
 
-        {/* Didactic Concept Block */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-3xl border border-gray-200 shadow-sm mb-24 overflow-hidden group hover:shadow-md transition-shadow"
-        >
-          <div 
-            className="p-8 md:p-12 cursor-pointer"
-            onClick={() => setIsConceptExpanded(!isConceptExpanded)}
-          >
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform duration-500">
-                  <BookOpen className="w-6 h-6 text-hm-red" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5">
+          {/* Große Kachel: didaktisches Lehrkonzept mit zwei Szenarien */}
+          <motion.div {...reveal()} className={`${GLASS} sm:col-span-2 lg:col-span-12 p-6 sm:p-10 lg:p-12`}>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+              <div className="lg:col-span-5 flex flex-col gap-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 shrink-0 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 text-hm-red" />
+                  </div>
+                  <h3 className="text-3xl font-extrabold tracking-tight leading-tight">{t.conceptTitle}</h3>
                 </div>
-                <h4 className="text-3xl font-black text-gray-900 tracking-tighter">{t.conceptTitle}</h4>
+                <p className="text-lg text-gray-300 leading-relaxed font-light">{t.conceptIntro}</p>
               </div>
-              
-              <p className="text-lg text-gray-700 leading-relaxed font-light mb-6">
-                {t.conceptIntro}
-              </p>
 
-              {!isConceptExpanded ? (
-                <div className="pt-2">
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">{t.twoScenarios}</p>
+              <div className="lg:col-span-7 flex flex-col gap-3">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">{t.twoScenarios}</p>
+                {!isConceptExpanded ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <motion.div
-                      animate={{ y: [0, -2, 0] }}
-                      transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut' }}
-                      className="group relative overflow-hidden rounded-xl aspect-video bg-hm-red hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
-                      style={{ backgroundImage: `url(${SYNCHRON_POSTER})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-hm-red/95 via-hm-red/55 to-hm-red/20" />
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="w-20 h-20 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center ring-4 ring-white/60 group-hover:bg-white/35 group-hover:scale-110 transition-all duration-200 shadow-xl">
-                          <Play className="w-9 h-9 text-white fill-white translate-x-0.5" />
-                        </div>
-                      </div>
-                      <div className="relative h-full flex flex-col justify-end p-5 text-white">
-                        <div className="text-sm font-bold mb-1">{t.syncTitle}</div>
-                        <div className="text-xs text-white/80 font-light mb-3">{t.syncSub}</div>
-                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
-                          <span>{t.expand}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </div>
-                      </div>
-                    </motion.div>
-                    <motion.div
-                      animate={{ y: [0, -2, 0] }}
-                      transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut', delay: 0.3 }}
-                      className="group relative overflow-hidden rounded-xl aspect-video bg-hm-blue hover:scale-[1.02] transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
-                      style={{ backgroundImage: `url(${ASYNCHRON_POSTER})`, backgroundSize: 'cover', backgroundPosition: 'center top' }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-hm-blue/95 via-hm-blue/55 to-hm-blue/20" />
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="w-20 h-20 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center ring-4 ring-white/60 group-hover:bg-white/35 group-hover:scale-110 transition-all duration-200 shadow-xl">
-                          <Play className="w-9 h-9 text-white fill-white translate-x-0.5" />
-                        </div>
-                      </div>
-                      <div className="relative h-full flex flex-col justify-end p-5 text-white">
-                        <div className="text-sm font-bold mb-1">{t.asyncTitle}</div>
-                        <div className="text-xs text-white/80 font-light mb-3">{t.asyncSub}</div>
-                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white/90">
-                          <span>{t.expand}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </div>
-                      </div>
-                    </motion.div>
+                    {teaser(t.syncTitle, t.syncSub, SYNCHRON_POSTER, 'text-hm-red')}
+                    {teaser(t.asyncTitle, t.asyncSub, ASYNCHRON_POSTER, 'text-hm-turquoise')}
                   </div>
-                </div>
-              ) : (
-                <div className="pt-2">
-                  <ActionCue mode="expand" expanded={isConceptExpanded} accent="red" />
-                </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setIsConceptExpanded(false)}
+                    aria-expanded
+                    aria-controls="konzept-szenarien"
+                    className="self-start min-h-11 rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hm-turquoise"
+                  >
+                    <ActionCue mode="expand" expanded accent="turquoise" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <AnimatePresence initial={false}>
+              {isConceptExpanded && (
+                <motion.div
+                  id="konzept-szenarien"
+                  initial={reduce ? false : { height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={reduce ? undefined : { height: 0, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-10 pt-10 border-t border-white/10 flex flex-col gap-10">
+                    <p className="text-lg text-gray-300 leading-relaxed font-light max-w-4xl">{t.passive}</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
+                        <h4 className="text-xl font-extrabold tracking-tight text-hm-red mb-4">{t.syncHeading}</h4>
+                        <p className="text-gray-300 leading-relaxed font-light">{t.syncText}</p>
+                        <DidacticVideo src={SYNC_VIDEO} poster={SYNCHRON_POSTER} title={t.syncVideo} />
+                      </div>
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8">
+                        <h4 className="text-xl font-extrabold tracking-tight text-hm-turquoise mb-4">{t.asyncHeading}</h4>
+                        <p className="text-gray-300 leading-relaxed font-light">{t.asyncText}</p>
+                        <DidacticVideo src={ASYNC_VIDEO} poster={ASYNCHRON_POSTER} title={t.asyncVideo} />
+                      </div>
+                    </div>
+
+                    <blockquote className="m-0 border-l-2 border-hm-red pl-6 text-2xl sm:text-3xl leading-snug text-white max-w-4xl" style={serif}>
+                      {t.conclusion}
+                    </blockquote>
+                    <p className="text-sm text-gray-400 italic">{t.foundation}</p>
+                  </div>
+                </motion.div>
               )}
-            </div>
-          </div>
-
-          <AnimatePresence>
-            {isConceptExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="p-8 md:p-12 pt-0 border-t border-gray-100">
-                  <div className="max-w-4xl mx-auto pt-8">
-                    <p className="text-lg text-gray-700 leading-relaxed font-light mb-12">
-                      {t.passive}
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
-                      {/* Szenario 1 */}
-                      <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
-                        <h5 className="text-xl font-bold text-hm-red mb-4">{t.syncHeading}</h5>
-                        <p className="text-gray-700 leading-relaxed font-light">
-                          {t.syncText}
-                        </p>
-                        <DidacticVideo 
-                          src="https://holoboard-videos-b.netlify.app/videos/073-final_videos-webseite-ger.mp4" 
-                          title={t.syncVideo} 
-                        />
-                      </div>
-
-                      {/* Szenario 2 */}
-                      <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
-                        <h5 className="text-xl font-bold text-hm-blue mb-4">{t.asyncHeading}</h5>
-                        <p className="text-gray-700 leading-relaxed font-light">
-                          {t.asyncText}
-                        </p>
-                        <DidacticVideo 
-                          src="https://video.hm.edu/getMedium/default/8ff6a30eadda7484c8df6efe74a78163.mp4" 
-                          title={t.asyncVideo} 
-                        />
-                      </div>
-                    </div>
-
-                    <div className="bg-gray-900 text-white p-8 rounded-2xl text-center mb-8">
-                      <p className="text-xl font-light leading-relaxed">
-                        {t.conclusion}
-                      </p>
-                    </div>
-
-                    <div className="text-center">
-                      <p className="text-sm text-gray-500 italic">
-                        {t.foundation}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, rotateY: 20, scale: 0.9 }}
-            whileInView={{ opacity: 1, rotateY: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, type: "spring", stiffness: 100 }}
-            className="relative perspective-1000 hidden lg:block"
-          >
-            <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl bg-gray-900 relative transform-gpu hover:rotate-y-12 hover:rotate-x-12 transition-transform duration-700 ease-out p-8 flex items-center justify-center">
-              <img 
-                src="https://holoboard-assets.netlify.app/images/083-confluence_media-d.png" 
-                alt={t.setupAlt} 
-                className="w-full h-full object-contain opacity-95 relative z-10"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-hm-blue/20 to-hm-red/10 mix-blend-overlay pointer-events-none" />
-              
-              {/* Abstract UI Elements overlay */}
-              <div className="absolute top-1/4 left-1/4 w-32 h-32 border border-white/20 rounded-full animate-[spin_10s_linear_infinite]" />
-              <div className="absolute bottom-1/3 right-1/4 w-48 h-48 border border-hm-turquoise/30 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
-            </div>
+            </AnimatePresence>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {features.map((feature, index) => (
-              <SpotlightCard 
-                key={feature.id} 
-                feature={feature} 
-                index={index} 
-                onClick={() => setSelectedFeature(feature.id)} 
-              />
-            ))}
-          </div>
+          {/* Große Bildkarte: Aufbau */}
+          <motion.figure
+            {...reveal(0.05)}
+            className={`${GLASS} m-0 sm:col-span-2 lg:col-span-6 lg:row-span-2 p-4 sm:p-6 flex flex-col gap-4`}
+          >
+            <div className="flex-1 min-h-[320px] rounded-[16px] bg-black/40 flex items-center justify-center p-4 sm:p-8">
+              <img src={SETUP_IMAGE} alt={t.setupAlt} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full max-h-[560px] object-contain" />
+            </div>
+            <figcaption className="text-xs font-bold uppercase tracking-[0.2em] text-hm-turquoise px-2">{t.setupAlt}</figcaption>
+          </motion.figure>
+
+          {/* Kleinere Kacheln: Komponenten mit Detail-Modal */}
+          {features.map((f, i) => (
+            <motion.button
+              key={f.id}
+              type="button"
+              layoutId={reduce ? undefined : `card-${f.id}`}
+              onClick={() => setSelectedFeature(f.id)}
+              aria-haspopup="dialog"
+              {...reveal(0.08 + i * 0.06)}
+              className={`${GLASS} lg:col-span-3 p-3 text-left flex flex-col gap-4 transition-colors duration-300 hover:border-white/35 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hm-turquoise`}
+            >
+              <div className="overflow-hidden rounded-[16px] aspect-[16/10] bg-black/40">
+                <img src={f.image} alt={f.title} loading="lazy" referrerPolicy="no-referrer" className="w-full h-full object-cover opacity-90" />
+              </div>
+              <div className="px-2 pb-2 flex flex-col gap-2 flex-1">
+                <div className="flex items-center gap-3">
+                  <span className="w-9 h-9 shrink-0 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center">{f.icon}</span>
+                  <span className="text-lg font-extrabold tracking-tight leading-tight">{f.title}</span>
+                </div>
+                <span className="text-sm text-gray-300 leading-relaxed">{f.description}</span>
+                <ActionCue mode="detail" accent="turquoise" className="mt-auto self-start" />
+              </div>
+            </motion.button>
+          ))}
         </div>
       </div>
 
-      {/* Expandable Modal for Content */}
+      {/* Detail-Modal als dunkles Glas-Panel */}
       <AnimatePresence>
-        {selectedFeature !== null && (
+        {selected && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedFeature(null)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100] cursor-pointer"
+              className="fixed inset-0 bg-black/70 backdrop-blur-md z-[100] cursor-pointer"
             />
             <div className="fixed inset-0 flex items-center justify-center z-[101] pointer-events-none p-4 sm:p-6">
               <motion.div
-                layoutId={`card-${selectedFeature}`}
-                className="bg-white w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl pointer-events-auto flex flex-col max-h-[90vh]"
+                layoutId={reduce ? undefined : `card-${selected.id}`}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="konzept-modal-titel"
+                className="w-full max-w-3xl rounded-[22px] border border-white/15 bg-[#0B0D10]/95 backdrop-blur-xl text-white shadow-2xl pointer-events-auto flex flex-col max-h-[90vh] overflow-hidden"
               >
-                {features.map(f => f.id === selectedFeature && (
-                  <React.Fragment key={f.id}>
-                    <div className="relative h-64 sm:h-80 w-full bg-gray-900 flex-shrink-0">
-                      {f.video ? (
-                        <video 
-                          src={f.video} 
-                          autoPlay 
-                          loop 
-                          muted 
-                          playsInline
-                          className="w-full h-full object-cover opacity-90"
-                        />
-                      ) : (
-                        <img 
-                          src={f.image} 
-                          alt={f.title} 
-                          className="w-full h-full object-cover opacity-90"
-                          referrerPolicy="no-referrer"
-                        />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
-                      <button 
-                        onClick={() => setSelectedFeature(null)}
-                        aria-label={t.close}
-                        className="absolute top-6 right-6 w-10 h-10 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
+                <div className="relative h-64 sm:h-80 w-full bg-black flex-shrink-0">
+                  {selected.video ? (
+                    <video
+                      src={selected.video}
+                      poster={selected.image}
+                      controls
+                      preload="metadata"
+                      playsInline
+                      aria-label={selected.title}
+                      className="w-full h-full object-contain"
+                    >
+                      {t.videoFallback}
+                    </video>
+                  ) : (
+                    <>
+                      <img src={selected.image} alt={selected.title} referrerPolicy="no-referrer" className="w-full h-full object-contain" />
+                      <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0B0D10] to-transparent pointer-events-none" />
+                    </>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedFeature(null)}
+                    aria-label={t.close}
+                    className="absolute top-4 right-4 w-11 h-11 bg-black/50 hover:bg-black/70 border border-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="p-6 sm:p-10 overflow-y-auto">
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="w-11 h-11 shrink-0 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center">{selected.icon}</div>
+                    <h4 id="konzept-modal-titel" className="text-2xl sm:text-3xl font-extrabold tracking-tight">{selected.title}</h4>
+                  </div>
+                  <p className="text-lg text-gray-300 font-light leading-relaxed mb-6">{selected.description}</p>
+                  <div className="h-px w-full bg-white/10 mb-6" />
+                  <div className="text-gray-300 leading-relaxed">{selected.detailedText}</div>
+                  {selected.secondaryImage && (
+                    <div className="mt-8 rounded-2xl overflow-hidden border border-white/15">
+                      <img src={selected.secondaryImage} alt={`${selected.title}${t.detailSuffix}`} loading="lazy" className="w-full h-auto" referrerPolicy="no-referrer" />
                     </div>
-                    <div className="p-8 sm:p-12 overflow-y-auto">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100">
-                          {f.icon}
-                        </div>
-                        <h4 className="text-3xl font-bold text-gray-900">{f.title}</h4>
-                      </div>
-                      <div className="text-xl text-gray-600 font-light leading-relaxed mb-6">
-                        {f.description}
-                      </div>
-                      <div className="h-px w-full bg-gray-100 mb-6" />
-                      <div className="text-gray-700 leading-relaxed">
-                        {f.detailedText}
-                      </div>
-                      {f.secondaryImage && (
-                        <div className="mt-8 rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-                          <img src={f.secondaryImage} alt={`${f.title}${t.detailSuffix}`} className="w-full h-auto" referrerPolicy="no-referrer" />
-                        </div>
-                      )}
-                    </div>
-                  </React.Fragment>
-                ))}
+                  )}
+                </div>
               </motion.div>
             </div>
           </>
@@ -469,69 +440,11 @@ export default function HoloboardKonzept() {
   );
 }
 
-// Spotlight Card Component
-function SpotlightCard({ feature, index, onClick }: { key?: React.Key, feature: any, index: number, onClick: () => void }) {
-  const divRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  return (
-    <motion.div
-      layoutId={`card-${feature.id}`}
-      ref={divRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setOpacity(1)}
-      onMouseLeave={() => setOpacity(0)}
-      onClick={onClick}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      className="relative overflow-hidden rounded-3xl bg-white border border-gray-200 p-8 cursor-pointer group shadow-sm hover:shadow-xl transition-shadow duration-500"
-    >
-      {/* Spotlight Hover Effect */}
-      <div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-0"
-        style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(62, 70, 217, 0.08), transparent 40%)`,
-        }}
-      />
-      
-      <div className="relative z-10">
-        <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 border border-gray-100">
-          {feature.icon}
-        </div>
-        <h4 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h4>
-        <p className="text-gray-500 leading-relaxed font-light text-sm mb-6">{feature.description}</p>
-        
-        <div className="mt-6 pt-4 border-t border-gray-100">
-          <ActionCue mode="detail" accent="blue" />
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function DidacticVideo({ src, title }: { src: string; title: string }) {
+function DidacticVideo({ src, poster, title }: { src: string; poster: string; title: string }) {
   const t = useT(T);
   return (
-    <div className="mt-6 rounded-2xl overflow-hidden border border-gray-100 bg-black aspect-video shadow-sm">
-      <video
-        src={src}
-        title={title}
-        aria-label={title}
-        controls
-        preload="metadata"
-        playsInline
-        className="w-full h-full"
-      >
+    <div className="mt-6 rounded-2xl overflow-hidden border border-white/15 bg-black aspect-video">
+      <video src={src} poster={poster} title={title} aria-label={title} controls preload="metadata" playsInline className="w-full h-full">
         {t.videoFallback}
       </video>
     </div>
