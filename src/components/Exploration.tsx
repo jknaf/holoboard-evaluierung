@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X, Image as ImageIcon } from 'lucide-react';
 import { useT } from '../i18n';
 
@@ -33,15 +33,15 @@ const slideMeta: { phase: Phase; image: string; rotate?: 'left' | 'right' }[] = 
   { phase: 'pres', image: "https://holoboard-assets.netlify.app/images/20241115_114416.jpg" },
 ];
 
-// Jahr und Hervorhebung je Zeitstrahl-Eintrag; die Texte stehen in T.<lang>.timeline.
-const timelineMeta: { year: string; highlight?: boolean }[] = [
-  { year: "2022" },
-  { year: "2022" },
-  { year: "2023" },
-  { year: "2023–2024", highlight: true },
-  { year: "2024" },
-  { year: "Q3 2025" },
-  { year: "Q4 2025" },
+// Jahr und Kartenbild (Index in slideMeta) je Zeitstrahl-Eintrag; die Texte stehen in T.<lang>.timeline.
+const timelineMeta: { year: string; slide: number }[] = [
+  { year: "2022", slide: 1 },       // erster Streaming-Prototyp
+  { year: "2022", slide: 0 },       // Zeichnung des ursprünglichen Ansatzes
+  { year: "2023", slide: 5 },       // Kamera 4D
+  { year: "2023–2024", slide: 8 },  // erster Versuch beim Holobox-Anbieter
+  { year: "2024", slide: 7 },       // IT-Hardware des Holoboards
+  { year: "Q3 2025", slide: 16 },   // Holobox mit Interaktion
+  { year: "Q4 2025", slide: 17 },   // Präsentation zum Hochschulentwicklungsplan
 ];
 
 const T = {
@@ -50,10 +50,12 @@ const T = {
     titleA: 'Forschungs- &',
     titleB: 'Entwicklungsreise',
     intro: 'Vom Problem der Distanz in der Onlinelehre hin zu einem real demonstrierbaren, interaktiven System. Eine Dokumentation der technologischen und didaktischen Evolution.',
-    galleryBtn: (n: number) => `Entwicklungsdokumentation — ${n} Bilder`,
+    galleryBtn: (n: number) => `Entwicklungsdokumentation: ${n} Bilder`,
     galleryHeader: 'Entwicklungsdokumentation',
-    more: 'weitere',
     close: 'Schließen',
+    back: 'Zurück',
+    forward: 'Weiter',
+    stops: ['Ausgangspunkt', 'Vision', 'Exploration', 'Wandel', 'Aufbau', 'Prototyp', 'Präsentation'],
     prev: 'Vorheriges Bild',
     next: 'Nächstes Bild',
     phases: {
@@ -99,8 +101,10 @@ const T = {
     intro: 'From the problem of distance in online teaching to an interactive system that can be demonstrated in practice. A record of the technological and pedagogical evolution.',
     galleryBtn: (n: number) => `Development archive: ${n} images`,
     galleryHeader: 'Development archive',
-    more: 'more',
     close: 'Close',
+    back: 'Previous',
+    forward: 'Next',
+    stops: ['Starting point', 'Vision', 'Exploration', 'Shift', 'Build', 'Prototype', 'Presentation'],
     prev: 'Previous image',
     next: 'Next image',
     phases: {
@@ -145,14 +149,11 @@ export default function Exploration() {
   const t = useT(T);
   const gallerySlides = slideMeta.map((m, i) => ({ ...m, phase: t.phases[m.phase], ...t.slides[i] }));
   const timeline = timelineMeta.map((m, i) => ({ ...m, ...t.timeline[i] }));
-  const containerRef = useRef(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const [active, setActive] = useState(0);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev === gallerySlides.length - 1 ? 0 : prev + 1));
@@ -160,6 +161,36 @@ export default function Exploration() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? gallerySlides.length - 1 : prev - 1));
+  };
+
+  const openGallery = (idx: number) => {
+    setCurrentSlide(idx);
+    setIsGalleryOpen(true);
+  };
+
+  // Karten-Elemente in der Reihenfolge der Zeitleiste (der Abstandhalter am Ende hat kein data-card).
+  const cards = (): HTMLElement[] => Array.from(scrollerRef.current?.querySelectorAll<HTMLElement>('[data-card]') ?? []);
+
+  // Aktiver Eintrag = Karte, deren linke Kante der Scrollposition am nächsten liegt.
+  const onScroll = () => {
+    const el = scrollerRef.current;
+    const list = cards();
+    if (!el || !list.length) return;
+    const base = list[0].offsetLeft;
+    let best = 0;
+    list.forEach((c, i) => {
+      if (Math.abs(c.offsetLeft - base - el.scrollLeft) < Math.abs(list[best].offsetLeft - base - el.scrollLeft)) best = i;
+    });
+    setActive(best);
+  };
+
+  const goTo = (i: number) => {
+    const idx = Math.max(0, Math.min(timeline.length - 1, i));
+    const el = scrollerRef.current;
+    const list = cards();
+    if (!el || !list[idx]) return;
+    el.scrollTo({ left: list[idx].offsetLeft - list[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+    setActive(idx);
   };
 
   useEffect(() => {
@@ -173,88 +204,110 @@ export default function Exploration() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isGalleryOpen]);
 
+  // Linker Rand der Kartenreihe fluchtet mit dem max-w-7xl-Container, die Reihe selbst läuft bis zum Fensterrand.
+  // scroll-pl muss gleich sein, damit die Karten an derselben Kante einrasten (Klassen ausgeschrieben für den Tailwind-Scanner).
+  const edge = 'pl-4 sm:pl-6 lg:pl-[max(2rem,calc((100vw-80rem)/2+2rem))] scroll-pl-4 sm:scroll-pl-6 lg:scroll-pl-[max(2rem,calc((100vw-80rem)/2+2rem))]';
+  const roundBtn = 'w-12 h-12 shrink-0 rounded-full border border-gray-300 bg-white text-gray-900 flex items-center justify-center transition-colors hover:border-hm-red hover:text-hm-red disabled:opacity-40 disabled:hover:border-gray-300 disabled:hover:text-gray-900';
+
   return (
-    <section id="exploration" ref={containerRef} className="relative h-[700vh] bg-gray-50">
-      <div className="sticky top-0 h-screen flex items-start pt-16 lg:items-center lg:pt-0 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16">
-          
-          {/* Left: Fixed Title */}
-          <div className="flex flex-col justify-center">
-            <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
-            <h3 className="text-3xl sm:text-5xl md:text-7xl font-black text-gray-900 mb-4 lg:mb-6 tracking-tighter leading-tight">
-              {t.titleA} <br/> {t.titleB}
-            </h3>
-            <p className="text-base lg:text-xl text-gray-600 font-light leading-relaxed mb-6 lg:mb-8">
-              {t.intro}
-            </p>
-            
-            <div>
-              <button
-                onClick={() => setIsGalleryOpen(true)}
-                className="inline-flex items-center gap-3 bg-gray-900 hover:bg-hm-red text-white px-6 py-3 rounded-full font-bold tracking-wide transition-all duration-300 shadow-md hover:shadow-lg"
-              >
-                <ImageIcon className="w-5 h-5" />
-                {t.galleryBtn(gallerySlides.length)}
-              </button>
-
-              <div className="hidden lg:flex items-center gap-3 mt-4">
-                {[1, 7, 18].map((idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => { setCurrentSlide(idx); setIsGalleryOpen(true); }}
-                    className="w-20 h-20 rounded-lg overflow-hidden ring-2 ring-gray-200 hover:ring-hm-red transition-all duration-300 hover:scale-105"
-                  >
-                    <img
-                      src={gallerySlides[idx].image}
-                      alt={gallerySlides[idx].title}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </button>
-                ))}
-                <button
-                  onClick={() => setIsGalleryOpen(true)}
-                  className="w-20 h-20 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all duration-300 hover:scale-105 ring-2 ring-gray-200 hover:ring-hm-red"
-                >
-                  <span className="text-gray-500 font-bold text-sm text-center leading-tight">+{gallerySlides.length - 3}<br/>{t.more}</span>
-                </button>
-              </div>
-            </div>
+    <MotionConfig reducedMotion="user">
+    <section id="exploration" className="relative bg-[#F4F4F1] text-gray-900 py-16 lg:py-24 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Kopf: Eyebrow und Titel links, Galerie und Vor/Zurück rechts */}
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-bold tracking-[0.24em] text-hm-red uppercase mb-3">{t.eyebrow}</p>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter leading-[0.95]">
+              {t.titleA} {t.titleB}
+            </h2>
+            <p className="mt-4 max-w-2xl text-base text-gray-600 leading-relaxed">{t.intro}</p>
           </div>
-
-          {/* Right: Scrolling Content */}
-          <div className="relative h-[40vh] lg:h-[60vh] flex items-center">
-            {timeline.map((item, index) => {
-              // Calculate opacity and y based on scroll progress for each item
-              const step = 1 / timeline.length;
-              const start = index * step;
-              const end = start + step;
-              
-              const opacity = useTransform(scrollYProgress, [start - 0.05, start, end - 0.05, end], [0, 1, 1, 0]);
-              const y = useTransform(scrollYProgress, [start - 0.05, start, end - 0.05, end], [100, 0, 0, -100]);
-              const scale = useTransform(scrollYProgress, [start - 0.05, start, end - 0.05, end], [0.8, 1, 1, 0.8]);
-
-              return (
-                <motion.div
-                  key={index}
-                  style={{ opacity, y, scale }}
-                  className="absolute inset-0 flex flex-col justify-center"
-                >
-                  <div className={`text-[8vw] lg:text-[6vw] font-black mb-4 tracking-tighter leading-none transition-colors ${item.highlight ? 'text-hm-red' : 'text-gray-200'}`}>
-                    {item.year}
-                  </div>
-                  <h4 className={`text-xl lg:text-3xl font-bold mb-3 lg:mb-4 ${item.highlight ? 'text-gray-900' : 'text-hm-blue'}`}>
-                    {item.title}
-                  </h4>
-                  <p className="text-base lg:text-2xl text-gray-600 leading-relaxed font-light">
-                    {item.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => openGallery(0)}
+              className="inline-flex items-center gap-2 bg-gray-900 hover:bg-hm-red text-white px-5 py-3 rounded-full text-sm font-bold tracking-wide transition-colors"
+            >
+              <ImageIcon className="w-4 h-4" />
+              {t.galleryBtn(gallerySlides.length)}
+            </button>
+            <button type="button" aria-label={t.back} onClick={() => goTo(active - 1)} disabled={active === 0} className={roundBtn}>
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button type="button" aria-label={t.forward} onClick={() => goTo(active + 1)} disabled={active === timeline.length - 1} className={roundBtn}>
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
-
         </div>
+
+        {/* Knotenleiste: sieben gleich breite Spalten, Linie von Mitte erster bis Mitte letzter Spalte */}
+        <div className="mt-10 lg:mt-14 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto no-scrollbar">
+          <div className="relative min-w-[560px]">
+            <div aria-hidden className="absolute top-[8px] left-[calc(100%/14)] right-[calc(100%/14)] h-0.5 bg-gray-300">
+              <div
+                className="h-full bg-hm-red transition-[width] duration-500 motion-reduce:transition-none"
+                style={{ width: `${(active / (timeline.length - 1)) * 100}%` }}
+              />
+            </div>
+            <ol className="relative grid grid-cols-7">
+            {timeline.map((item, i) => (
+              <li key={i} className="relative flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-current={i === active ? 'step' : undefined}
+                  className={`group flex flex-col items-center gap-3 ${i === active ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
+                >
+                  <span className="h-[18px] flex items-center">
+                    <span
+                      className={`block rounded-full border-2 transition-all motion-reduce:transition-none ${
+                        i <= active ? 'border-hm-red' : 'border-gray-400 group-hover:border-hm-red'
+                      } ${i === active ? 'w-[18px] h-[18px] bg-hm-red shadow-[0_0_0_6px_rgba(252,85,85,0.15)]' : `w-2.5 h-2.5 ${i < active ? 'bg-hm-red' : 'bg-white'}`}`}
+                    />
+                  </span>
+                  <span className="text-[13px] font-extrabold whitespace-nowrap">{item.year}</span>
+                  <span className="hidden md:block text-xs font-medium tracking-wide">{t.stops[i]}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+          </div>
+        </div>
+      </div>
+
+      {/* Kartenreihe: scroll-snap, Scrollposition bestimmt den aktiven Knoten */}
+      <div
+        ref={scrollerRef}
+        onScroll={onScroll}
+        className={`relative mt-10 lg:mt-12 flex gap-6 lg:gap-10 overflow-x-auto no-scrollbar snap-x snap-mandatory ${edge}`}
+      >
+        {timeline.map((item, i) => (
+          <article
+            key={i}
+            data-card
+            className={`snap-start shrink-0 w-[85vw] sm:w-[420px] flex flex-col gap-3 transition-opacity duration-300 motion-reduce:transition-none ${i < active ? 'opacity-45' : ''}`}
+          >
+            <button
+              type="button"
+              onClick={() => openGallery(item.slide)}
+              aria-label={`${t.galleryHeader}: ${gallerySlides[item.slide].title}`}
+              className="h-48 lg:h-56 rounded-2xl overflow-hidden bg-gray-200 mb-2"
+            >
+              <img
+                src={gallerySlides[item.slide].image}
+                alt={gallerySlides[item.slide].title}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
+              />
+            </button>
+            <span className="text-xs font-extrabold tracking-[0.18em] text-hm-red">{item.year}</span>
+            <h3 className="text-xl lg:text-2xl font-extrabold leading-tight tracking-tight">{item.title}</h3>
+            <p className="text-[15px] leading-relaxed text-gray-600">{item.description}</p>
+          </article>
+        ))}
+        {/* ponytail: Abstandhalter, damit auch die letzte Karte an den linken Rand einrasten kann */}
+        <div aria-hidden className="shrink-0 w-[calc(100%-85vw)] sm:w-[calc(100%-420px)]" />
       </div>
 
       {/* Gallery Modal */}
@@ -341,5 +394,6 @@ export default function Exploration() {
         )}
       </AnimatePresence>
     </section>
+    </MotionConfig>
   );
 }

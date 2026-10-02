@@ -1,6 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Quote } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useT } from '../i18n';
 
 const T = {
@@ -8,6 +7,8 @@ const T = {
     eyebrow: 'Karriereeffekte',
     title: 'Impact für Studierende',
     intro: 'Die studentischen Arbeiten führen nicht nur zu Prototypen und Konzepten, sondern auch zu konkreten beruflichen Anschlüssen in Unternehmen, KI-nahen Praxisfeldern und selbstständigen Tätigkeiten.',
+    pathsLabel: 'Drei Wege',
+    paths: 'Festanstellung, Holding-Ebene, eigene Firma',
     quotes: [
       {
         text: "Ich habe die Festanstellung hauptsächlich wegen meiner Workflow- und Automatisierungskenntnisse aus der Bachelorarbeit bekommen.",
@@ -30,6 +31,8 @@ const T = {
     eyebrow: 'Career Outcomes',
     title: 'Impact on Students',
     intro: 'Student projects do more than produce prototypes and concepts: they also open up concrete career paths, whether in companies, in AI-related fields of practice or in self-employment.',
+    pathsLabel: 'Three paths',
+    paths: 'Permanent role, holding level, own company',
     quotes: [
       {
         text: "I landed my permanent job mainly thanks to the workflow and automation skills I picked up during my bachelor's thesis.",
@@ -50,47 +53,92 @@ const T = {
   },
 };
 
+// Instrument Serif nur für die Zitate, selbst gehostet (public/fonts, @font-face in index.css).
+const serif = { fontFamily: "'Instrument Serif', Georgia, serif" };
+
 export default function Impact() {
   const t = useT(T);
-  const quotes = t.quotes;
+  const [q1, q2, q3] = t.quotes;
+  const reduce = useReducedMotion();
+
+  // Dezentes Einblenden; bei reduzierter Bewegung sofort sichtbar.
+  const reveal = (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 16 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: '-60px' },
+          transition: { duration: 0.5, delay },
+        };
+
+  const caption = (q: typeof q1) => (
+    <>
+      {q.author}
+      <span className="text-hm-red" aria-hidden="true">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+      <span className="sr-only">: </span>
+      {q.role}
+    </>
+  );
 
   return (
-    <section id="impact" className="py-24 bg-hm-blue text-white relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mb-16"
-        >
-          <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">{t.eyebrow}</h2>
-          <h3 className="text-3xl md:text-4xl font-bold mb-6">{t.title}</h3>
-          <p className="text-lg text-blue-100 font-light leading-relaxed">
-            {t.intro}
-          </p>
+    <section id="impact" className="py-24 bg-[#F4F4F1] text-[#111111]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div {...reveal()} className="max-w-3xl mb-12">
+          <h2 className="text-xs font-bold tracking-[0.24em] text-hm-red uppercase mb-3">{t.eyebrow}</h2>
+          <h3 className="text-4xl md:text-[56px] font-black leading-[0.95] tracking-[-0.04em] mb-6">{t.title}</h3>
+          <p className="text-lg text-gray-600 leading-relaxed">{t.intro}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {quotes.map((quote, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white/10 backdrop-blur-md p-8 rounded-3xl border border-white/20"
-            >
-              <Quote className="w-8 h-8 text-hm-turquoise mb-6 opacity-50" />
-              <p className="text-lg leading-relaxed mb-8 font-light italic">"{quote.text}"</p>
-              <div>
-                <p className="font-semibold text-white">{quote.author}</p>
-                <p className="text-sm text-hm-turquoise">{quote.role}</p>
-              </div>
-            </motion.div>
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-[auto_auto_auto] gap-4">
+          {/* Großes Feld: Zitat 1 über abgedunkeltem Foto */}
+          <motion.figure
+            {...reveal()}
+            className="lg:col-span-7 lg:row-span-3 relative m-0 overflow-hidden rounded-3xl bg-[#0b0b0b] text-white p-7 sm:p-10 lg:p-12 min-h-[420px] lg:min-h-[560px] flex flex-col justify-end gap-6 lg:gap-7"
+          >
+            <img
+              src="https://holoboard-assets.netlify.app/images/20241115_114416.jpg"
+              alt=""
+              referrerPolicy="no-referrer"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover opacity-35"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1),rgba(0,0,0,0.85)_70%)]" aria-hidden="true" />
+            <span className="relative text-hm-red text-[88px] lg:text-[120px] leading-[0.5]" style={serif} aria-hidden="true">“</span>
+            <blockquote className="relative m-0 text-[28px] sm:text-[34px] lg:text-[40px] leading-[1.15] tracking-[-0.01em]" style={serif}>
+              {q1.text}
+            </blockquote>
+            <figcaption className="relative text-[13px] font-semibold tracking-[0.08em] uppercase text-gray-300">
+              {caption(q1)}
+            </figcaption>
+          </motion.figure>
+
+          {/* Rotes Feld: Zitat 2. Zitat weiß (große Schrift, 3:1 reicht), Quelle dunkel für 4.5:1. */}
+          <motion.figure
+            {...reveal(0.08)}
+            className="lg:col-span-5 m-0 rounded-3xl bg-hm-red text-white p-7 sm:p-9 flex flex-col justify-between gap-8"
+          >
+            <blockquote className="m-0 text-2xl leading-[1.25]" style={serif}>{q2.text}</blockquote>
+            <figcaption className="text-xs font-bold tracking-[0.1em] uppercase text-[#111111]">{caption(q2)}</figcaption>
+          </motion.figure>
+
+          {/* Weißes Feld: Zitat 3 */}
+          <motion.figure
+            {...reveal(0.16)}
+            className="lg:col-span-5 m-0 rounded-3xl bg-white border border-gray-200 p-7 flex flex-col justify-between gap-6"
+          >
+            <blockquote className="m-0 text-[21px] leading-[1.3]" style={serif}>{q3.text}</blockquote>
+            <figcaption className="text-[11px] font-bold tracking-[0.1em] uppercase text-gray-500">{caption(q3)}</figcaption>
+          </motion.figure>
+
+          {/* Schwarzes Feld: drei Wege, als schmale Leiste unter den Zitaten */}
+          <motion.div
+            {...reveal(0.24)}
+            className="lg:col-span-5 rounded-3xl bg-[#111111] text-white px-7 py-6 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6"
+          >
+            <span className="shrink-0 text-xs font-bold tracking-[0.16em] uppercase text-hm-turquoise">{t.pathsLabel}</span>
+            <span className="text-lg xl:text-xl font-extrabold leading-[1.25] tracking-[-0.02em]">{t.paths}</span>
+          </motion.div>
         </div>
       </div>
     </section>

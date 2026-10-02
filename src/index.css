@@ -56,6 +56,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif/instrument-serif-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-hm-red: #FC5555;
   --color-hm-blue: #3E46D9;
@@ -102,6 +110,28 @@ body {
   html.custom-cursor .custom-cursor-dot {
     display: block;
   }
+}
+
+/* Kapitel-Auftakt: Scanlinie läuft langsam über das Bild, Hintergrundbild driftet leicht */
+.chapter-scan {
+  box-shadow: 0 0 12px rgba(51,204,204,.6);
+  animation: chapter-scan 7s linear infinite;
+}
+@keyframes chapter-scan {
+  0% { top: 0; opacity: 0; }
+  10%, 90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.chapter-drift {
+  animation: chapter-drift 16s ease-in-out infinite alternate;
+}
+@keyframes chapter-drift {
+  0% { transform: scale(1.06) translateX(-10px); }
+  100% { transform: scale(1.12) translateX(10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-scan { display: none; }
+  .chapter-drift { animation: none; }
 }
 
 /* Hero-Trailer: drei Begriffe tauchen nacheinander auf und verschwinden, dann erscheint der Titel.

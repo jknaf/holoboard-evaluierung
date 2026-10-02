@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useT } from '../i18n';
 
 const T = {
@@ -10,7 +10,6 @@ const T = {
     newEyebrow: 'Der Richtungswechsel',
     newTitle: 'Fokus auf das Holoboard',
     newText: 'Zwischen 2023 und 2024 verschob sich der Fokus hin zu einem System, das mit vorhandener Medientechnik, klarer Interaktion und besserer didaktischer Anschlussfähigkeit realistisch umgesetzt werden konnte: dem Holoboard.',
-    scroll: 'Scroll to transform',
   },
   en: {
     phase: 'Phase 3: A Technological Shift (2023–2024)',
@@ -19,62 +18,40 @@ const T = {
     newEyebrow: 'A Change of Direction',
     newTitle: 'Focus on the Holoboard',
     newText: 'Between 2023 and 2024, the focus shifted to a system that could realistically be built with existing media technology, offered clear interaction and fitted far more readily into pedagogical practice: the Holoboard.',
-    scroll: 'Scroll to transform',
   },
 };
 
+// Vorher/Nachher nebeneinander. Früher lief das als 300vh-Scroll-Wipe, bei dem in der Mitte
+// beide Texte ausgeblendet waren (alt bis 30 %, neu erst ab 70 %): ein Bildschirm voll leerer Fläche.
 export default function TechnologischerWandel() {
   const t = useT(T);
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Fade out Layer 1 text early before the wipe starts
-  const opacity1 = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  
-  // Clip path for a wipe effect from left to right
-  const clipPath = useTransform(scrollYProgress, [0.2, 0.8], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  
-  // Fade in Layer 2 text after the wipe has mostly covered the screen
-  const opacity2 = useTransform(scrollYProgress, [0.7, 1], [0, 1]);
+  const reduced = useReducedMotion();
 
   return (
-    <section id="wandel" ref={containerRef} className="relative h-[300vh] bg-hm-black">
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center">
-
-        {/* Layer 1: Old Approach */}
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <motion.div style={{ opacity: opacity1 }} className="max-w-4xl w-full text-center p-8 relative z-10">
-            <h2 className="text-sm font-bold tracking-widest text-gray-500 uppercase mb-3">{t.phase}</h2>
-            <h3 className="text-5xl md:text-7xl font-black text-gray-900 mb-8 tracking-tighter">{t.oldTitle}</h3>
-            <p className="text-xl md:text-2xl text-gray-600 font-light leading-relaxed max-w-3xl mx-auto">
-              {t.oldText}
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Layer 2: New Approach (Wipes in from right) */}
-        <motion.div 
-          style={{ clipPath }}
-          className="absolute inset-0 flex items-center justify-center bg-hm-blue text-white"
-        >
-          <motion.div style={{ opacity: opacity2 }} className="max-w-4xl w-full text-center p-8">
-            <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">{t.newEyebrow}</h2>
-            <h3 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter">{t.newTitle}</h3>
-            <p className="text-xl md:text-2xl text-blue-100 font-light leading-relaxed max-w-3xl mx-auto">
-              {t.newText}
-            </p>
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 text-xs font-bold tracking-widest uppercase flex flex-col items-center gap-4 mix-blend-difference z-10">
-          <span>{t.scroll}</span>
-          <div className="w-px h-16 bg-gradient-to-b from-white to-transparent" />
+    <section id="wandel" className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[80vh]">
+      {/* Vorher: ursprünglicher Ansatz */}
+      <div className="flex items-center bg-gray-100 px-6 py-20 sm:px-10 lg:p-16 xl:p-24">
+        <div className="max-w-xl">
+          <h2 className="text-sm font-bold tracking-widest text-gray-500 uppercase mb-3">{t.phase}</h2>
+          <h3 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 tracking-tighter">{t.oldTitle}</h3>
+          <p className="text-lg md:text-xl text-gray-600 font-light leading-relaxed">{t.oldText}</p>
         </div>
       </div>
+
+      {/* Nachher: wischt einmal von links herein, sobald sichtbar */}
+      <motion.div
+        initial={reduced ? false : { clipPath: 'inset(0 100% 0 0)' }}
+        whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        className="flex items-center bg-hm-blue text-white px-6 py-20 sm:px-10 lg:p-16 xl:p-24"
+      >
+        <div className="max-w-xl">
+          <h2 className="text-sm font-bold tracking-widest text-hm-turquoise uppercase mb-3">{t.newEyebrow}</h2>
+          <h3 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">{t.newTitle}</h3>
+          <p className="text-lg md:text-xl text-blue-100 font-light leading-relaxed">{t.newText}</p>
+        </div>
+      </motion.div>
     </section>
   );
 }

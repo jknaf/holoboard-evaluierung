@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Database, Server, User, Monitor, Cpu, Globe } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import ActionCue from './ui/ActionCue';
 import { useT } from '../i18n';
 
@@ -13,11 +12,21 @@ function r(text: string, size = 'text-sm') {
 
 const T = {
   de: {
-    eyebrow: "Systemdesign",
-    title: "Technische Architektur",
-    nodeWeb: "Webplattform",
-    nodeLlm: "Lokales LLM",
-    nodeRag: "RAG System",
+    eyebrow: "Technische Architektur",
+    title: "Ein verteiltes Echtzeitsystem",
+    hint: "Tippen Sie auf eine Komponente: vom gesprochenen Satz bis zur Antwort des Avatars.",
+    rowTop: "Interaktion",
+    rowBottom: "Wissen und Logik",
+    panelEyebrow: "Komponente",
+    nodes: [
+      { id: "user", title: "User", sub: "Sprache, Mimik, Gestik", text: "Kein reiner Eingabepunkt, sondern ein kontinuierlicher Signalgeber: Sprache, Präsenz und Gestik fließen in die Verarbeitung ein.", tags: ["Eingang", "Multimodal"] },
+      { id: "web", title: "Webplattform", sub: "Steuerung", text: "Zentrale Laufzeitumgebung für Sitzungen, Frontend-Logik, API-Kommunikation und Zustandswechsel.", tags: ["Kontrollschicht", "Echtzeit"] },
+      { id: "tavus", title: "Tavus", sub: "Avatar in Echtzeit", text: "Avatarbasierte Echtzeit-Kommunikation: eine vollständige Conversational-Video-Infrastruktur, nicht bloß Videoausgabe.", tags: ["KI-Avatar", "Video"] },
+      { id: "box", title: "Holobox", sub: "Ausgabe auf Glas", text: "Kein bloßes Displaygehäuse, sondern ein optisch-räumliches Interface mit eigenen physischen Randbedingungen.", tags: ["Glasscheibe", "Ausgabe"] },
+      { id: "n8n", title: "n8n", sub: "Orchestrierung", text: "Die operative Kopplung zwischen Tool-Calling des Sprachmodells, RAG-Backend und der Rückgabe an den Avatar.", tags: ["No-/Low-Code", "Workflows"] },
+      { id: "rag", title: "RAG + Vektordatenbank", sub: "Wissensschicht", text: "Liefert projektspezifische, institutionelle und studienbezogene Antworten aus eigenen Dokumenten.", tags: ["Wissensdatenbank", "Eigene Quellen"] },
+      { id: "llm", title: "Lokales LLM", sub: "Ollama, gpt-oss:20b", text: "On-Premise-Modellpfad für Datenschutz, institutionelle Kontrolle und Offline-Demos.", tags: ["On-Premise", "Datenschutz"] },
+    ],
     btnTitle: "Vollständiger technischer Bericht",
     btnSub: "8 Kapitel mit Architekturdiagrammen aufklappen",
     k001: "Technische Dokumentation: Systemarchitektur des Holoboards",
@@ -153,11 +162,21 @@ const T = {
     k131: "Gesamtpipeline",
   },
   en: {
-    eyebrow: "System design",
-    title: "Technical architecture",
-    nodeWeb: "Web platform",
-    nodeLlm: "Local LLM",
-    nodeRag: "RAG system",
+    eyebrow: "Technical architecture",
+    title: "A distributed real-time system",
+    hint: "Tap a component to follow the path from a spoken sentence to the avatar's answer.",
+    rowTop: "Interaction",
+    rowBottom: "Knowledge and logic",
+    panelEyebrow: "Component",
+    nodes: [
+      { id: "user", title: "User", sub: "Speech, facial expression, gesture", text: "Not just an input point but a continuous source of signals: speech, presence and gesture all feed into processing.", tags: ["Input", "Multimodal"] },
+      { id: "web", title: "Web platform", sub: "Control", text: "Central runtime for sessions, frontend logic, API communication and state transitions.", tags: ["Control layer", "Real time"] },
+      { id: "tavus", title: "Tavus", sub: "Real-time avatar", text: "Avatar-based real-time communication: a complete conversational video infrastructure, not merely video output.", tags: ["AI avatar", "Video"] },
+      { id: "box", title: "Holobox", sub: "Output on glass", text: "Not just a display enclosure but an optical, spatial interface with its own physical constraints.", tags: ["Glass pane", "Output"] },
+      { id: "n8n", title: "n8n", sub: "Orchestration", text: "The operational link between the language model's tool calling, the RAG backend and the answer returned to the avatar.", tags: ["No-code/low-code", "Workflows"] },
+      { id: "rag", title: "RAG + vector database", sub: "Knowledge layer", text: "Delivers project-specific, institutional and study-related answers from the project's own documents.", tags: ["Knowledge base", "Own sources"] },
+      { id: "llm", title: "Local LLM", sub: "Ollama, gpt-oss:20b", text: "On-premises model path for data protection, institutional control and offline demos.", tags: ["On-premises", "Data protection"] },
+    ],
     btnTitle: "Full technical report",
     btnSub: "Expand 8 chapters with architecture diagrams",
     k001: "Technical documentation: Holoboard system architecture",
@@ -294,112 +313,89 @@ const T = {
   },
 };
 
+// Leitungen im Schema: wer nach rechts (h), rückwärts nach links (hr) oder nach unten (v) verbunden ist.
+const LINKS: Record<string, ('h' | 'hr' | 'v')[]> = {
+  user: ['h'], web: ['h', 'v'], tavus: ['h'], n8n: ['hr'], rag: ['hr'],
+};
+
 export default function Architektur() {
   const t = useT(T);
-  const containerRef = useRef(null);
   const [showDetails, setShowDetails] = useState(false);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"]
-  });
+  const [sel, setSel] = useState('n8n');
+  const current = t.nodes.find((n) => n.id === sel) ?? t.nodes[4];
 
-  const pathLength = useTransform(scrollYProgress, [0, 0.8], [0, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+  const card = (n: (typeof t.nodes)[number], bottom: boolean) => (
+    <div key={n.id} className={`relative ${bottom ? 'md:mt-20' : ''}`}>
+      {LINKS[n.id]?.map((dir) => <Link key={dir} dir={dir} />)}
+      <button
+        type="button"
+        onClick={() => setSel(n.id)}
+        aria-pressed={sel === n.id}
+        aria-controls="architektur-panel"
+        className={`relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-center gap-1.5 rounded-2xl border p-4 text-left text-white transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-hm-turquoise md:p-[18px] ${
+          sel === n.id
+            ? 'border-hm-red bg-hm-red/15 shadow-[0_0_30px_rgba(252,85,85,0.25)]'
+            : 'border-white/15 bg-white/5 hover:border-white/35 hover:bg-white/10'
+        }`}
+      >
+        <span className="text-[15px] font-extrabold leading-tight tracking-tight md:text-base">{n.title}</span>
+        <span className="text-xs text-gray-400">{n.sub}</span>
+      </button>
+    </div>
+  );
 
   return (
-    <section id="architektur" ref={containerRef} className="py-32 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-24">
-          <h2 className="text-sm font-bold tracking-widest text-hm-red uppercase mb-3">{t.eyebrow}</h2>
-          <h3 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter">{t.title}</h3>
-        </div>
+    <section id="architektur" className="bg-white relative overflow-hidden">
+      {/* Lebendiges Schema: dunkle Bühne mit Raster und türkisem Glühen */}
+      <div className="relative overflow-hidden bg-[#05070A] py-24 text-white md:py-32">
+        <div aria-hidden className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <div aria-hidden className="absolute left-1/2 top-1/2 h-[500px] w-[700px] max-w-full -translate-x-1/2 -translate-y-1/3 bg-[radial-gradient(closest-side,rgba(51,204,204,0.12),transparent)] xl:left-[38%]" />
 
-        <div className="relative max-w-5xl mx-auto aspect-[16/12] sm:aspect-[16/9] flex items-center justify-center mb-16">
-          
-          {/* SVG Connections */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none hidden sm:block" viewBox="0 0 1000 600">
-            {/* User to Web */}
-            <motion.path
-              d="M 200 150 L 500 150"
-              fill="none"
-              stroke="#FC5555"
-              strokeWidth="4"
-              strokeDasharray="10 10"
-              style={{ pathLength, opacity }}
-            />
-            {/* Web to Holobox */}
-            <motion.path
-              d="M 500 150 L 800 150"
-              fill="none"
-              stroke="#3E46D9"
-              strokeWidth="4"
-              strokeDasharray="10 10"
-              style={{ pathLength, opacity }}
-            />
-            {/* Web to LLM */}
-            <motion.path
-              d="M 500 150 L 500 450"
-              fill="none"
-              stroke="#000000"
-              strokeWidth="4"
-              strokeDasharray="10 10"
-              style={{ pathLength, opacity }}
-            />
-            {/* LLM to API */}
-            <motion.path
-              d="M 500 450 L 200 450"
-              fill="none"
-              stroke="#33CCCC"
-              strokeWidth="4"
-              strokeDasharray="10 10"
-              style={{ pathLength, opacity }}
-            />
-            {/* LLM to RAG */}
-            <motion.path
-              d="M 500 450 L 800 450"
-              fill="none"
-              stroke="#33CCCC"
-              strokeWidth="4"
-              strokeDasharray="10 10"
-              style={{ pathLength, opacity }}
-            />
-          </svg>
-
-          {/* Nodes (Desktop Positioning) */}
-          <div className="hidden sm:block">
-            <div className="absolute top-[150px] left-[200px] -translate-x-1/2 -translate-y-1/2">
-              <Node icon={<User />} label="User" color="bg-hm-red" delay={0} />
-            </div>
-            <div className="absolute top-[150px] left-[500px] -translate-x-1/2 -translate-y-1/2">
-              <Node icon={<Globe />} label={t.nodeWeb} color="bg-gray-900" delay={0.1} />
-            </div>
-            <div className="absolute top-[150px] left-[800px] -translate-x-1/2 -translate-y-1/2">
-              <Node icon={<Monitor />} label="Holobox" color="bg-hm-turquoise" delay={0.2} />
-            </div>
-            <div className="absolute top-[450px] left-[200px] -translate-x-1/2 -translate-y-1/2">
-              <Node icon={<Server />} label="Tavus API" color="bg-purple-600" delay={0.3} />
-            </div>
-            <div className="absolute top-[450px] left-[500px] -translate-x-1/2 -translate-y-1/2">
-              <Node icon={<Cpu />} label={t.nodeLlm} color="bg-hm-blue" delay={0.4} />
-            </div>
-            <div className="absolute top-[450px] left-[800px] -translate-x-1/2 -translate-y-1/2">
-              <Node icon={<Database />} label={t.nodeRag} color="bg-emerald-600" delay={0.5} />
-            </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-14 flex max-w-3xl flex-col gap-4 md:mb-20">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-hm-turquoise">{t.eyebrow}</p>
+            <h2 className="text-4xl font-black leading-[0.95] tracking-tighter md:text-6xl">{t.title}</h2>
+            <p className="text-lg font-light text-gray-400">{t.hint}</p>
           </div>
 
-          {/* Mobile Fallback Grid */}
-          <div className="sm:hidden grid grid-cols-2 gap-8 w-full">
-            <Node icon={<User />} label="User" color="bg-hm-red" delay={0} />
-            <Node icon={<Globe />} label={t.nodeWeb} color="bg-gray-900" delay={0.1} />
-            <Node icon={<Monitor />} label="Holobox" color="bg-hm-turquoise" delay={0.2} />
-            <Node icon={<Cpu />} label={t.nodeLlm} color="bg-hm-blue" delay={0.3} />
-            <Node icon={<Server />} label="Tavus API" color="bg-purple-600" delay={0.4} />
-            <Node icon={<Database />} label={t.nodeRag} color="bg-emerald-600" delay={0.5} />
+          <div className="flex flex-col gap-10 xl:flex-row xl:items-center">
+            <div className="grid flex-1 grid-cols-2 gap-3 md:grid-cols-4 md:gap-x-12 md:gap-y-4">
+              <span className="col-span-2 text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 md:col-span-4">{t.rowTop}</span>
+              {t.nodes.slice(0, 4).map((n) => card(n, false))}
+              <span className="col-span-2 mt-6 text-[11px] font-bold uppercase tracking-[0.2em] text-white/40 md:col-span-1 md:mt-20 md:self-center md:text-right">{t.rowBottom}</span>
+              {t.nodes.slice(4).map((n) => card(n, true))}
+            </div>
+
+            <aside
+              id="architektur-panel"
+              aria-live="polite"
+              className="flex min-h-[300px] flex-col gap-4 rounded-[22px] border border-white/15 bg-[linear-gradient(160deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-6 backdrop-blur-md md:p-8 xl:w-[380px] xl:shrink-0"
+            >
+              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-hm-red">{t.panelEyebrow}</span>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={current.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex flex-col gap-4"
+                >
+                  <h3 className="text-3xl font-black leading-[1.05] tracking-tight">{current.title}</h3>
+                  <p className="text-base leading-relaxed text-gray-300">{current.text}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {current.tags.map((tag) => (
+                      <span key={tag} className="rounded-full border border-hm-turquoise/40 px-3 py-1.5 text-xs font-semibold text-hm-turquoise">{tag}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </aside>
           </div>
-
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Toggle Button */}
         <div className="flex justify-center">
           {!showDetails ? (
@@ -694,20 +690,26 @@ export default function Architektur() {
   );
 }
 
-function Node({ icon, label, color, delay }: { icon: React.ReactNode, label: string, color: string, delay: number }) {
+// Leitung mit laufendem Datenpunkt; nur ab md sichtbar, bei reduzierter Bewegung steht der Punkt in der Mitte.
+function Link({ dir }: { dir: 'h' | 'hr' | 'v'; key?: string }) {
+  const still = useReducedMotion();
+  const vertical = dir === 'v';
+  const path = ['0%', '15%', '85%', '100%'];
+  if (dir === 'hr') path.reverse();
+  const pos = vertical ? 'top' : 'left';
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.5 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay, type: "spring", stiffness: 200, damping: 20 }}
-      whileHover={{ scale: 1.1 }}
-      className="flex flex-col items-center gap-3 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 min-w-[140px]"
+    <span
+      aria-hidden
+      className={`pointer-events-none absolute hidden bg-hm-turquoise/35 md:block ${
+        vertical ? 'left-1/2 top-full h-24 w-px' : 'left-full top-1/2 h-px w-12'
+      }`}
     >
-      <div className={`w-16 h-16 rounded-full ${color} text-white flex items-center justify-center shadow-inner`}>
-        {React.cloneElement(icon as React.ReactElement, { className: "w-8 h-8" })}
-      </div>
-      <span className="font-bold text-gray-900 tracking-tight text-sm uppercase">{label}</span>
-    </motion.div>
+      <motion.span
+        className={`absolute size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-hm-turquoise shadow-[0_0_10px_2px_rgba(51,204,204,0.8)] ${vertical ? 'left-1/2' : 'top-1/2'}`}
+        style={still ? { [pos]: '50%' } : undefined}
+        animate={still ? undefined : { [pos]: path, opacity: [0, 1, 1, 0] }}
+        transition={{ duration: 1.8, ease: 'linear', repeat: Infinity, times: [0, 0.15, 0.85, 1], delay: dir === 'hr' ? 0.6 : vertical ? 0.3 : 0 }}
+      />
+    </span>
   );
 }

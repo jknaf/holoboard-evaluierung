@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
+import { motion, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 import { Download as DownloadIcon, Menu, X } from 'lucide-react';
 
 // Sections
@@ -26,6 +26,7 @@ import Contact from './components/Contact';
 import Download from './components/Download';
 import Footer from './components/Footer';
 import CookieConsent from './components/CookieConsent';
+import ChapterIntro from './components/ChapterIntro';
 import { useT, useLang } from './i18n';
 
 const CHAPTERS = [
@@ -49,7 +50,6 @@ const T = {
     logoAlt: 'Hochschule München Logo',
     summaryPdf: 'Zusammenfassung PDF',
     menuToggle: 'Menü umschalten',
-    inThisChapter: 'In diesem Kapitel',
     langSwitch: 'Sprache wählen',
   },
   en: {
@@ -64,15 +64,11 @@ const T = {
     logoAlt: 'Munich University of Applied Sciences logo',
     summaryPdf: 'Summary PDF',
     menuToggle: 'Toggle menu',
-    inThisChapter: 'In this chapter',
     langSwitch: 'Choose language',
   },
 };
 
 export default function App() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
   const [isHovering, setIsHovering] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeChapter, setActiveChapter] = useState('projekt');
@@ -88,7 +84,10 @@ export default function App() {
     label: t.labels[chapter.id],
     items: chapter.items.map((id) => ({ id, label: t.labels[id] })),
   }));
-  const activeChapterItems = chapters.find((chapter) => chapter.id === activeChapter)?.items ?? chapters[0].items;
+  const activeIndex = Math.max(0, CHAPTERS.findIndex((chapter) => chapter.id === activeChapter));
+  // Fortschrittsbalken je Kapitel: direkt am DOM gesetzt, damit nicht bei jedem Scroll-Frame die ganze Seite neu rendert
+  const barRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const mobileBarRef = useRef<HTMLSpanElement | null>(null);
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -132,6 +131,41 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const mark = window.scrollY + window.innerHeight * 0.3;
+      const top = (el: Element | null) => (el ? el.getBoundingClientRect().top + window.scrollY : Infinity);
+      const starts = CHAPTERS.map((chapter) => top(document.getElementById(`kapitel-${chapter.id}`)));
+      const end = document.querySelector('main')?.getBoundingClientRect().bottom ?? 0;
+      let active = 0;
+      starts.forEach((start, i) => {
+        const stop = starts[i + 1] ?? end + window.scrollY;
+        const progress = Math.min(1, Math.max(0, (mark - start) / (stop - start)));
+        if (progress > 0) active = i;
+        const bar = barRefs.current[i];
+        if (bar) bar.style.transform = `scaleX(${progress})`;
+      });
+      const activeStop = starts[active + 1] ?? end + window.scrollY;
+      if (mobileBarRef.current) {
+        mobileBarRef.current.style.transform = `scaleX(${Math.min(1, Math.max(0, (mark - starts[active]) / (activeStop - starts[active])))})`;
+      }
+      setActiveChapter(CHAPTERS[active].id);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isMobileMenuOpen) {
       document.body.style.overflow = '';
       return;
@@ -153,59 +187,59 @@ export default function App() {
         transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
       />
 
-      {/* Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-hm-red z-[10000] origin-left"
-        style={{ scaleX }}
-      />
-
-      {/* Sticky Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-xl z-50 border-b border-gray-200 shadow-sm">
+      {/* Navigation: eine Zeile, je Kapitel ein Fortschrittsbalken */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/75 backdrop-blur-xl border-b border-white/10 text-white">
         <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 sm:h-20 gap-4">
-            
-            {/* Logo Area */}
-            <div className="flex-shrink-0 flex flex-col justify-center">
-              <img 
-                src="https://holoboard-assets.netlify.app/brand/061-logo_assets-hm-logo-rgb.png" 
-                alt={t.logoAlt} 
-                className="h-8 sm:h-10 w-auto object-contain"
+          <div className="flex justify-between items-center h-16 sm:h-[4.5rem] gap-4">
+            <a
+              href="#hero"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex-shrink-0 flex flex-col justify-center"
+            >
+              <img
+                src="https://holoboard-assets.netlify.app/brand/061-logo_assets-hm-logo-rgb.png"
+                alt={t.logoAlt}
+                className="h-7 sm:h-8 w-auto object-contain"
                 referrerPolicy="no-referrer"
               />
-              <span className="font-black text-[10px] sm:text-xs tracking-widest uppercase text-gray-500 mt-1">Holoboard</span>
-            </div>
+              <span className="font-black text-[10px] tracking-widest uppercase text-white/60 mt-1">Holoboard</span>
+            </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex flex-1 justify-center items-center px-4">
-              <div className="flex items-center gap-6 xl:gap-8 h-full">
-                {chapters.map((chapter) => (
-                  <button
-                    key={chapter.id}
-                    type="button"
-                    onClick={() => {
-                      setActiveChapter(chapter.id);
-                      scrollToSection(chapter.items[0].id);
-                    }}
-                    className={`relative px-1 py-2 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.22em] transition-colors whitespace-nowrap ${
-                      activeChapter === chapter.id
-                        ? 'text-hm-red'
-                        : 'text-gray-500 hover:text-hm-red'
+            <div className="hidden lg:flex flex-1 justify-center items-center gap-6 xl:gap-9">
+              {chapters.map((chapter, i) => (
+                <button
+                  key={chapter.id}
+                  type="button"
+                  aria-current={activeChapter === chapter.id ? 'true' : undefined}
+                  onClick={() => scrollToSection(`kapitel-${chapter.id}`)}
+                  className="flex flex-col gap-2 min-w-[6.5rem] xl:min-w-[7.5rem] text-left group"
+                >
+                  <span
+                    className={`text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.2em] whitespace-nowrap transition-colors ${
+                      activeChapter === chapter.id ? 'text-white' : 'text-white/50 group-hover:text-white'
                     }`}
                   >
-                    {chapter.label}
+                    <span className="text-hm-red">0{i + 1}</span>
+                    <span className="ml-2">{chapter.label}</span>
+                  </span>
+                  <span className="h-0.5 rounded-full bg-white/15 overflow-hidden">
                     <span
-                      className={`absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-opacity ${
-                        activeChapter === chapter.id ? 'bg-hm-red opacity-100' : 'bg-transparent opacity-0'
-                      }`}
+                      ref={(el) => {
+                        barRefs.current[i] = el;
+                      }}
+                      className="block h-full bg-hm-red origin-left"
+                      style={{ transform: 'scaleX(0)' }}
                     />
-                  </button>
-                ))}
-              </div>
+                  </span>
+                </button>
+              ))}
             </div>
 
-            {/* Right Actions */}
-            <div className="flex-shrink-0 flex items-center gap-3">
-              <div role="group" aria-label={t.langSwitch} className="flex items-center rounded-full border border-gray-200 p-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">
+            <div className="flex-shrink-0 flex items-center gap-2 sm:gap-3">
+              <div role="group" aria-label={t.langSwitch} className="flex items-center rounded-full border border-white/20 p-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">
                 {(['de', 'en'] as const).map((code) => (
                   <button
                     key={code}
@@ -213,7 +247,7 @@ export default function App() {
                     onClick={() => setLang(code)}
                     aria-pressed={lang === code}
                     className={`rounded-full px-2 py-1 sm:px-2.5 transition-colors ${
-                      lang === code ? 'bg-gray-900 text-white' : 'text-gray-500 hover:text-hm-red'
+                      lang === code ? 'bg-white text-black' : 'text-white/60 hover:text-white'
                     }`}
                   >
                     {code}
@@ -224,20 +258,19 @@ export default function App() {
                 href="#download"
                 onClick={(e) => {
                   e.preventDefault();
-                  document.getElementById('download')?.scrollIntoView({ behavior: 'smooth' });
+                  scrollToSection('download');
                 }}
-                className="flex items-center gap-1.5 bg-hm-red text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest hover:bg-red-700 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap"
+                className="flex items-center gap-1.5 bg-hm-red text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest hover:bg-red-600 transition-colors whitespace-nowrap"
               >
                 <DownloadIcon className="w-3 h-3" />
                 <span className="hidden sm:block">{t.summaryPdf}</span>
                 <span className="block sm:hidden">PDF</span>
               </a>
-
-              {/* Mobile Menu Toggle */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-1.5 text-gray-600 hover:text-hm-red hover:bg-gray-100 rounded-full transition-colors"
+                className="lg:hidden p-1.5 text-white/80 hover:text-white rounded-full transition-colors"
                 aria-label={t.menuToggle}
+                aria-expanded={isMobileMenuOpen}
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -245,28 +278,10 @@ export default function App() {
           </div>
         </div>
 
-        <div className="hidden lg:block border-t border-gray-100 bg-gray-50/80">
-          <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-center gap-5 py-3">
-              <span className="shrink-0 text-[10px] font-bold uppercase tracking-[0.24em] text-gray-400">
-                {t.inThisChapter}
-              </span>
-              <div className="h-6 w-px bg-gray-200" />
-              <div className="flex items-center gap-2 xl:gap-3 overflow-x-auto no-scrollbar">
-                {activeChapterItems.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => scrollToSection(item.id)}
-                    className="rounded-full border border-gray-200 bg-white px-4 py-2 text-[10px] xl:text-[11px] font-bold uppercase tracking-[0.2em] text-gray-600 hover:border-hm-red/30 hover:text-hm-red transition-colors whitespace-nowrap"
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Mobil: Fortschritt im aktuellen Kapitel */}
+        <span aria-hidden="true" className="lg:hidden absolute left-0 right-0 bottom-0 h-0.5 bg-white/10 overflow-hidden">
+          <span ref={mobileBarRef} className="block h-full bg-hm-red origin-left" style={{ transform: 'scaleX(0)' }} />
+        </span>
 
         {/* Mobile Menu Dropdown */}
         <AnimatePresence>
@@ -275,19 +290,24 @@ export default function App() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: '100dvh' }}
               exit={{ opacity: 0, height: 0 }}
-              className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto overscroll-contain border-t border-gray-100 bg-white/95 backdrop-blur-xl lg:hidden sm:top-20"
+              className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto overscroll-contain border-t border-white/10 bg-black/95 backdrop-blur-xl lg:hidden sm:top-[4.5rem]"
               style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}
             >
-              <div className="min-h-full px-4 py-4 pb-8 space-y-4 shadow-inner">
-                {chapters.map((chapter) => (
-                  <div key={chapter.id} className="rounded-2xl border border-gray-100 bg-gray-50/60 p-2">
-                    <button
-                      type="button"
-                      onClick={() => setActiveChapter(chapter.id)}
-                      className="w-full px-3 py-2 text-left text-[11px] font-bold uppercase tracking-[0.22em] text-gray-500"
+              <div className="min-h-full px-4 py-4 pb-8 space-y-4">
+                {chapters.map((chapter, i) => (
+                  <div key={chapter.id} className="rounded-2xl border border-white/10 bg-white/[0.04] p-2">
+                    <a
+                      href={`#kapitel-${chapter.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsMobileMenuOpen(false);
+                        setTimeout(() => scrollToSection(`kapitel-${chapter.id}`), 100);
+                      }}
+                      className={`block px-3 py-2 text-[11px] font-bold uppercase tracking-[0.22em] ${i === activeIndex ? 'text-white' : 'text-white/50'}`}
                     >
-                      {chapter.label}
-                    </button>
+                      <span className="text-hm-red">0{i + 1}</span>
+                      <span className="ml-2">{chapter.label}</span>
+                    </a>
                     <div className="space-y-1">
                       {chapter.items.map((item) => (
                         <a
@@ -295,13 +315,10 @@ export default function App() {
                           href={`#${item.id}`}
                           onClick={(e) => {
                             e.preventDefault();
-                            setActiveChapter(chapter.id);
                             setIsMobileMenuOpen(false);
-                            setTimeout(() => {
-                              scrollToSection(item.id);
-                            }, 100);
+                            setTimeout(() => scrollToSection(item.id), 100);
                           }}
-                          className="block px-3 py-3 text-sm font-bold uppercase tracking-widest text-gray-600 hover:text-hm-red hover:bg-white rounded-xl transition-colors"
+                          className="block px-3 py-3 text-sm font-bold uppercase tracking-widest text-white/80 hover:text-hm-red hover:bg-white/5 rounded-xl transition-colors"
                         >
                           {item.label}
                         </a>
@@ -317,21 +334,26 @@ export default function App() {
 
       <main>
         <Hero />
+        <ChapterIntro index={1} id="projekt" title={chapters[0].label} items={chapters[0].items} onSelect={scrollToSection} />
         <Ausgangspunkt />
         <Exploration />
         <TechnologischerWandel />
         <HoloboardKonzept />
+        <ChapterIntro index={2} id="technik" title={chapters[1].label} items={chapters[1].items} onSelect={scrollToSection} />
         <Architektur />
         <AvatarIntegration />
         <Prototyp />
         <Demonstrator />
+        <ChapterIntro index={3} id="praxis" title={chapters[2].label} items={chapters[2].items} onSelect={scrollToSection} />
         <Netzwerk />
         <StudentischeProjekte />
-        <Impact />
         <Wissenstransfer />
         <Nutzen />
-        <Learnings />
+        <ChapterIntro index={4} id="evaluation" title={chapters[3].label} items={chapters[3].items} onSelect={scrollToSection} />
         <Evaluation />
+        <Impact />
+        <Learnings />
+        <ChapterIntro index={5} id="ausblick" title={chapters[4].label} items={chapters[4].items} onSelect={scrollToSection} />
         <Ausblick />
         <Zukunftsperspektive />
         <Download />
